@@ -44,7 +44,7 @@ module draw_display(
      * Internal logic
      */
 
-    always_ff @(posedge clk) begin : bg_ff_blk
+    /*always_ff @(posedge clk) begin : bg_ff_blk
         if (rst) begin
             out.vcount <= '0;
             out.vsync  <= '0;
@@ -62,9 +62,9 @@ module draw_display(
             out.hblnk  <= in.hblnk;
             out.rgb    <= rgb_nxt;
         end
-    end
+    end*/
 
-    always_comb begin
+    /*always_comb begin
         rgb_nxt = in.rgb;
     //draw Shape display
         Draw_Shape_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY)
@@ -73,9 +73,9 @@ module draw_display(
     //draw checkered on display
         Draw_checkered_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY)
 
-    end
+    end*/
 
-    function void Draw_Shape_display (input [10:0] in.hcount, [10:0] in.vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
+    /*function void Draw_Shape_display (input [10:0] in.hcount, [10:0] in.vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
         if ((in.vcount == V_DISPLAY || in.vcount == V_DISPLAY - height) && (in.hcount >= H_DISPLAY && in.hcount <= H_DISPLAY + length))                    
                 rgb_nxt = 12'hf_a_0;                
             else if ((in.vcount <= V_DISPLAY || in.vcount >= V_DISPLAY - height) && (in.hcount == H_DISPLAY || in.hcount == H_DISPLAY + length))
@@ -97,6 +97,6 @@ module draw_display(
                 rgb_nxt = 12'hf_a_0;
     end
     endfunction
-    
+    */
 
 endmodule

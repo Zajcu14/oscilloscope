@@ -18,6 +18,7 @@
      input  logic clk,
      input  logic clk_mouse,
      input  logic clk_trigger,
+     input  logic clk_adc,
      input  logic rst,
      output logic vs,
      output logic hs,
@@ -26,7 +27,7 @@
      output logic [3:0] b,
      inout logic ps2_clk,
      inout logic ps2_data,
-     input logic [7:0] adc
+     inout logic [1:0] i2c
  );
  
  
@@ -49,6 +50,14 @@ wire clk_mouse;
  wire [11:0] trigger_rom_data;
  wire [11:0] trigger_data;
  wire [11:0] filtered_data;
+ wire [3:0] delay;
+ 
+ // Test wires
+ wire ready;
+ wire [11:0] data [399:0];
+ 
+ 
+ 
  
  reg dft_analysis;
  
@@ -66,46 +75,16 @@ wire clk_mouse;
   * Signals assignments
   */
  
- assign vs = vga_display.vsync;
- assign hs = vga_display.hsync;
- assign {r,g,b} = vga_display.rgb;
+ assign vs = vga_mouse.vsync;
+ assign hs = vga_mouse.hsync;
+ assign {r,g,b} = vga_mouse.rgb;
  
  
  /**
   * Submodules instances
   */
   
- vga_timing u_vga_timing (
-     .clk,
-     .rst,
-     .out(vga_timing)
- );
- 
- draw_bg u_draw_bg ( 
-     .clk,
-     .rst,
- 
-     .in(vga_timing),
-     .out(vga_bg)
- );
- 
- delay #(.WIDTH(2)) u_delay_mouse(
-    .clk,
-    .rst(1'b0),
-    .din({xpos_nxt,ypos_nxt}),
-    .dout({xpos,ypos})
- );
- 
- draw_mouse u_draw_mouse (
-     .clk,
-     .xpos(xpos),
-     .ypos(ypos),
- 
-     .in(vga_bg),
-     .out(vga_mouse)
- );
-  
-  MouseCtl u_mouse_ctl(
+ MouseCtl u_mouse_ctl(
      .ps2_data(ps2_data),
      .ps2_clk(ps2_clk),
      .clk(clk100MHz),
@@ -123,7 +102,78 @@ wire clk_mouse;
      .value('0),
      .zpos()
  );
+  
+ vga_timing u_vga_timing (
+     .clk,
+     .rst,
+     .out(vga_timing)
+ );
  
+ // Generate graph
+ 
+sin_gen u_graph_gen(
+    .clk,
+    .out(data),
+    .ready()
+    );
+ 
+ draw_bg u_draw_bg ( 
+     .clk,
+     .rst,
+ 
+     .in(vga_timing),
+     .out(vga_bg),
+     .data(data)
+ );
+ 
+ 
+ 
+ delay #(.WIDTH(2)) u_delay_mouse(
+    .clk,
+    .rst(1'b0),
+    .din({xpos_nxt,ypos_nxt}),
+    .dout({xpos,ypos})
+ );
+ 
+ draw_mouse u_draw_mouse (
+     .clk,
+     .xpos(xpos),
+     .ypos(ypos),
+ 
+     .in(vga_bg),
+     .out(vga_mouse)
+ );
+ 
+ /*draw_display u_draw_display(
+    .clk,
+    .clk_data(clk_trigger),
+    .in(vga_interface),
+    .out(vga_display), 
+    .rst,
+    .data(display_data),
+    .graph_scale({Y_scale,X_scale})
+ );*/
+ 
+ adc_control u_adc_control (
+    .clk(clk_adc),
+    .channel(2'b00),
+    .rst,
+    .sda(i2c[0]),
+    .scl(i2c[1]),
+    .data_output()
+);
+ 
+ /*trigger u_trigger(
+    .clk(clk_trigger),
+    .data_input(trigger_data),
+    .mode(mode),
+    .threshold(threshold),
+    .rst
+ );*/
+ 
+ 
+  // Niefunkcjonalne
+ /*
  user_interface u_user_interface(
     .clk,
     .in(vga_mouse),
@@ -137,21 +187,11 @@ wire clk_mouse;
     .time_scale(X_scale)
  );
  
- draw_display u_draw_display(
-    .clk,
-    .clk_data(clk_trigger),
-    .in(vga_interface),
-    .out(vga_display), 
-    .reset,
-    .data(display_data),
-    .graph_scale({Y_scale,X_scale})
- );
- 
- adc_control u_adc_control(
-    .clk(clk_adc),
-    .rst,
-    .channel(observed_channel),
-    .sda(adc_series_data)
+ data_acqusition u_data_acquisition(
+    .clk(clk),
+    .read(ready),
+    .data(data),
+    .input_data(adc_series_data)
  );
  
  trigger_data u_trigger_data(
@@ -167,28 +207,19 @@ wire clk_mouse;
     .data_output_display(display_data),
     .delay(delay)
   );
-  
-  
-  
+ 
   low_pass u_low_pass(
     .clk(clk),
     .data(trigger_data),
     .filtered_data(filtered_data),
     .corner_freq(corner_freq)
   );
-  
- trigger u_trigger(
-    .clk(clk_trigger),
-    .data(trigger_data),
-    .mode(mode),
-    .threshold(threshold),
-    .rst
- );
  
  dft u_dtt(
       .clk,
       .data(triger_data),
       .dft_analysis(dft_analysis)
   );
- 
+ */
  endmodule
+

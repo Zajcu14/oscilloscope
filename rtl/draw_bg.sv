@@ -13,21 +13,25 @@
 module draw_bg (
         input  logic clk,
         input  logic rst,
-
+        input  logic [11:0] data [399:0],
+        //input  logic ready,
+        
         vga_if.in in,
-        vga_if.out out
-         
+        vga_if.out out         
     );
 
     import vga_pkg::*;
-
+    typedef logic [11:0] sample_data;
 
     /**
      * Local variables and signals
      */
-
+    localparam resolution = 12;
     logic [11:0] rgb_nxt;
+    
 
+    
+    
     /**
      * Internal logic
      */
@@ -41,6 +45,7 @@ module draw_bg (
             out.hsync  <= '0;
             out.hblnk  <= '0;
             out.rgb    <= '0;
+          
         end else begin
             out.vcount <= in.vcount;
             out.vsync  <= in.vsync;
@@ -65,11 +70,26 @@ module draw_bg (
             else if (in.hcount == HOR_PIXELS - 1)   // - right edge:
                 rgb_nxt = 12'h0_0_f;                // - - make a blue line.
             else                                 // The rest of active display pixels:
-                rgb_nxt = 12'h8_8_8;              // - fill with gray.
-        
-            DrawJ_Letter( 11'd100, 11'd150);
-            DrawZ_Letter(11'd200, 11'd150);
-
+                rgb_nxt = 12'h0_0_0;              // - fill with gray.                             
+            
+            DrawRectBorder(11'd100, 11'd100, 11'd400, 11'd400);
+            DrawRectBorder(11'd100, 11'd100, 11'd200, 11'd200);
+            DrawRectBorder(11'd300, 11'd100, 11'd200, 11'd200);
+            DrawRectBorder(11'd100, 11'd300, 11'd200, 11'd200);
+            DrawRectBorder(11'd300, 11'd300, 11'd200, 11'd200);
+            
+            if( in.hcount > 99 && in.vcount  == (300 - data[in.hcount - 100]) && in.hcount < 500 && (300 - data[in.hcount - 100] > 99) && (300 - data[in.hcount - 100]) < 500) begin
+                rgb_nxt = 12'h8_f_2;
+                
+                
+            end
+            if(in.hcount > 99 && in.hcount < 500) begin
+                if((300 - data[in.hcount - 100]) < 100 && in.vcount == 100) 
+                    rgb_nxt = 12'h8_f_2;
+                if((300 - data[in.hcount - 100]) > 500 && in.vcount == 499) 
+                    rgb_nxt = 12'h8_f_2;
+            end
+            
         end
     end
 
@@ -77,7 +97,13 @@ module draw_bg (
         if( ypos <= in.vcount  && xpos <= in.hcount && (xpos+length) > in.hcount && (ypos+height)  > in.vcount )
             rgb_nxt = 12'h1_2_3;
     endfunction
-
+    
+    function void DrawRectBorder (input [10:0] xpos, [10:0] ypos, int length, int height);
+        if( ypos <= in.vcount  && xpos <= in.hcount && (xpos+length) > in.hcount && (ypos+height)  > in.vcount )
+            if( ypos == in.vcount  || xpos == in.hcount || (xpos+length - 1) == in.hcount || (ypos+height -1)  == in.vcount )
+                rgb_nxt = 12'hf_f_f;
+    endfunction
+    
 
     function void DrawLine(input [10:0] xpos1, [10:0] ypos1, input [10:0] xpos2, [10:0] ypos2,
             input [10:0] xpos3, [10:0] ypos3, input [10:0] xpos4, [10:0] ypos4);
