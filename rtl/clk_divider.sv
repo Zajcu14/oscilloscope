@@ -31,7 +31,7 @@ wire clk_in, clk_fb, clk_ss, clk_out;
 logic [7:0] safe_start = 0;
 
 wire locked;
-wire pclk;
+//wire pclk;
 wire pclk_mirror;
  
  

@@ -22,9 +22,8 @@
 
 module draw_display(
     input logic clk,
-    //input logic clk_data,
-    //input logic reset,
-    input reg[7:0] data [0:255],
+    input logic rst,
+    input reg[7:0] data_display [0:255],
     //input logic [7:0] graph_scale,
 
     vga_if.in in,
@@ -44,7 +43,7 @@ module draw_display(
      * Internal logic
      */
 
-    /*always_ff @(posedge clk) begin : bg_ff_blk
+    always_ff @(posedge clk) begin : bg_ff_blk
         if (rst) begin
             out.vcount <= '0;
             out.vsync  <= '0;
@@ -56,47 +55,47 @@ module draw_display(
         end else begin
             out.vcount <= in.vcount;
             out.vsync  <= in.vsync;
-            out.hblnk  <= in.vblnk;
+            out.vblnk  <= in.vblnk;
             out.hcount <= in.hcount;
             out.hsync  <= in.hsync;
             out.hblnk  <= in.hblnk;
             out.rgb    <= rgb_nxt;
         end
-    end*/
+    end
 
-    /*always_comb begin
+    always_comb begin
         rgb_nxt = in.rgb;
     //draw Shape display
-        Draw_Shape_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY)
-    //draw data on display
-        Draw_data_display(data, in.hcount, in.vcount, V_DISPLAY, H_DISPLAY)
+        Draw_Shape_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY);
+    //draw data_display on display
+        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY, H_DISPLAY, 256);
     //draw checkered on display
-        Draw_checkered_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY)
+        Draw_checkered_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY);
 
-    end*/
+    end
 
-    /*function void Draw_Shape_display (input [10:0] in.hcount, [10:0] in.vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
-        if ((in.vcount == V_DISPLAY || in.vcount == V_DISPLAY - height) && (in.hcount >= H_DISPLAY && in.hcount <= H_DISPLAY + length))                    
+    function void Draw_Shape_display (input [10:0] hcount, [10:0] vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
+        if ((vcount == V_DISPLAY || in.vcount == V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length))                    
                 rgb_nxt = 12'hf_a_0;                
-            else if ((in.vcount <= V_DISPLAY || in.vcount >= V_DISPLAY - height) && (in.hcount == H_DISPLAY || in.hcount == H_DISPLAY + length))
+            else if ((vcount <= V_DISPLAY || vcount >= V_DISPLAY - height) && (hcount == H_DISPLAY || hcount == H_DISPLAY + length))
                 rgb_nxt = 12'hf_a_0;
     endfunction
     
-    function void Draw_data_display (input [7:0] data [0:255], [10:0] in.hcount, [10:0] in.vcount, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
-        if (in.hcount - H_DISPLAY >= 0 && in.hcount - H_DISPLAY <= 255) begin
-            if ((in.hcount >= H_DISPLAY && in.hcount <= H_DISPLAY + length) 
-            &&  (in.vcount - V_DISPLAY == data[in.hcount - H_DISPLAY])) begin
+    function void Draw_data_display (input [7:0] data_display [0:255], [10:0] hcount, [10:0] vcount, [10:0] V_DISPLAY, [10:0] H_DISPLAY, int length);
+        if (in.hcount - H_DISPLAY >= 0 && hcount - H_DISPLAY <= 255) begin
+            if ((hcount >= H_DISPLAY && hcount <= H_DISPLAY + length) 
+            &&  (vcount - V_DISPLAY == data_display[hcount - H_DISPLAY])) begin
                     rgb_nxt = 12'ha_a_0; 
             end
         end
     endfunction
 // 256/32 = 8
-    function void Draw_checkered_display (input [10:0] in.hcount, [10:0] in.vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
-    if ((in.vcount <= V_DISPLAY && in.vcount >= V_DISPLAY - height) && (in.hcount >= H_DISPLAY && in.hcount <= H_DISPLAY + length)) begin                  
-            if (in.vcount [5:0] == 6'd32 || in.hcount [5:0] == 6'd32)
+    function void Draw_checkered_display (input [10:0] hcount, [10:0] vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
+    if ((vcount <= V_DISPLAY && vcount >= V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin                  
+            if (vcount [5:0] == 6'd32 || hcount [5:0] == 6'd32)
                 rgb_nxt = 12'hf_a_0;
     end
     endfunction
-    */
+    
 
 endmodule
