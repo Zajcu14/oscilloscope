@@ -41,17 +41,17 @@
  wire  [11:0] ypos_nxt;
  
  // Clock wires
-wire clk_trigger;
-wire clk_adc;
-wire clk_mouse;
+//wire clk_trigger;
+//wire clk_adc;
+//wire clk_mouse;
  
  // Data wires
- wire adc_series_data;
- wire [11:0] trigger_rom_data;
- wire [11:0] trigger_data;
- wire [11:0] filtered_data;
+ //wire adc_series_data;
+ //wire [11:0] trigger_rom_data;
+ //wire [11:0] trigger_data;
+ //wire [11:0] filtered_data;
  wire [3:0] delay;
- 
+ reg [7:0] trigger_buffer [0:255];
  // Test wires
  wire ready;
  wire [11:0] data [399:0];
@@ -144,15 +144,14 @@ sin_gen u_graph_gen(
      .out(vga_mouse)
  );
  
- /*draw_display u_draw_display(
+ draw_display u_draw_display(
     .clk,
-    .clk_data(clk_trigger),
     .in(vga_interface),
     .out(vga_display), 
     .rst,
-    .data(display_data),
-    .graph_scale({Y_scale,X_scale})
- );*/
+    .data_display(trigger_buffer)
+   // .graph_scale({Y_scale,X_scale})
+ );
  
  adc_control u_adc_control (
     .clk(clk_adc),
@@ -163,13 +162,14 @@ sin_gen u_graph_gen(
     .data_output()
 );
  
- /*trigger u_trigger(
-    .clk(clk_trigger),
-    .data_input(trigger_data),
-    .mode(mode),
-    .threshold(threshold),
-    .rst
- );*/
+ trigger u_trigger(
+    .clk,
+    .mode(2'b01),
+    .data_input(),
+    .rst,
+    .LEVEL_TRIGGER(8'd10), 
+    .trigger_buffer
+ );
  
  
   // Niefunkcjonalne
