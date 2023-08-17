@@ -1,43 +1,11 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-06-30 20:54:44
+Created: 2023-08-17 22:44:53
 
 ----SYNTHESIS----
-WARNING: [Synth 8-3848] Net vcount in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:15]
-WARNING: [Synth 8-3848] Net vsync in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:16]
-WARNING: [Synth 8-3848] Net vblnk in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:17]
-WARNING: [Synth 8-3848] Net hcount in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:18]
-WARNING: [Synth 8-3848] Net hsync in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:19]
-WARNING: [Synth 8-3848] Net hblnk in module/entity vga_timing does not have driver. [rtl/vga_timing.sv:20]
-WARNING: [Synth 8-7129] Port vcount[10] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[9] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[8] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[7] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[6] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[5] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[4] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[3] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[2] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[1] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vcount[0] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vsync in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vblnk in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[10] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[9] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[8] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[7] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[6] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[5] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[4] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[3] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[2] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[1] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hcount[0] in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hsync in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port hblnk in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port clk in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7129] Port rst in module vga_timing is either unconnected or has no load
-WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+ERROR: [Synth 8-439] module 'clk_divider' not found [fpga/rtl/top_oscilloscope_basys3.sv:39]
+ERROR: [Synth 8-6156] failed synthesizing module 'top_oscilloscope_basys3' [fpga/rtl/top_oscilloscope_basys3.sv:17]
+ERROR: [Common 17-69] Command failed: Synthesis failed - please see the console or run log file for details
 
 ----IMPLEMENTATION----
-CLEAR :)
+No implementation log file found!

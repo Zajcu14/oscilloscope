@@ -98,17 +98,17 @@ module sin_gen #(parameter AMPLITUDE = 5, parameter RESOLUTION = 12) (
         return current + 1;
     endfunction
     
-    function sample_data AddFloating ( input [11:0] a, [11:0] b, int range);
+    function  AddFloating ( input [11:0] a, [11:0] b, int range);
         return a+b;
     endfunction
     
-    function sample_data MultipleFloating ( input [11:0] a, [11:0] b, int range);
+    function  MultipleFloating ( input [11:0] a, [11:0] b, int range);
         logic [23:0] a_extended = a; 
         logic [23:0] b_extended = b; 
         return a*b >> 12;
     endfunction
     
-    function sample_data DivideFloating ( input [11:0] a, [11:0] b, int range);
+    function  DivideFloating ( input [11:0] a, [11:0] b, int range);
         logic [23:0] a_extended = a; 
         logic [23:0] b_extended = b; 
         return a*b >> 12;

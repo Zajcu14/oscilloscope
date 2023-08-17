@@ -66,18 +66,18 @@ module draw_display(
     always_comb begin
         rgb_nxt = in.rgb;
     //draw Shape display
-        Draw_Shape_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY);
+        Draw_Shape_display(in.hcount, in.vcount, 255, 255, V_DISPLAY, H_DISPLAY);
     //draw data_display on display
-        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY, H_DISPLAY, 256);
+        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY, H_DISPLAY, 255);
     //draw checkered on display
-        Draw_checkered_display(in.hcount, in.vcount, 256, 256, V_DISPLAY, H_DISPLAY);
+        Draw_checkered_display(in.hcount, in.vcount, 255, 255, V_DISPLAY, H_DISPLAY);
 
     end
 
     function void Draw_Shape_display (input [10:0] hcount, [10:0] vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
-        if ((vcount == V_DISPLAY || in.vcount == V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length))                    
+        if ((vcount == V_DISPLAY || vcount == V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length))                    
                 rgb_nxt = 12'hf_a_0;                
-            else if ((vcount <= V_DISPLAY || vcount >= V_DISPLAY - height) && (hcount == H_DISPLAY || hcount == H_DISPLAY + length))
+            else if ((vcount <= V_DISPLAY && vcount >= V_DISPLAY - height) && (hcount == H_DISPLAY || hcount == H_DISPLAY + length))
                 rgb_nxt = 12'hf_a_0;
     endfunction
     
@@ -92,7 +92,7 @@ module draw_display(
 // 256/32 = 8
     function void Draw_checkered_display (input [10:0] hcount, [10:0] vcount, int length, int height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
     if ((vcount <= V_DISPLAY && vcount >= V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin                  
-            if (vcount [5:0] == 6'd32 || hcount [5:0] == 6'd32)
+            if ((vcount - V_DISPLAY) % 6'd32 == 0 || (hcount-H_DISPLAY) % 6'd32 == 0 )
                 rgb_nxt = 12'hf_a_0;
     end
     endfunction

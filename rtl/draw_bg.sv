@@ -78,7 +78,8 @@ module draw_bg (
             DrawRectBorder(11'd100, 11'd300, 11'd200, 11'd200);
             DrawRectBorder(11'd300, 11'd300, 11'd200, 11'd200);
             
-            if( in.hcount > 99 && in.vcount  == (300 - data[in.hcount - 100]) && in.hcount < 500 && (300 - data[in.hcount - 100] > 99) && (300 - data[in.hcount - 100]) < 500) begin
+            if( in.hcount > 99 && in.vcount  == (300 - data[in.hcount - 100]) && in.hcount < 500 && (300 - data[in.hcount - 100] > 99) 
+            && (300 - data[in.hcount - 100]) < 500) begin
                 rgb_nxt = 12'h8_f_2;
                 
                 

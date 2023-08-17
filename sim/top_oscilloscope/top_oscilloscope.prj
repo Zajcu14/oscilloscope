@@ -16,14 +16,16 @@ sv work ../../rtl/vga_pkg.sv \
         ../../rtl/adc_control.sv \
         ../../rtl/clk_divider.sv \
         ../../rtl/dft.sv \
+        ../../rtl/sin_gen.sv \
         ../../rtl/draw_display.sv \
         ../../rtl/draw_mouse.sv \
         ../../rtl/low_pass.sv \
-        ../../rtl/sin_gen.sv \
+        ../../rtl/trigger.sv \
         ../../rtl/user_interface.sv \
         ../../rtl/vga_if.sv \
         ../common/tiff_writer.sv \
         top_oscilloscope_tb.sv
+        
 verilog work  ../../rtl/delay.v 
 verilog work  ../../rtl/clk_wiz_0.v
 verilog work  ../../rtl/clk_wiz_0_clk_wiz.v

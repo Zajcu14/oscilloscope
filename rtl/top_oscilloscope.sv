@@ -59,7 +59,7 @@
  
  
  
- reg dft_analysis;
+ //reg dft_analysis;
  
  
  // VGA signals from timing
@@ -75,9 +75,9 @@
   * Signals assignments
   */
  
- assign vs = vga_mouse.vsync;
- assign hs = vga_mouse.hsync;
- assign {r,g,b} = vga_mouse.rgb;
+ assign vs = vga_display.vsync;
+ assign hs = vga_display.hsync;
+ assign {r,g,b} = vga_display.rgb;
  
  
  /**
@@ -116,7 +116,6 @@ sin_gen u_graph_gen(
     .out(data),
     .ready()
     );
- 
  draw_bg u_draw_bg ( 
      .clk,
      .rst,
@@ -146,7 +145,7 @@ sin_gen u_graph_gen(
  
  draw_display u_draw_display(
     .clk,
-    .in(vga_interface),
+    .in(vga_mouse),
     .out(vga_display), 
     .rst,
     .data_display(trigger_buffer)
