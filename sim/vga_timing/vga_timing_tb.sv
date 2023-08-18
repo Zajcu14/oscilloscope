@@ -61,13 +61,13 @@ end
 
 vga_timing dut(
     .clk,
-    .rst,
-    .vcount,
-    .vsync,
-    .vblnk,
-    .hcount,
-    .hsync,
-    .hblnk
+    .rst
+ //   .vcount,
+ //   .vsync,
+ //   .vblnk,
+ //   .hcount,
+ //   .hsync,
+ //   .hblnk
 );
 
 /**

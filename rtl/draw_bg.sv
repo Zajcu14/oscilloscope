@@ -13,7 +13,7 @@
 module draw_bg (
         input  logic clk,
         input  logic rst,
-        input  logic [11:0] data [399:0],
+        input  logic [11:0] data [0:399],
         //input  logic ready,
         
         vga_if.in in,
@@ -72,7 +72,7 @@ module draw_bg (
             else                                 // The rest of active display pixels:
                 rgb_nxt = 12'h0_0_0;              // - fill with gray.                             
             
-            DrawRectBorder(11'd100, 11'd100, 11'd400, 11'd400);
+     /*       DrawRectBorder(11'd100, 11'd100, 11'd400, 11'd400);
             DrawRectBorder(11'd100, 11'd100, 11'd200, 11'd200);
             DrawRectBorder(11'd300, 11'd100, 11'd200, 11'd200);
             DrawRectBorder(11'd100, 11'd300, 11'd200, 11'd200);
@@ -90,7 +90,7 @@ module draw_bg (
                 if((300 - data[in.hcount - 100]) > 500 && in.vcount == 499) 
                     rgb_nxt = 12'h8_f_2;
             end
-            
+        */
         end
     end
 

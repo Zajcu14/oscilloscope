@@ -54,8 +54,40 @@
  reg [7:0] trigger_buffer [0:255];
  // Test wires
  wire ready;
- wire [11:0] data [399:0];
- 
+ wire [11:0] data [0:399];
+ reg [7:0] sin_data [0:255] = {  8'h80, 8'h83, 8'h86, 8'h89, 8'h8c, 8'h8f, 8'h92, 8'h95,
+ 8'h98, 8'h9b, 8'h9e, 8'ha1, 8'ha4, 8'ha7, 8'haa, 8'had,
+ 8'haf, 8'hb2, 8'hb5, 8'hb8, 8'hbb, 8'hbe, 8'hc0, 8'hc3,
+ 8'hc6, 8'hc8, 8'hcb, 8'hdd, 8'hcf, 8'hd1, 8'hd4, 8'hd6,
+ 8'hd8, 8'hdb, 8'hde, 8'he0, 8'he2, 8'he5, 8'he7, 8'he9,
+ 8'heb, 8'hee, 8'hf0, 8'hf2, 8'hf4, 8'hf6, 8'hf8, 8'hfb,
+ 8'hfd, 8'hff, 8'hff, 8'hfd, 8'hfb, 8'hf9, 8'hf7, 8'hf5,
+ 8'hf3, 8'hf1, 8'hef, 8'hec, 8'hea, 8'he8, 8'he6, 8'he4,
+ 8'he2, 8'he0, 8'hdf, 8'hdd, 8'hdb, 8'hd9, 8'hd7, 8'hd5,
+ 8'h80, 8'h83, 8'h86, 8'h89, 8'h8c, 8'h8f, 8'h92, 8'h95,
+ 8'h98, 8'h9b, 8'h9e, 8'ha1, 8'ha4, 8'ha7, 8'haa, 8'had,
+ 8'haf, 8'hb2, 8'hb5, 8'hb8, 8'hbb, 8'hbe, 8'hc0, 8'hc3,
+ 8'hc6, 8'hc8, 8'hcb, 8'hdd, 8'hcf, 8'hd1, 8'hd4, 8'hd6,
+ 8'hd8, 8'hdb, 8'hde, 8'he0, 8'he2, 8'he5, 8'he7, 8'he9,
+ 8'heb, 8'hee, 8'hf0, 8'hf2, 8'hf4, 8'hf6, 8'hf8, 8'hfb,
+ 8'hfd, 8'hff, 8'hff, 8'hfd, 8'hfb, 8'hf9, 8'hf7, 8'hf5,
+ 8'hf3, 8'hf1, 8'hef, 8'hec, 8'hea, 8'he8, 8'he6, 8'he4,
+ 8'he2, 8'he0, 8'hdf, 8'hdd, 8'hdb, 8'hd9, 8'hd7, 8'hd5,
+ 8'h80, 8'h83, 8'h86, 8'h89, 8'h8c, 8'h8f, 8'h92, 8'h95,
+ 8'h98, 8'h9b, 8'h9e, 8'ha1, 8'ha4, 8'ha7, 8'haa, 8'had,
+ 8'haf, 8'hb2, 8'hb5, 8'hb8, 8'hbb, 8'hbe, 8'hc0, 8'hc3,
+ 8'hc6, 8'hc8, 8'hcb, 8'hdd, 8'hcf, 8'hd1, 8'hd4, 8'hd6,
+ 8'hd8, 8'hdb, 8'hde, 8'he0, 8'he2, 8'he5, 8'he7, 8'he9,
+ 8'heb, 8'hee, 8'hf0, 8'hf2, 8'hf4, 8'hf6, 8'hf8, 8'hfb,
+ 8'hfd, 8'hff, 8'hff, 8'hfd, 8'hfb, 8'hf9, 8'hf7, 8'hf5,
+ 8'hf3, 8'hf1, 8'hef, 8'hec, 8'hea, 8'he8, 8'he6, 8'he4,
+ 8'he2, 8'he0, 8'hdf, 8'hdd, 8'hdb, 8'hd9, 8'hd7, 8'hd5,
+ 8'h80, 8'h83, 8'h86, 8'h89, 8'h8c, 8'h8f, 8'h92, 8'h95,
+ 8'h98, 8'h9b, 8'h9e, 8'ha1, 8'ha4, 8'ha7, 8'haa, 8'had,
+ 8'haf, 8'hb2, 8'hb5, 8'hb8, 8'hbb, 8'hbe, 8'hc0, 8'hc3,
+ 8'hc6, 8'hc8, 8'hcb, 8'hdd, 8'hcf, 8'hd1, 8'hd4, 8'hd6,
+ 8'hc6, 8'hc8, 8'hcb, 8'hdd, 8'hcf, 8'hd1, 8'hd4, 8'hd6
+};
  
  
  
@@ -113,7 +145,7 @@
  
 sin_gen u_graph_gen(
     .clk,
-    .out(data),
+    .out(),
     .ready()
     );
  draw_bg u_draw_bg ( 
@@ -122,7 +154,7 @@ sin_gen u_graph_gen(
  
      .in(vga_timing),
      .out(vga_bg),
-     .data(data)
+     .data()
  );
  
  
@@ -148,7 +180,7 @@ sin_gen u_graph_gen(
     .in(vga_mouse),
     .out(vga_display), 
     .rst,
-    .data_display(trigger_buffer)
+    .data_display(sin_data)
    // .graph_scale({Y_scale,X_scale})
  );
  
