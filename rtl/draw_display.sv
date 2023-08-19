@@ -90,7 +90,7 @@ module draw_display(
 // 256/32 = 8
     function void Draw_checkered_display (input [10:0] hcount, [10:0] vcount, [10:0] length, [10:0] height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
     if ((vcount <= V_DISPLAY && vcount >= V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin                  
-            if ((vcount - V_DISPLAY) % 7'd64 == 0 || (hcount-H_DISPLAY) % 7'd64 == 0 )
+            if ((vcount - V_DISPLAY) % 7'd64 == 0 || (hcount-H_DISPLAY) % 7'd64 == 0)
                 rgb_nxt = 12'hf_a_0;
     end
     endfunction
