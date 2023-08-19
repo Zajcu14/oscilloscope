@@ -9,9 +9,9 @@
 
 package vga_pkg;
 
-// Parameters for VGA Display 800 x 600 @ 60fps using a 40 MHz clock;
-localparam HOR_PIXELS = 800;
-localparam VER_PIXELS = 600;
+// Parameters for VGA Display 1024 x 768 @ 60fps using a 65 MHz clock;
+localparam HOR_PIXELS = 1024;
+localparam VER_PIXELS = 768;
 localparam V_DISPLAY = 550;
 localparam H_DISPLAY = 50;
 

@@ -22,18 +22,18 @@ module vga_timing (
      * Local variables and signals
      */
 
-    localparam HOR_TOTAL_TIME = 1056;
-    localparam HOR_BLANK_START = 800;
-    localparam HOR_BLANK_TIME = 256;
-    localparam HOR_SYNC_START = 840;
-    localparam HOR_SYNC_TIME = 128;
+    localparam HOR_TOTAL_TIME = 1344;
+    localparam HOR_BLANK_START = 1024;
+    localparam HOR_BLANK_TIME = 320;
+    localparam HOR_SYNC_START = 1048;
+    localparam HOR_SYNC_TIME = 136;
 
 
-    localparam VER_TOTAL_TIME = 628;
-    localparam VER_BLANK_START = 600;
-    localparam VER_BLANK_TIME = 28;
-    localparam VER_SYNC_START = 601;
-    localparam VER_SYNC_TIME = 4;
+    localparam VER_TOTAL_TIME = 806;
+    localparam VER_BLANK_START = 768;
+    localparam VER_BLANK_TIME = 38;
+    localparam VER_SYNC_START = 771;
+    localparam VER_SYNC_TIME = 6;
 
 
     logic vs_nxt;

@@ -29,7 +29,7 @@ module top_oscilloscope_basys3 (
 
 logic clk_100MHz;
 logic clk_10MHz;
-logic clk_40MHz;
+logic clk_65MHz;
 logic clk_100KHz;
 
 /**
@@ -41,9 +41,9 @@ clk_divider u_clk_divider_1(
     .pclk(clk_1MHz)
 );
 
-clk_divider #( .DIVIDE(25.000)) u_clk_divider_2(
+clk_divider #( .DIVIDE(15.500)) u_clk_divider_2(
     .clk(clk),
-    .pclk(clk_40MHz)
+    .pclk(clk_65MHz)
 );
 
  logic [10:0] clk_divider;
@@ -75,7 +75,7 @@ clk_divider #( .DIVIDE(25.000)) u_clk_divider_2(
  
 
 top_oscilloscope u_top_oscilloscope (
-    .clk(clk_40MHz),
+    .clk(clk_65MHz),
     .clk_mouse(clk100MHz),
     .clk_trigger(clk100MHz),
     .clk_adc(clk100MHz),
