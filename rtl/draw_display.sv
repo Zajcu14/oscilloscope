@@ -69,13 +69,23 @@ module draw_display(
 
     always_comb begin
         rgb_nxt = in.rgb;
-    //draw Shape display
-        Draw_Shape_display(in.hcount, in.vcount, 512, 512, V_DISPLAY, H_DISPLAY);
-    //draw data_display on display
-        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY, H_DISPLAY, 512, 512, x_mouse_pos, y_mouse_pos);
-    //draw checkered on display
-        Draw_checkered_display(in.hcount, in.vcount, 512, 512, V_DISPLAY, H_DISPLAY);
 
+        //DISPLAY__1
+    //draw Shape display
+        Draw_Shape_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
+    //draw data_display on display
+        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos);
+    //draw checkered on display
+        Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
+
+        //DISPLAY__2
+    //draw Shape display
+        Draw_Shape_display(in.hcount, in.vcount, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, V_DISPLAY_2, H_DISPLAY_2);
+    //draw data_display on display
+        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY_2, H_DISPLAY_2, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, x_mouse_pos, y_mouse_pos);
+    //draw checkered on display
+        Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, V_DISPLAY_2, H_DISPLAY_2);
+        
     end
 
     function void Draw_Shape_display (input [10:0] hcount, [10:0] vcount, [10:0] length, [10:0] height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);

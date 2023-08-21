@@ -76,11 +76,14 @@ module user_interface(
         x_mouse_pos_nxt = x_mouse_pos;
         minus_y_nxt = minus_y;
         minus_x_nxt = minus_x;
-        if (left_mouse)begin
-            y_mouse_pos_nxt = (ypos_nxt >= ypos)? (ypos_nxt - ypos): (ypos - ypos_nxt);
-            x_mouse_pos_nxt = (xpos_nxt >= xpos)? (xpos_nxt - xpos): (xpos - xpos_nxt);
-            minus_y_nxt = (ypos_nxt >= ypos)? 1'b0 : 1'b1;
-            minus_x_nxt = (xpos_nxt >= xpos)? 1'b0 : 1'b1;
+        if ((xpos >= V_DISPLAY_1 && xpos<= V_DISPLAY_1 + LENGTH_DISPLAY_1) 
+        && (ypos <= H_DISPLAY_1 && ypos + HEIGHT_DISPLAY_1 >= H_DISPLAY_1)) begin
+            if (left_mouse)begin
+                y_mouse_pos_nxt = (ypos_nxt >= ypos)? (ypos_nxt - ypos) : (ypos - ypos_nxt);
+                x_mouse_pos_nxt = (xpos_nxt >= xpos)? (xpos_nxt - xpos) : (xpos - xpos_nxt);
+                minus_y_nxt = (ypos_nxt >= ypos)? 1'b0 : 1'b1;
+                minus_x_nxt = (xpos_nxt >= xpos)? 1'b0 : 1'b1;
+            end
         end else begin
             xpos_nxt = xpos;
             ypos_nxt = ypos;
