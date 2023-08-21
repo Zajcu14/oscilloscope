@@ -22,11 +22,11 @@
 
 module trigger(
     input logic clk,
-    input logic [7:0] data_input,
+    input logic [11:0] data_input,
     input logic [1:0] mode,
     input logic rst,
     input logic [7:0] LEVEL_TRIGGER, 
-    output reg [7:0] trigger_buffer [0:255]
+    output reg [11:0] trigger_buffer [0:255]
     );
 
     // Bufory na poprzednie wartości sygnału do zastosowania histerezy
@@ -50,7 +50,7 @@ module trigger(
         if (rst) begin
             // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
             for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= 8'b0;
+                trigger_buffer[i] <= 'z;
             end
             trigger_index <= 8'b0;
             trigger_level_case <= 0;
@@ -60,7 +60,7 @@ module trigger(
                 trigger_index <= trigger_index + 1;
             end else begin
                  for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= 8'b0;
+                trigger_buffer[i] <= 'z;
                 end
                 trigger_index <= 8'b0;
             end 

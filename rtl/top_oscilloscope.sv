@@ -18,7 +18,7 @@
      input  logic clk,
      input  logic clk_mouse,
      input  logic clk_trigger,
-     input  logic clk_adc,
+     input  logic clk_adc,  
      input  logic rst,
      output logic vs,
      output logic hs,
@@ -39,6 +39,8 @@
  wire  [11:0] ypos;
  wire  [11:0] xpos_nxt;
  wire  [11:0] ypos_nxt;
+ wire left_mouse_nxt, left_mouse;
+ wire minus_y, minus_x;
  
  // Clock wires
 //wire clk_trigger;
@@ -51,11 +53,12 @@
  //wire [11:0] trigger_data;
  //wire [11:0] filtered_data;
  wire [3:0] delay;
- reg [7:0] trigger_buffer [0:255];
+ wire [10:0] x_mouse_pos, y_mouse_pos;
+ reg [11:0] trigger_buffer [0:255];
  // Test wires
  wire ready;
  wire [11:0] data [0:399];
- reg [7:0] sin_data [0:255] = {  
+ reg [11:0] sin_data [0:255] = {  
    8'h80, 8'h82, 8'h85, 8'h87, 8'h89, 8'h8b, 8'h8d, 8'h8f,
    8'h91, 8'h93, 8'h95, 8'h97, 8'h99, 8'h9b, 8'h9d, 8'h9f,
    8'ha1, 8'ha3, 8'ha5, 8'ha7, 8'ha9, 8'hab, 8'had, 8'haf,
@@ -108,9 +111,9 @@
   * Signals assignments
   */
  
- assign vs = vga_display.vsync;
- assign hs = vga_display.hsync;
- assign {r,g,b} = vga_display.rgb;
+ assign vs = vga_mouse.vsync;
+ assign hs = vga_mouse.hsync;
+ assign {r,g,b} = vga_mouse.rgb;
  
  
  /**
@@ -124,7 +127,7 @@
      .rst(rst),
      .xpos(xpos_nxt),
      .ypos(ypos_nxt),
-     .left(),
+     .left(left_mouse_nxt),
      .middle(),
      .new_event(),
      .right(),
@@ -163,28 +166,48 @@ sin_gen u_graph_gen(
  delay #(.WIDTH(2)) u_delay_mouse(
     .clk,
     .rst(1'b0),
-    .din({xpos_nxt,ypos_nxt}),
-    .dout({xpos,ypos})
+    .din({xpos_nxt,ypos_nxt,left_mouse_nxt}),
+    .dout({xpos,ypos,left_mouse})
  );
  
  draw_mouse u_draw_mouse (
      .clk,
      .xpos(xpos),
      .ypos(ypos),
- 
-     .in(vga_bg),
+     .in(vga_display),
      .out(vga_mouse)
  );
  
  draw_display u_draw_display(
     .clk,
-    .in(vga_mouse),
-    .out(vga_display), 
     .rst,
-    .data_display(sin_data)
+    .in(vga_bg),
+    .out(vga_display), 
+    .data_display(sin_data),
+    .y_mouse_pos(y_mouse_pos),
+    .x_mouse_pos(x_mouse_pos),
+    .minus_y(minus_y),
+    .minus_x(minus_x)
    // .graph_scale({Y_scale,X_scale})
  );
- 
+
+ user_interface u_user_interface(
+    .clk,
+    .rst,
+    .xpos(xpos),
+    .ypos(ypos),
+    .left_mouse(left_mouse),
+    .y_mouse_pos(y_mouse_pos),
+    .x_mouse_pos(x_mouse_pos),
+    .minus_y(minus_y),
+    .minus_x(minus_x),
+    //.delay(delay),
+    .mode()
+    //.threshold(threshold),
+   // .corner_freq(),
+   // .amplitude_scale(Y_scale),
+   // .time_scale(X_scale)
+ );
  adc_control u_adc_control (
     .clk(clk_adc),
     .channel(2'b00),
@@ -206,18 +229,6 @@ sin_gen u_graph_gen(
  
   // Niefunkcjonalne
  /*
- user_interface u_user_interface(
-    .clk,
-    .in(vga_mouse),
-    .out(vga_interface),
-    
-    .delay(delay),
-    .mode(mode),
-    .threshold(threshold),
-    .corner_freq(),
-    .amplitude_scale(Y_scale),
-    .time_scale(X_scale)
- );
  
  data_acqusition u_data_acquisition(
     .clk(clk),
