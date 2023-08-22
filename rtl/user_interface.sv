@@ -34,7 +34,8 @@ module user_interface(
     output [3:0] mode,
     output [3:0] corner_freq,
     output [3:0] amplitude_scale,
-    output [3:0] time_scale
+    output [3:0] time_scale,
+    output [3:0] scale_voltage
     );
     import vga_pkg::*;
 
@@ -74,7 +75,7 @@ module user_interface(
     function void  move_chart;
         y_mouse_pos_nxt = y_mouse_pos;
         x_mouse_pos_nxt = x_mouse_pos;
-        minus_y_nxt = minus_y;
+         minus_y_nxt = minus_y; 
         minus_x_nxt = minus_x;
         if ((xpos >= V_DISPLAY_1 && xpos<= V_DISPLAY_1 + LENGTH_DISPLAY_1) 
         && (ypos <= H_DISPLAY_1 && ypos + HEIGHT_DISPLAY_1 >= H_DISPLAY_1)) begin

@@ -41,6 +41,7 @@
  wire  [11:0] ypos_nxt;
  wire left_mouse_nxt, left_mouse;
  wire minus_y, minus_x;
+ wire [3:0] scale_voltage;
  
  // Clock wires
 //wire clk_trigger;
@@ -183,6 +184,7 @@ sin_gen u_graph_gen(
     .rst,
     .in(vga_bg),
     .out(vga_display), 
+    .scale_voltage(4'd1),
     .data_display(sin_data),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
@@ -202,7 +204,8 @@ sin_gen u_graph_gen(
     .minus_y(minus_y),
     .minus_x(minus_x),
     //.delay(delay),
-    .mode()
+    .mode(),
+    .scale_voltage(scale_voltage)
     //.threshold(threshold),
    // .corner_freq(),
    // .amplitude_scale(Y_scale),
