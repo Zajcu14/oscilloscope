@@ -133,11 +133,11 @@
      .middle(),
      .new_event(),
      .right(),
-     .setmax_x('0),
-     .setmax_y('0),
-     .setx('0),
-     .sety('0),
-     .value('0),
+     .setmax_x(),
+     .setmax_y(),
+     .setx(),
+     .sety(),
+     .value(),
      .zpos()
  );
   

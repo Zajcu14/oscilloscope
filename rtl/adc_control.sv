@@ -35,7 +35,7 @@ module adc_control(
     fsm_state state_nxt;
     
     bit [9:0] address;
-    bit master;
+    bit master, master_nxt;
 
     logic [11:0] data_output_nxt;
 
@@ -54,12 +54,14 @@ module adc_control(
    
     always_ff @(posedge clk , posedge rst ) begin
         if(rst) begin
-            data_output <= '0;
+            data_output <= 'b0;
             state <= START;
             counter <= 'b0;
             delay <= 'b0;
+            master <= 'b0;
         end
         else if(clk) begin
+            master <= master_nxt;
             state <= state_nxt;
             counter <= counter_nxt;
             delay <= delay_nxt;
@@ -80,34 +82,35 @@ module adc_control(
         state_nxt = START;
         delay_nxt = delay;
         counter_nxt = counter;
+        master_nxt = master;
         if(state == START && counter == 'b0) begin
             state_nxt = START;
-            master = 'b1;
+            master_nxt = 'b1;
             counter_nxt = counter + 1;
         end
         else if(state == START && counter == 'b1 && delay != 'd99999) begin
          
                 state_nxt = START;
                 counter_nxt = counter;
-                master = 'b0;
+                master_nxt = 'b0;
                 delay_nxt = delay + 1;
         end
         else if(state == START && counter == 'b1 && delay == 'd99999) begin
          
                 state_nxt = CONF;
                 counter_nxt = counter + 1;
-                master = 'b0;
+                master_nxt = 'b0;
                 delay_nxt = 0;
         end
         else if(state == CONF) begin
             case(counter)
                 11'd9: begin
                     state_nxt = ACK_SLAVE;
-                    master = address[9 - counter];
+                    master_nxt = address[9 - counter];
                 end
                 default: begin
                     state_nxt = CONF;
-                    master = address[9 - counter];
+                    master_nxt = address[9 - counter];
                 end
             endcase
             counter_nxt = counter + 1;
@@ -115,21 +118,21 @@ module adc_control(
         else if(state == ACK_SLAVE) begin
             state_nxt = READ;
             counter_nxt = counter + 1;
-            master = 'b0;
+            master_nxt = 'b0;
         end
         else if(state == READ) begin
             case(counter)
                 11'd27: begin
                     state_nxt = ACK_MASTER_OFF;
-                    master = 'b0;
+                    master_nxt = 'b0;
                 end
                 11'd18: begin
                     state_nxt = ACK_MASTER;
-                    master = 'b0;
+                    master_nxt = 'b0;
                 end
                 default: begin
                     state_nxt = READ;
-                    master = 'b0;
+                    master_nxt = 'b0;
                 end
             endcase
             counter_nxt = counter + 1;
@@ -137,12 +140,12 @@ module adc_control(
         else if(state == ACK_MASTER) begin
                 state_nxt = READ;
                 counter_nxt = counter + 1;
-                master = 'b0;
+                master_nxt = 'b0;
         end
         else if(state == ACK_MASTER_OFF) begin
                 state_nxt = OFF;
                 counter_nxt = counter + 1;
-                master = 'b1;
+                master_nxt = 'b1;
                 
                 data_output_nxt[11] = adc_buffer[4];
                 data_output_nxt[10] = adc_buffer[5];
@@ -161,17 +164,17 @@ module adc_control(
             case(counter)
                 11'd29: begin
                     state_nxt = OFF;
-                    master = 'b1;
+                    master_nxt = 'b1;
                     counter_nxt = counter + 1;
                 end
                 11'd28: begin
                     state_nxt = OFF;
-                    master = 'b0;
+                    master_nxt = 'b0;
                     counter_nxt = counter + 1;
                 end
                 default: begin
                     state_nxt = START;
-                    master = 'b1;
+                    master_nxt = 'b1;
                     counter_nxt = 0;
                 end
             endcase
