@@ -98,7 +98,7 @@ module draw_display(
     
     function void Draw_data_display (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
          [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
-        assign case_minus = {minus_y, minus_x};
+        case_minus = {minus_y, minus_x};
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             case(case_minus)
                 2'b00: begin
@@ -130,7 +130,7 @@ module draw_display(
 
     function void Draw_data_display_2 (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos);
-       assign case_minus = {minus_y, minus_x};
+       case_minus = {minus_y, minus_x};
        if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
            case(case_minus)
                2'b00: begin

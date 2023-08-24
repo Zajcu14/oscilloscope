@@ -46,7 +46,7 @@ module trigger(
     logic [1:0] trigger_level_case_nxt, trigger_level_case;
 
     // Monitorowanie wejścia i triggerowanie
-    always_ff @(posedge clk or negedge rst) begin
+    always_ff @(posedge clk or posedge rst) begin
         if (rst) begin
             // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
             for (int i = 0; i < 256; i++) begin

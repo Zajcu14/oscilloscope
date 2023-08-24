@@ -148,11 +148,12 @@
  
  // Generate graph
  
-sin_gen u_graph_gen(
+/*sin_gen u_graph_gen(
     .clk,
     .out(),
     .ready()
-    );
+    );*/
+
  draw_bg u_draw_bg ( 
      .clk,
      .rst,
@@ -161,8 +162,6 @@ sin_gen u_graph_gen(
      .out(vga_bg),
      .data()
  );
- 
- 
  
  delay #(.WIDTH(2)) u_delay_mouse(
     .clk,
@@ -211,6 +210,7 @@ sin_gen u_graph_gen(
    // .amplitude_scale(Y_scale),
    // .time_scale(X_scale)
  );
+ 
  adc_control u_adc_control (
     .clk(clk_adc),
     .channel(2'b00),

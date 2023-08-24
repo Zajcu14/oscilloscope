@@ -31,22 +31,36 @@ set xdc_files {
 
 # Specify SystemVerilog design files location   -- EDIT
 set sv_files {
-    ../rtl/vga_pkg.sv
-    ../rtl/vga_timing.sv
-    ../rtl/draw_bg.sv
-    ../rtl/top_oscilloscope.sv
-    rtl/top_oscilloscope_basys3.sv
+	../rtl/vga_pkg.sv
+	../rtl/vga_timing.sv
+	../rtl/draw_bg.sv
+	../rtl/top_oscilloscope.sv
+	../rtl/adc_control.sv
+	../rtl/dft.sv
+	../rtl/draw_display.sv
+	../rtl/draw_mouse.sv
+	../rtl/low_pass.sv
+	../rtl/sin_gen.sv
+	../rtl/trigger.sv
+	../rtl/trigger_data.sv
+	../rtl/trigger_rom.sv
+	../rtl/clk_divider.sv
+	../rtl/user_interface.sv
+	../rtl/vga_if.sv
+    	rtl/top_oscilloscope_basys3.sv
 }
 
 # Specify Verilog design files location         -- EDIT
-# set verilog_files {
-#     path/to/file.v
-# }
+ set verilog_files {
+	../rtl/delay.v
+ }
 
 # Specify VHDL design files location            -- EDIT
-# set vhdl_files {
-#    path/to/file.vhd
-# }
+ set vhdl_files {
+    	../rtl/MouseCtl.vhd
+	../rtl/MouseDisplay.vhd
+	../rtl/Ps2Interface.vhd
+ }
 
 # Specify files for a memory initialization     -- EDIT
 # set mem_files {
