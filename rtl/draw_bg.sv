@@ -13,7 +13,7 @@
 module draw_bg (
         input  logic clk,
         input  logic rst,
-        input  logic [11:0] data [0:399],
+        //input  logic [11:0] data [0:399],
         //input  logic ready,
         
         vga_if.in in,
@@ -26,7 +26,7 @@ module draw_bg (
     /**
      * Local variables and signals
      */
-    localparam resolution = 12;
+    //localparam resolution = 12;
     logic [11:0] rgb_nxt;
     
 

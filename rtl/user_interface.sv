@@ -29,13 +29,13 @@ module user_interface(
     output logic [10:0] x_mouse_pos,
     output logic [10:0] y_mouse_pos, 
     output logic  minus_y,
-    output logic  minus_x,
-    output [3:0] delay,
-    output [3:0] mode,
-    output [3:0] corner_freq,
-    output [3:0] amplitude_scale,
-    output [3:0] time_scale,
-    output [3:0] scale_voltage
+    output logic  minus_x
+    //output [3:0] delay,
+    //output [3:0] mode,
+    //output [3:0] corner_freq,
+    //output [3:0] amplitude_scale,
+    //output [3:0] time_scale,
+    //output [3:0] scale_voltage
     );
     import vga_pkg::*;
 
@@ -57,6 +57,8 @@ module user_interface(
            y_mouse_pos <= '0;
            minus_y <= '0;
            minus_x <= '0;
+           //xpos_nxt <= '0;
+           //ypos_nxt <= '0;
         end else begin
            x_mouse_pos <= x_mouse_pos_nxt;
            y_mouse_pos <= y_mouse_pos_nxt; 

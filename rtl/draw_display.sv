@@ -23,7 +23,7 @@
 module draw_display(
     input logic clk,
     input logic rst,
-    input reg[11:0] data_display [0:255],
+    input reg [11:0] data_display [0:255],
     input logic [10:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
     input logic  minus_y,

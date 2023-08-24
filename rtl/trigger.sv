@@ -46,21 +46,21 @@ module trigger(
     logic [1:0] trigger_level_case_nxt, trigger_level_case;
 
     // Monitorowanie wejścia i triggerowanie
-    always_ff @(posedge clk or posedge rst) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
             // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
             for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= 'z;
+                trigger_buffer[i] <= 12'bz;
             end
             trigger_index <= 8'b0;
-            trigger_level_case <= 0;
+            trigger_level_case <= 'b0;
         end else begin
             if (trigger_active) begin
                 trigger_buffer[trigger_index] <= data_input;
                 trigger_index <= trigger_index + 1;
             end else begin
                  for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= 'z;
+                trigger_buffer[i] <= 12'bz;
                 end
                 trigger_index <= 8'b0;
             end 
@@ -71,6 +71,8 @@ module trigger(
     end
     
 always_comb begin
+    trigger_level_case_nxt = 2'b00;
+    trigger_active = 0;
     case (mode)
 
 

@@ -1,8 +1,9 @@
 // The module delays the input data 'din' by the number of clock cycles
 // set by CLK_DEL input parameter
+`timescale 1ns / 1ps
 module delay
     #( parameter
-        WIDTH   = 8, // bit width of the input/output data
+        WIDTH   = 25, // bit width of the input/output data
         CLK_DEL = 1  // number of clock cycles the data is delayed
     )
     (

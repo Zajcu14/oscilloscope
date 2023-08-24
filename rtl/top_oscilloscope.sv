@@ -25,8 +25,8 @@
      output logic [3:0] r,
      output logic [3:0] g,
      output logic [3:0] b,
-     inout logic ps2_clk,
-     inout logic ps2_data,
+     inout wire ps2_clk,
+     inout wire ps2_data,
      inout logic [1:0] i2c
  );
  
@@ -41,7 +41,7 @@
  wire  [11:0] ypos_nxt;
  wire left_mouse_nxt, left_mouse;
  wire minus_y, minus_x;
- wire [3:0] scale_voltage;
+//wire [3:0] scale_voltage;
  
  // Clock wires
 //wire clk_trigger;
@@ -53,13 +53,14 @@
  //wire [11:0] trigger_rom_data;
  //wire [11:0] trigger_data;
  //wire [11:0] filtered_data;
- wire [3:0] delay;
+ //wire [3:0] delay;
  wire [10:0] x_mouse_pos, y_mouse_pos;
- reg [11:0] trigger_buffer [0:255];
+ wire [11:0] trigger_buffer [0:255];
+ wire [11:0] data_adc;
  // Test wires
- wire ready;
- wire [11:0] data [0:399];
- reg [11:0] sin_data [0:255] = {  
+ //wire ready;
+ //wire [11:0] data [0:399];
+ /*reg [11:0] sin_data [0:255] = {  
    8'h80, 8'h82, 8'h85, 8'h87, 8'h89, 8'h8b, 8'h8d, 8'h8f,
    8'h91, 8'h93, 8'h95, 8'h97, 8'h99, 8'h9b, 8'h9d, 8'h9f,
    8'ha1, 8'ha3, 8'ha5, 8'ha7, 8'ha9, 8'hab, 8'had, 8'haf,
@@ -93,7 +94,7 @@
    8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00,
    8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00
 };
- 
+ */
  
  
  //reg dft_analysis;
@@ -124,7 +125,7 @@
  MouseCtl u_mouse_ctl(
      .ps2_data(ps2_data),
      .ps2_clk(ps2_clk),
-     .clk(clk100MHz),
+     .clk(clk_mouse),
      .rst(rst),
      .xpos(xpos_nxt),
      .ypos(ypos_nxt),
@@ -159,13 +160,15 @@
      .rst,
  
      .in(vga_timing),
-     .out(vga_bg),
-     .data()
+     .out(vga_bg)
+     //.data()
  );
  
- delay #(.WIDTH(2)) u_delay_mouse(
-    .clk,
-    .rst(1'b0),
+ delay #(.WIDTH(25),
+   .CLK_DEL(4)) 
+ u_delay_mouse(
+    .clk(clk),
+    .rst(rst),
     .din({xpos_nxt,ypos_nxt,left_mouse_nxt}),
     .dout({xpos,ypos,left_mouse})
  );
@@ -184,7 +187,7 @@
     .in(vga_bg),
     .out(vga_display), 
     .scale_voltage(4'd1),
-    .data_display(sin_data),
+    .data_display(trigger_buffer),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
@@ -201,10 +204,10 @@
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
-    .minus_x(minus_x),
+    .minus_x(minus_x)
     //.delay(delay),
-    .mode(),
-    .scale_voltage(scale_voltage)
+    //.mode(),
+    //.scale_voltage()
     //.threshold(threshold),
    // .corner_freq(),
    // .amplitude_scale(Y_scale),
@@ -217,16 +220,16 @@
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
-    .data_output()
+    .data_output(data_adc)
 );
  
  trigger u_trigger(
-    .clk,
+    .clk(clk_trigger),
     .mode(2'b01),
-    .data_input(),
+    .data_input(data_adc),
     .rst,
     .LEVEL_TRIGGER(8'd10), 
-    .trigger_buffer
+    .trigger_buffer(trigger_buffer)
  );
  
  
