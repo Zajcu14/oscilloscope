@@ -45,7 +45,7 @@ module user_interface(
       */
  
     logic [10:0] x_mouse_pos_nxt, y_mouse_pos_nxt;
-    logic [11:0] xpos_nxt, ypos_nxt;
+    logic [11:0] xpos_state_nxt, ypos_state_nxt, xpos_state, ypos_state;
     logic  minus_y_nxt, minus_x_nxt;
      /**
       * Internal logic
@@ -57,13 +57,15 @@ module user_interface(
            y_mouse_pos <= '0;
            minus_y <= '0;
            minus_x <= '0;
-           //xpos_nxt <= '0;
-           //ypos_nxt <= '0;
+           xpos_state <= '0;
+           ypos_state <= '0;
         end else begin
            x_mouse_pos <= x_mouse_pos_nxt;
            y_mouse_pos <= y_mouse_pos_nxt; 
            minus_y <= minus_y_nxt;
            minus_x <= minus_x_nxt;
+           xpos_state <= xpos_state_nxt;
+           ypos_state <= ypos_state_nxt;
         end
     end
  
@@ -77,19 +79,21 @@ module user_interface(
     function void  move_chart;
         y_mouse_pos_nxt = y_mouse_pos;
         x_mouse_pos_nxt = x_mouse_pos;
-         minus_y_nxt = minus_y; 
+        minus_y_nxt = minus_y; 
         minus_x_nxt = minus_x;
+        ypos_state_nxt = ypos_state;
+        xpos_state_nxt = xpos_state;
         if ((xpos >= V_DISPLAY_1 && xpos<= V_DISPLAY_1 + LENGTH_DISPLAY_1) 
         && (ypos <= H_DISPLAY_1 && ypos + HEIGHT_DISPLAY_1 >= H_DISPLAY_1)) begin
             if (left_mouse)begin
-                y_mouse_pos_nxt = (ypos_nxt >= ypos)? (ypos_nxt - ypos) : (ypos - ypos_nxt);
-                x_mouse_pos_nxt = (xpos_nxt >= xpos)? (xpos_nxt - xpos) : (xpos - xpos_nxt);
-                minus_y_nxt = (ypos_nxt >= ypos)? 1'b0 : 1'b1;
-                minus_x_nxt = (xpos_nxt >= xpos)? 1'b0 : 1'b1;
+                y_mouse_pos_nxt = (ypos_state >= ypos)? (ypos_state - ypos) : (ypos - ypos_state);
+                x_mouse_pos_nxt = (xpos_state >= xpos)? (xpos_state - xpos) : (xpos - xpos_state);
+                minus_y_nxt = (ypos_state >= ypos)? 1'b0 : 1'b1;
+                minus_x_nxt = (xpos_state >= xpos)? 1'b0 : 1'b1;
             end
         end else begin
-            xpos_nxt = xpos;
-            ypos_nxt = ypos;
+            xpos_state_nxt = xpos;
+            ypos_state_nxt = ypos;
         end
      endfunction
      
