@@ -36,7 +36,9 @@ module adc_control(
     
     bit [9:0] address;
     bit master;
-    
+
+    logic [11:0] data_output_nxt;
+
     logic [10:0] counter;
     logic [10:0] counter_read;
     logic [10:0] counter_read_nxt;
@@ -52,6 +54,7 @@ module adc_control(
    
     always_ff @(posedge clk , posedge rst ) begin
         if(rst) begin
+            data_output <= '0;
             state <= START;
             counter <= 'b0;
             delay <= 'b0;
@@ -60,16 +63,23 @@ module adc_control(
             state <= state_nxt;
             counter <= counter_nxt;
             delay <= delay_nxt;
+            data_output <= data_output_nxt;
         
         end
+        /* to nigdy sie nie wykona, always_ff ustawiony na posegde wiec zadziła kiedy clk ma stan wysoki
         else begin
             state <= state;
             counter <= counter;
             delay <= delay;
         end
+        */
     end
     
     always_comb begin
+        data_output_nxt = data_output;
+        state_nxt = START;
+        delay_nxt = delay;
+        counter_nxt = counter;
         if(state == START && counter == 'b0) begin
             state_nxt = START;
             master = 'b1;
@@ -91,7 +101,7 @@ module adc_control(
         end
         else if(state == CONF) begin
             case(counter)
-                'd9: begin
+                11'd9: begin
                     state_nxt = ACK_SLAVE;
                     master = address[9 - counter];
                 end
@@ -109,11 +119,11 @@ module adc_control(
         end
         else if(state == READ) begin
             case(counter)
-                'd27: begin
+                11'd27: begin
                     state_nxt = ACK_MASTER_OFF;
                     master = 'b0;
                 end
-                'd18: begin
+                11'd18: begin
                     state_nxt = ACK_MASTER;
                     master = 'b0;
                 end
@@ -134,27 +144,27 @@ module adc_control(
                 counter_nxt = counter + 1;
                 master = 'b1;
                 
-                data_output[11] <= adc_buffer[4];
-                data_output[10] <= adc_buffer[5];
-                data_output[9] <= adc_buffer[6];
-                data_output[8] <= adc_buffer[7];
-                data_output[7] <= adc_buffer[8];
-                data_output[6] <= adc_buffer[9];
-                data_output[5] <= adc_buffer[10];
-                data_output[4] <= adc_buffer[11];
-                data_output[3] <= adc_buffer[12];
-                data_output[2]  <= adc_buffer[13];
-                data_output[1]  <= adc_buffer[14];
-                data_output[0]  <= adc_buffer[15];
+                data_output_nxt[11] = adc_buffer[4];
+                data_output_nxt[10] = adc_buffer[5];
+                data_output_nxt[9] = adc_buffer[6];
+                data_output_nxt[8] = adc_buffer[7];
+                data_output_nxt[7] = adc_buffer[8];
+                data_output_nxt[6] = adc_buffer[9];
+                data_output_nxt[5] = adc_buffer[10];
+                data_output_nxt[4] = adc_buffer[11];
+                data_output_nxt[3] = adc_buffer[12];
+                data_output_nxt[2]  = adc_buffer[13];
+                data_output_nxt[1]  = adc_buffer[14];
+                data_output_nxt[0]  = adc_buffer[15];
         end
         else if(state == OFF) begin
             case(counter)
-                'd29: begin
+                11'd29: begin
                     state_nxt = OFF;
                     master = 'b1;
                     counter_nxt = counter + 1;
                 end
-                'd28: begin
+                11'd28: begin
                     state_nxt = OFF;
                     master = 'b0;
                     counter_nxt = counter + 1;
@@ -194,10 +204,10 @@ module adc_control(
     
     always_comb begin
         case (channel)
-                2'b00: address = 8'b01010001;
-                2'b01: address = 8'b00100001;
-                2'b10: address = 8'b01000001;
-                2'b11: address = 8'b10000001;
+                2'b00: address[7:0]  = 8'b01010001;
+                2'b01: address[7:0]  = 8'b00100001;
+                2'b10: address[7:0]  = 8'b01000001;
+                2'b11: address[7:0]  = 8'b10000001;
         endcase
     end
     
