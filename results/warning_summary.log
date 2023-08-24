@@ -1,81 +1,27 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-08-24 20:34:18
+Created: 2023-08-24 21:48:39
 
 ----SYNTHESIS----
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
 WARNING: [Synth 8-6014] Unused sequential element set_x.x_inter_reg was removed.  [rtl/MouseCtl.vhd:456]
 WARNING: [Synth 8-6014] Unused sequential element set_y.inc_reg was removed.  [rtl/MouseCtl.vhd:514]
 WARNING: [Synth 8-6014] Unused sequential element set_y.y_inter_reg was removed.  [rtl/MouseCtl.vhd:520]
-WARNING: [Synth 8-3848] Net clk100MHz in module/entity top_oscilloscope_basys3 does not have driver. [fpga/rtl/top_oscilloscope_basys3.sv:79]
 WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[8] in module draw_display is either unconnected or has no load
+CRITICAL WARNING: [Constraints 18-1056] Clock 'clk' completely overrides clock 'sys_clk_pin'.
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
 WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[8] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[16]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[15]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[14]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[13]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[12]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[11]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[10]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[9]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[8]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[7]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[6]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[5]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[4]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[3]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[2]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[1]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/Inst_Ps2Interface/FSM_onehot_state_reg[0]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[36]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[35]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[34]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[33]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[32]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[31]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[30]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[29]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[28]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[27]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[26]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[25]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[24]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[23]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[22]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[21]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[20]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[19]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[18]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[17]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[16]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[15]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[14]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[13]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[12]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[11]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[10]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[9]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[8]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[7]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[6]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[5]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[4]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[3]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[2]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[1]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_mouse_ctl/FSM_onehot_state_reg[0]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_trigger/FSM_sequential_trigger_level_case_reg[1]) is unused and will be removed from module top_oscilloscope_basys3.
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_trigger/FSM_sequential_trigger_level_case_reg[0]) is unused and will be removed from module top_oscilloscope_basys3.
-CRITICAL WARNING: [Shape Builder 18-119] Failed to create I/OLOGIC Route Through shape for instance u_clk_divider_2/clk_ibuf. Found overlapping instances within the shape: u_clk_divider_1/clk_ibuf and u_clk_divider_2/clk_ibuf.
+WARNING: [Netlist 29-101] Netlist 'top_oscilloscope_basys3' is not ideal for floorplanning, since the cellview 'trigger' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
 INFO: [runtcl-6] Synthesis results are not added to the cache due to CRITICAL_WARNING
 
 ----IMPLEMENTATION----
-WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[0] expects both input and output buffering but the buffers are incomplete.
+WARNING: [Netlist 29-101] Netlist 'top_oscilloscope_basys3' is not ideal for floorplanning, since the cellview 'trigger' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+CRITICAL WARNING: [Constraints 18-1056] Clock 'clk' completely overrides clock 'sys_clk_pin'.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
-WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[0] expects both input and output buffering but the buffers are incomplete.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
+WARNING: [Route 35-328] Router estimated timing not met.
+CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.

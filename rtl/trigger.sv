@@ -55,6 +55,7 @@ module trigger(
             trigger_index <= 8'b0;
             trigger_level_case <= 'b0;
         end else begin
+            trigger_level_case <= trigger_level_case_nxt;
 
             if (trigger_active) begin
                 trigger_buffer[trigger_index] <= data_input;
@@ -65,8 +66,7 @@ module trigger(
                 end
                 trigger_index <= 8'b0;
             end 
-
-            trigger_level_case <= trigger_level_case_nxt;
+            
         end
             // Zapisz bieżące wartości jako poprzednie do kolejnej iteracji
          //   prev_data_input <= data_input;
