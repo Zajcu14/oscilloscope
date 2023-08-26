@@ -32,7 +32,7 @@ module trigger(
     // Próg histerezy dla zbocza rosnącego i opadającego
     parameter HIST_THRESHOLD = 0; // Można dostosować wartość progową w zależności od szumów
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
-    parameter LEVEL_TRIGGER  = 10;
+    parameter LEVEL_TRIGGER  = 1054;
 
     logic [7:0] trigger_index, trigger_index_nxt;
     logic trigger_active,trigger_active_nxt;
