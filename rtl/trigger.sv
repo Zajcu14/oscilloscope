@@ -32,7 +32,7 @@ module trigger(
     // Próg histerezy dla zbocza rosnącego i opadającego
     parameter HIST_THRESHOLD = 0; // Można dostosować wartość progową w zależności od szumów
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
-    parameter LEVEL_TRIGGER  = 1054;
+    parameter LEVEL_TRIGGER  = 10;
 
     logic [7:0] trigger_index, trigger_index_nxt;
     logic trigger_active,trigger_active_nxt;
@@ -42,7 +42,11 @@ module trigger(
     always_ff @(posedge clk) begin
         if (rst) begin
             // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
-            trigger_buffer[0] <= 'z;
+            //trigger_buffer[0] <= 'z;
+            for (int i = 0; i < 256; i++) begin
+                trigger_buffer[i] <= 12'bz;
+            end
+            trigger_index <= 8'b0;
             trigger_index <= '0;
             trigger_level_case <= '0;
             counter_clk <= 8'd0;
@@ -51,10 +55,13 @@ module trigger(
             trigger_active <= trigger_active_nxt;
             counter_clk <= counter_clk_nxt; 
             trigger_level_case <= trigger_level_case_nxt;
-            trigger_buffer[trigger_index + 1] <= 'z;
+            //trigger_buffer[trigger_index + 1] <= 'z;
             trigger_index <= trigger_index_nxt;
             if (!trigger_active) begin
-                trigger_buffer[0] <= 'z;
+             //   trigger_buffer[0] <= 'z;
+                for (int i = 0; i < 256; i++) begin
+                    trigger_buffer[i] <= 12'bz;
+                end
             end else begin
                 trigger_buffer[trigger_index] <= data_input;
             end
@@ -63,7 +70,7 @@ module trigger(
         end
     
 always_comb begin
-    if (counter_clk == 555) begin
+    if (counter_clk == 499) begin //ustawiony na 130Khz z 65Mhz
         trigger_index_nxt = trigger_index + 1;
         counter_clk_nxt = '0;        // Trigger aktywowany poziomem
                 case (trigger_level_case) 

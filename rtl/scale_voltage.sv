@@ -57,7 +57,7 @@ module scale_voltage(
             case(scale)
                 2'b00: begin
                
-
+                    
             
                 trigger_buffer[trigger_index] <= data_input;
                 trigger_index <= trigger_index + 1;

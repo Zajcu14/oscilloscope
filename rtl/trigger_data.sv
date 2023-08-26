@@ -19,10 +19,11 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+/*
 module trigger_data(
     input logic clk,
     input logic data,
     input logic data_reg
     );
 endmodule
+*/
