@@ -225,11 +225,12 @@
  
  trigger u_trigger(
     .clk(clk_trigger),
-    .mode(2'b01),
     .data_input(data_adc),
     .rst,
-    .LEVEL_TRIGGER(8'd10), 
-    .trigger_buffer(trigger_buffer)
+   // .LEVEL_TRIGGER(12'd1054), 
+    .trigger_buffer(trigger_buffer),
+    .counter_clk(),
+    .trigger_level_case()
  );
  
  

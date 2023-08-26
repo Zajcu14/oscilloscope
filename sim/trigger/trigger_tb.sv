@@ -24,20 +24,20 @@ module trigger_tb(
 );
 
 logic clk;
-logic [1:0] mode;
 logic rst;
-logic [7:0] LEVEL_TRIGGER;
-reg [7:0] trigger_buffer [0:255];
-logic [7:0] z;
-logic [7:0] data_input = 0;
+//logic [11:0] LEVEL_TRIGGER;
+reg [11:0] trigger_buffer [0:255];
+//logic [7:0] z;
+logic [11:0] data_input = 0;
 
 trigger u_trigger(
     .clk,
     .data_input,
-    .mode,
     .rst,
-    .LEVEL_TRIGGER, 
-    .trigger_buffer
+ //   .LEVEL_TRIGGER, 
+    .trigger_buffer,
+    .counter_clk(),
+    .trigger_level_case()
 );
 
 /**
@@ -77,8 +77,8 @@ end
 /**
  * Main test 
  */
-assign LEVEL_TRIGGER = 8'd10; // ustawione na 20
-assign mode = 2'b01; // mode ustawiony na teigger level
+//assign LEVEL_TRIGGER = 8'd10; // ustawione na 10
+//assign mode = 2'b01; // mode ustawiony na teigger level
 
 initial begin
     @(posedge rst);

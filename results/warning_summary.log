@@ -1,6 +1,6 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-08-24 22:03:02
+Created: 2023-08-26 13:56:12
 
 ----SYNTHESIS----
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
@@ -11,13 +11,9 @@ WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either un
 WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[8] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
-WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port x_mouse_pos[8] in module draw_display is either unconnected or has no load
-WARNING: [Netlist 29-101] Netlist 'top_oscilloscope_basys3' is not ideal for floorplanning, since the cellview 'trigger' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
+WARNING: [Synth 8-3332] Sequential element (u_triggeri_3075) is unused and will be removed from module top_oscilloscope_basys3.
 
 ----IMPLEMENTATION----
-WARNING: [Netlist 29-101] Netlist 'top_oscilloscope_basys3' is not ideal for floorplanning, since the cellview 'trigger' contains a large number of primitives.  Please consider enabling hierarchy in synthesis if you want to do floorplanning.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
 WARNING: [Route 35-328] Router estimated timing not met.

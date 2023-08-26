@@ -89,6 +89,7 @@ module draw_display(
         
     end
 
+
     function void Draw_Shape_display (input [10:0] hcount, [10:0] vcount, [10:0] length, [10:0] height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
         if ((vcount == V_DISPLAY || vcount + height == V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length))                    
                 rgb_nxt = 12'hf_a_0;                
@@ -96,6 +97,7 @@ module draw_display(
                 rgb_nxt = 12'hf_a_0;
     endfunction
     
+
     function void Draw_data_display (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
          [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
         case_minus = {minus_y, minus_x};
@@ -120,6 +122,7 @@ module draw_display(
             endcase
         end
     endfunction
+
 // 256/32 = 8
     function void Draw_checkered_display (input [10:0] hcount, [10:0] vcount, [10:0] length, [10:0] height, [10:0] V_DISPLAY, [10:0] H_DISPLAY);
     if ((vcount <= V_DISPLAY && vcount >= V_DISPLAY - height) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin                  
@@ -127,6 +130,7 @@ module draw_display(
                 rgb_nxt = 12'hf_a_0;
     end
     endfunction
+
 
     function void Draw_data_display_2 (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos);
