@@ -24,7 +24,7 @@ module trigger(
     input logic clk,
     input logic [11:0] data_input,
     input logic rst,
-    //input logic [11:0] LEVEL_TRIGGER, 
+    input logic [10:0] LEVEL_TRIGGER, 
     output reg [11:0] trigger_buffer [0:255],
     output logic [7:0]  counter_clk,
     output logic [2:0] trigger_level_case
@@ -32,7 +32,7 @@ module trigger(
     // Próg histerezy dla zbocza rosnącego i opadającego
     parameter HIST_THRESHOLD = 0; // Można dostosować wartość progową w zależności od szumów
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
-    parameter LEVEL_TRIGGER  = 1054;
+    //parameter LEVEL_TRIGGER  = 1054;
 
     logic [7:0] trigger_index, trigger_index_nxt;
     logic trigger_active,trigger_active_nxt;

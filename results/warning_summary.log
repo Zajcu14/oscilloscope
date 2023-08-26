@@ -1,6 +1,6 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-08-26 20:25:20
+Created: 2023-08-26 20:36:03
 
 ----SYNTHESIS----
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
@@ -13,6 +13,17 @@ WARNING: [Synth 8-87] always_comb on 'counter_nxt_reg' did not result in combina
 WARNING: [Synth 8-87] always_comb on 'delay_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:99]
 WARNING: [Synth 8-87] always_comb on 'mode_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:100]
 WARNING: [Synth 8-87] always_comb on 'data_output_reg' did not result in combinational logic [rtl/adc_control.sv:202]
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[10] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[9] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[8] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[7] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[6] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[5] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[4] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[3] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[2] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[1] in module trigger is either unconnected or has no load
+WARNING: [Synth 8-7129] Port LEVEL_TRIGGER[0] in module trigger is either unconnected or has no load
 WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load

@@ -231,7 +231,7 @@ clock_adc u_clock_adc(
     .clk(clk_trigger),
     .data_input(data_adc),
     .rst,
-   // .LEVEL_TRIGGER(12'd1054), 
+    .LEVEL_TRIGGER(y_mouse_pos), 
     .trigger_buffer(trigger_buffer),
     .counter_clk(),
     .trigger_level_case()
