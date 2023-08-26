@@ -100,7 +100,6 @@ top_oscilloscope u_top_oscilloscope (
     .clk(pclk),
     .clk_mouse(mclk),
     .clk_trigger(pclk),
-    .clk_adc(pclk),
     .rst(btnC),
     .r(vgaRed),
     .g(vgaGreen),

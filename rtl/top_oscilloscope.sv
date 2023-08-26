@@ -18,7 +18,6 @@
      input  logic clk,
      input  logic clk_mouse,
      input  logic clk_trigger,
-     input  logic clk_adc,  
      input  logic rst,
      output logic vs,
      output logic hs,
@@ -222,7 +221,12 @@
     .scl(i2c[1]),
     .data_output(data_adc)
 );
- 
+clock_adc u_clock_adc(
+   .clk,
+   .rst,
+   .clk_adc
+);
+
  trigger u_trigger(
     .clk(clk_trigger),
     .data_input(data_adc),

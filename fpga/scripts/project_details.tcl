@@ -49,6 +49,7 @@ set sv_files {
 	../rtl/clk_divider.sv
 	../rtl/user_interface.sv
 	../rtl/vga_if.sv
+	../rtl/clock_adc.sv
     rtl/top_oscilloscope_basys3.sv
 }
 
