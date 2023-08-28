@@ -5,14 +5,14 @@ module clock_adc(
     );
     
     
-    logic [6:0] counter;
+    int counter;
     
     always_ff @( posedge clk) begin
         if(rst) begin
             clk_adc <= '0;
             counter <= '0;
         end
-        else if(counter == 28)begin
+        else if(counter == 325)begin
             clk_adc <= ~clk_adc;
             counter <= 0;
         end

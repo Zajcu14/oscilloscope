@@ -83,13 +83,13 @@ module user_interface(
         minus_x_nxt = minus_x;
         ypos_state_nxt = ypos_state;
         xpos_state_nxt = xpos_state;
-        if ((xpos >= V_DISPLAY_1 && xpos<= V_DISPLAY_1 + LENGTH_DISPLAY_1) 
-        && (ypos <= H_DISPLAY_1 && ypos + HEIGHT_DISPLAY_1 >= H_DISPLAY_1)) begin
+        if ((xpos >= H_DISPLAY_1 && xpos<= H_DISPLAY_1 + LENGTH_DISPLAY_1) 
+        && (ypos <= V_DISPLAY_1 && ypos + HEIGHT_DISPLAY_1 >= V_DISPLAY_1)) begin
             if (left_mouse)begin
                 y_mouse_pos_nxt = (ypos_state >= ypos)? (ypos_state - ypos) : (ypos - ypos_state);
                 x_mouse_pos_nxt = (xpos_state >= xpos)? (xpos_state - xpos) : (xpos - xpos_state);
-                minus_y_nxt = (ypos_state >= ypos)? 1'b0 : 1'b1;
-                minus_x_nxt = (xpos_state >= xpos)? 1'b0 : 1'b1;
+                minus_y_nxt = (ypos_state >= ypos)? 1'b1 : 1'b0;
+                minus_x_nxt = (xpos_state >= xpos)? 1'b1 : 1'b0; 
             end
         end else begin
             xpos_state_nxt = xpos;

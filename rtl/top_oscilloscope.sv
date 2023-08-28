@@ -44,7 +44,7 @@
  
  // Clock wires
 //wire clk_trigger;
-//wire clk_adc;
+wire clk_adc;
 //wire clk_mouse;
  
  // Data wires
@@ -54,12 +54,12 @@
  //wire [11:0] filtered_data;
  //wire [3:0] delay;
  wire [10:0] x_mouse_pos, y_mouse_pos;
- wire [11:0] trigger_buffer [0:255];
+ wire [11:0] trigger_buffer [0:511];
  wire [11:0] data_adc;
  // Test wires
- //wire ready;
+ wire ready;
  //wire [11:0] data [0:399];
- /*reg [11:0] sin_data [0:255] = {  
+ reg [11:0] sin_data [255:0];/* = {  
    8'h80, 8'h82, 8'h85, 8'h87, 8'h89, 8'h8b, 8'h8d, 8'h8f,
    8'h91, 8'h93, 8'h95, 8'h97, 8'h99, 8'h9b, 8'h9d, 8'h9f,
    8'ha1, 8'ha3, 8'ha5, 8'ha7, 8'ha9, 8'hab, 8'had, 8'haf,
@@ -93,8 +93,8 @@
    8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00,
    8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00, 8'h00
 };
- */
- 
+
+ ?*/
  
  //reg dft_analysis;
  
@@ -193,6 +193,14 @@
     .minus_x(minus_x)
    // .graph_scale({Y_scale,X_scale})
  );
+ 
+ acquisition_data u_acquisition_data(
+    .clk(clk_adc),
+    .rst,
+    .sample(data_adc),
+    .data(sin_data),
+    .ready(ready)
+    );
 
  user_interface u_user_interface(
     .clk,
@@ -219,19 +227,20 @@
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
-    .data_output(data_adc)
+    .data_output(data_adc),
+    .ready(ready)
 );
 clock_adc u_clock_adc(
    .clk,
    .rst,
-   .clk_adc
+   .clk_adc(clk_adc)
 );
 
  trigger u_trigger(
-    .clk(clk_trigger),
+    .clk(clk_adc),
     .data_input(data_adc),
     .rst,
-    .LEVEL_TRIGGER(y_mouse_pos), 
+    .LEVEL_TRIGGER(ypos), 
     .trigger_buffer(trigger_buffer),
     .counter_clk(),
     .trigger_level_case()

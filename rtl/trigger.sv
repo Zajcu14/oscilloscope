@@ -24,88 +24,73 @@ module trigger(
     input logic clk,
     input logic [11:0] data_input,
     input logic rst,
-    input logic [10:0] LEVEL_TRIGGER, 
-    output reg [11:0] trigger_buffer [0:255],
-    output logic [7:0]  counter_clk,
-    output logic [2:0] trigger_level_case
+    input logic [11:0] LEVEL_TRIGGER, 
+    output reg [11:0] trigger_buffer [0:511],
+    output logic [11:0]  counter_clk,
+    output logic trigger_level_case
     );
-    // Próg histerezy dla zbocza rosnącego i opadającego
-    parameter HIST_THRESHOLD = 0; // Można dostosować wartość progową w zależności od szumów
-    parameter ATTITUDE_LEVEL_TRIGGER = 8;
-    //parameter LEVEL_TRIGGER  = 1054;
-
-    logic [7:0] trigger_index, trigger_index_nxt;
-    logic trigger_active,trigger_active_nxt;
-    logic [2:0] trigger_level_case_nxt;
-    logic [7:0] counter_clk_nxt;
-
-    always_ff @(posedge clk) begin
-        if (rst) begin
-            // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
-            //trigger_buffer[0] <= 'z;
-            for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= 12'bz;
-            end
-            trigger_index <= 8'b0;
-            trigger_index <= '0;
-            trigger_level_case <= '0;
-            counter_clk <= 8'd0;
-            trigger_active <= '0;
-        end else begin
-            trigger_active <= trigger_active_nxt;
-            counter_clk <= counter_clk_nxt; 
-            trigger_level_case <= trigger_level_case_nxt;
-            //trigger_buffer[trigger_index + 1] <= 'z;
-            trigger_index <= trigger_index_nxt;
-            if (!trigger_active) begin
-             //   trigger_buffer[0] <= 'z;
-                for (int i = 0; i < 256; i++) begin
-                    trigger_buffer[i] <= 12'bz;
-                end
-            end else begin
-                trigger_buffer[trigger_index] <= data_input;
-            end
-            end 
-            
-        end
     
-always_comb begin
-    if (counter_clk == 499) begin //ustawiony na 130Khz z 65Mhz
-        trigger_index_nxt = trigger_index + 1;
-        counter_clk_nxt = '0;        // Trigger aktywowany poziomem
-                case (trigger_level_case) 
-                    3'd0: begin //wait for LEVEL_TRIGGER
-                        trigger_level_case_nxt = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0;
-                        trigger_active_nxt = 0;
-                        trigger_index_nxt = 0;
-                    end  
-                    3'd1: begin //earlier period
-                        trigger_level_case_nxt = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 3'd2 : 3'd1;
-                        trigger_active_nxt = 0;
-                        trigger_index_nxt = 0;
-                    end 
-                    3'd2: begin //trigger idle
-                        trigger_level_case_nxt = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd2;
-                        trigger_active_nxt = 1;
-                        trigger_index_nxt = 0;
-                    end
-                    3'd3: begin //trigger idle
-                        trigger_level_case_nxt = (data_input <= LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd3;
-                        trigger_active_nxt = 1;
-                     //   trigger_index_nxt = (trigger_buffer[0] == 'z)? 0 : (trigger_index + 1);
-                    end
-                    3'd4: begin //trigger idle
-                        trigger_level_case_nxt = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd4;
-                        trigger_active_nxt = 1;
-                    end
-                endcase
-     end else begin
-        trigger_level_case_nxt = trigger_level_case;
-        trigger_active_nxt = trigger_active;
-        counter_clk_nxt = counter_clk + 1;
-       trigger_index_nxt = trigger_index;
-     end
-end
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+   
+    parameter HIST_THRESHOLD = 0;
+    parameter ATTITUDE_LEVEL_TRIGGER = 8;
+    logic [11:0] counter_clk_nxt, counter;
+    reg [0:0][11:0]buffer; 
+     logic clk_trigger;
+     int counter_clk;
+     
+///////////////////////////////////////////////////////////////////////////////////////////////////////////       
+    assign buffer[0] = data_input;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////// 
+    always_ff @( posedge clk) begin
+        if(rst) begin
+            clk_trigger <= '0;
+            counter_clk <= '0;
+//--------------------------------------------------------------           
+        end else if(counter_clk == 24)begin
+            clk_trigger <= ~clk_trigger;
+            counter_clk <= 0;
+            
+        end else begin
+           counter_clk <= counter_clk +1;
+        end
+    end
+///////////////////////////////////////////////////////////////////////////////////////////////////////////    
+    
+    always_ff @(posedge clk_trigger) begin
+        if (rst) begin
+        
+            for (int i = 0; i < 512; i++) begin
+                trigger_buffer[i] <= '0;
+            end
+            trigger_level_case <= '0;
+            counter <= '0;
+//--------------------------------------------------------------
+        end else begin
+        
+            case (trigger_level_case)
+                1'd0: begin
+                trigger_level_case = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 1'd1 : 1'd0;
+            end
+             
+            1'd1: begin
+                if(counter == 10'd511)begin
+					counter <= 0;
+					trigger_level_case <= 1'd0;
+				end else begin
+					trigger_buffer[0:511] <= {trigger_buffer[0:510],buffer[0]};
+					counter <= counter + 1 ;
+					trigger_level_case <= 1'd1;
+				end
+		  end
+		  endcase 
+       end
+   end 
+            
+///////////////////////////////////////////////////////////////////////////////////////////////////////////            
+    
+endmodule
+
  /*   always_ff @(posedge clk) begin
         if (rst) begin
             // Sygnał resetu aktywny - zresetuj stan wyjść triggerów i indeksów buforów
@@ -218,4 +203,3 @@ end
 
 */
 
-endmodule
