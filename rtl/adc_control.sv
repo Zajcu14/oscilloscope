@@ -57,6 +57,11 @@ module adc_control(
     logic [1:0] mode;
     logic [1:0] mode_nxt;
     
+    logic clk_stretch;
+    
+    logic [3:0] stretch_counter;
+    logic [3:0] stretch_counter_nxt;
+    
     logic [15:0] adc_buffer;
 
 
@@ -66,7 +71,17 @@ module adc_control(
     
     assign master_all = ( state ==  OFF_LOW ) ? master_high : master;
     assign sda = ( state ==  READ  || state == ACK_SLAVE || state == ACK_SLAVE_OFF) ? 1'bZ : master_all; 
-    assign scl = ( state ==  START || state == OFF ) ? 1'b1 : !clk;
+    assign scl = ( state ==  START || state == OFF || (clk_stretch == 1'b1 && stretch_counter < 'd9) ) ? 1'b1 : !clk;
+    
+    always_ff @(negedge clk) begin
+        if(state == ACK_SLAVE && mode == 'b1) begin
+            clk_stretch <= 'b1;
+        end
+        else begin
+            clk_stretch <= 'b0;
+        end
+    
+    end
    
    always_ff @(negedge clk) begin
         if(state == OFF_LOW) 
@@ -81,7 +96,6 @@ module adc_control(
             counter <= 'b0;
             delay <= 'b0;
             mode <= 2'b11;
-            
         end
         else begin
             state <= state_nxt;
@@ -149,17 +163,25 @@ module adc_control(
             if(mode == 2'b11) begin
                 state_nxt = START;
                 mode_nxt = 'b0;
-		counter_nxt = 'b0;
+                counter_nxt = 'b0;
             end
             else if(mode == 'b1) begin
-                state_nxt = READ;
-                mode_nxt = mode;
-		counter_nxt = counter + 1;
+                if(stretch_counter < 'd7) begin
+                    state_nxt = ACK_SLAVE;
+                    stretch_counter_nxt = stretch_counter_nxt + 1;
+                    counter_nxt = counter;
+                end
+                else begin
+                    state_nxt = READ;
+                    mode_nxt = mode;
+                    counter_nxt = counter + 1;
+                    stretch_counter_nxt = stretch_counter_nxt + 1;
+                end
             end
             else begin
                 state_nxt = WRITE;
                 mode_nxt = mode;
-		counter_nxt = counter + 1;
+                counter_nxt = counter + 1;
             end
                 
             
