@@ -49,7 +49,8 @@ module draw_bg (
         end else begin
             out.vcount <= in.vcount;
             out.vsync  <= in.vsync;
-            out.hblnk  <= in.vblnk;
+            out.hblnk  <= in.hblnk;
+            out.vblnk  <= in.vblnk;
             out.hcount <= in.hcount;
             out.hsync  <= in.hsync;
             out.hblnk  <= in.hblnk;

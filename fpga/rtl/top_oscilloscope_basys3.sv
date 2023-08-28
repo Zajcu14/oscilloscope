@@ -99,7 +99,6 @@ assign JA1 = pclk_mirror;
 top_oscilloscope u_top_oscilloscope (
     .clk(pclk),
     .clk_mouse(mclk),
-    .clk_trigger(pclk),
     .rst(btnC),
     .r(vgaRed),
     .g(vgaGreen),

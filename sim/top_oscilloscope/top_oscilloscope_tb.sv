@@ -37,7 +37,7 @@
   */
  
  logic clk, rst;
- wire vs, hs;
+ wire vs;
  wire [3:0] r, g, b;
  
  
@@ -59,13 +59,11 @@
      .clk(clk),
      .rst(rst),
      .vs(vs),
-     .hs(hs),
+     .hs(),
      .r(r),
      .g(g),
      .b(b),
      .clk_mouse(),
-     .clk_trigger(),
-     .clk_adc(),
      .ps2_clk(),
      .ps2_data(),
      .i2c()

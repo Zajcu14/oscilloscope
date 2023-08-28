@@ -25,7 +25,7 @@ module trigger_tb(
 
 logic clk;
 logic rst;
-//logic [11:0] LEVEL_TRIGGER;
+logic [11:0] LEVEL_TRIGGER;
 reg [11:0] trigger_buffer [0:255];
 //logic [7:0] z;
 logic [11:0] data_input = 0;
@@ -34,7 +34,7 @@ trigger u_trigger(
     .clk,
     .data_input,
     .rst,
- //   .LEVEL_TRIGGER, 
+    .LEVEL_TRIGGER, 
     .trigger_buffer,
     .counter_clk(),
     .trigger_level_case()
@@ -77,7 +77,7 @@ end
 /**
  * Main test 
  */
-//assign LEVEL_TRIGGER = 8'd10; // ustawione na 10
+assign LEVEL_TRIGGER = 8'd10; // ustawione na 10
 //assign mode = 2'b01; // mode ustawiony na teigger level
 
 initial begin

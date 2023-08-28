@@ -26,7 +26,6 @@ module trigger(
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER, 
     output reg [11:0] trigger_buffer [0:511],
-    output logic [11:0]  counter_clk,
     output logic trigger_level_case
     );
     
@@ -34,30 +33,15 @@ module trigger(
    
     parameter HIST_THRESHOLD = 0;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
-    logic [11:0] counter_clk_nxt, counter;
-    reg [0:0][11:0]buffer; 
-     logic clk_trigger;
-     int counter_clk;
-     
+    logic [11:0] counter;
+    reg [11:0] buffer [0:0]; 
+    logic [11:0] clk_trigger;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////       
     assign buffer[0] = data_input;
-/////////////////////////////////////////////////////////////////////////////////////////////////////////// 
-    always_ff @( posedge clk) begin
-        if(rst) begin
-            clk_trigger <= '0;
-            counter_clk <= '0;
-//--------------------------------------------------------------           
-        end else if(counter_clk == 24)begin
-            clk_trigger <= ~clk_trigger;
-            counter_clk <= 0;
-            
-        end else begin
-           counter_clk <= counter_clk +1;
-        end
-    end
+  
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////    
     
-    always_ff @(posedge clk_trigger) begin
+    always_ff @(posedge clk) begin
         if (rst) begin
         
             for (int i = 0; i < 512; i++) begin
@@ -65,12 +49,14 @@ module trigger(
             end
             trigger_level_case <= '0;
             counter <= '0;
+            clk_trigger <= '0;
 //--------------------------------------------------------------
         end else begin
-        
+            if (clk_trigger==48)begin
+                clk_trigger <= '0;
             case (trigger_level_case)
-                1'd0: begin
-                trigger_level_case = (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 1'd1 : 1'd0;
+            1'd0: begin
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 1'd1 : 1'd0;
             end
              
             1'd1: begin
@@ -84,7 +70,11 @@ module trigger(
 				end
 		  end
 		  endcase 
-       end
+            end else begin
+                clk_trigger <= clk_trigger + 1;
+            end
+        end
+
    end 
             
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////            

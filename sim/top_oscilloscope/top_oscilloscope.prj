@@ -23,12 +23,15 @@ sv work ../../rtl/vga_pkg.sv \
         ../../rtl/trigger.sv \
         ../../rtl/user_interface.sv \
         ../../rtl/vga_if.sv \
+        ../../rtl/clock_adc.sv \
+        ../../rtl/font_gen.sv \
         ../common/tiff_writer.sv \
         top_oscilloscope_tb.sv
         
 verilog work  ../../rtl/delay.v 
 verilog work  ../../rtl/clk_wiz_0.v
 verilog work  ../../rtl/clk_wiz_0_clk_wiz.v
+verilog work  ../../rtl/font_rom.v
 vhdl    work  ../../rtl/MouseCtl.vhd
 vhdl    work  ../../rtl/MouseDisplay.vhd
 vhdl    work  ../../rtl/Ps2Interface.vhd

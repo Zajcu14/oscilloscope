@@ -17,7 +17,6 @@
  module top_oscilloscope (
      input  logic clk,
      input  logic clk_mouse,
-     input  logic clk_trigger,
      input  logic rst,
      output logic vs,
      output logic hs,
@@ -59,7 +58,7 @@ wire clk_adc;
  // Test wires
  wire ready;
  //wire [11:0] data [0:399];
- reg [11:0] sin_data [255:0];/* = {  
+ /*reg [11:0] sin_data [255:0]; = {  
    8'h80, 8'h82, 8'h85, 8'h87, 8'h89, 8'h8b, 8'h8d, 8'h8f,
    8'h91, 8'h93, 8'h95, 8'h97, 8'h99, 8'h9b, 8'h9d, 8'h9f,
    8'ha1, 8'ha3, 8'ha5, 8'ha7, 8'ha9, 8'hab, 8'had, 8'haf,
@@ -106,6 +105,7 @@ wire clk_adc;
  vga_if vga_mouse();
  vga_if vga_interface();
  vga_if vga_display();
+ vga_if vga_font_gen();
  
  
  /**
@@ -176,7 +176,7 @@ wire clk_adc;
      .clk,
      .xpos(xpos),
      .ypos(ypos),
-     .in(vga_display),
+     .in(vga_font_gen),
      .out(vga_mouse)
  );
  
@@ -193,14 +193,6 @@ wire clk_adc;
     .minus_x(minus_x)
    // .graph_scale({Y_scale,X_scale})
  );
- 
- acquisition_data u_acquisition_data(
-    .clk(clk_adc),
-    .rst,
-    .sample(data_adc),
-    .data(sin_data),
-    .ready(ready)
-    );
 
  user_interface u_user_interface(
     .clk,
@@ -242,10 +234,22 @@ clock_adc u_clock_adc(
     .rst,
     .LEVEL_TRIGGER(ypos), 
     .trigger_buffer(trigger_buffer),
-    .counter_clk(),
     .trigger_level_case()
  );
- 
+ font_gen u_font_gen (
+   .clk,
+   .rst,
+	.max(),
+   .min(), 
+   .mea(), 
+   .p2p(), 
+   .rms(), 
+   .frq(),
+	.vol(), 
+	.mode(),
+   .in(vga_display),
+   .out(vga_font_gen)
+ );
  
   // Niefunkcjonalne
  /*
