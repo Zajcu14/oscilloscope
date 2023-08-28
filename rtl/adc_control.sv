@@ -149,17 +149,20 @@ module adc_control(
             if(mode == 2'b11) begin
                 state_nxt = START;
                 mode_nxt = 'b0;
+		counter_nxt = 'b0;
             end
             else if(mode == 'b1) begin
                 state_nxt = READ;
                 mode_nxt = mode;
+		counter_nxt = counter + 1;
             end
             else begin
                 state_nxt = WRITE;
                 mode_nxt = mode;
+		counter_nxt = counter + 1;
             end
                 
-            counter_nxt = counter + 1;
+            
             master = 'b0;
         end
         else if(state == WRITE) begin
