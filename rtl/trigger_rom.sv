@@ -42,28 +42,22 @@ module trigger_rom(
         end
         end else begin
                 case (write)
-                    2'b11: begin
-                        write <= (read)? 2'b00 : 2'b11;
+                    2'd0: begin
+                        write <= (read)? 2'd1 : 2'd0;
+                        counter <= '0;
+                        ready <= 1'b1; 
+                    end
+                    2'd1: begin
+                        write <= (in.hcount == 600 || in.vcount < 3)? 2'd2 : 2'd1;
                         counter <= '0;
                         ready <= 1'b0; 
                     end
-                    2'b00: begin
-                        write <= (in.hcount == 600 || in.vcount < 3)? 2'b01 : 2'b00;
-                        counter <= '0;
-                        ready <= 1'b0; 
-                    end
-                    2'b01: begin
-                        write <= (counter == 12'd512)? 2'b10 : 2'b01;
+                    2'd2: begin
+                        write <= (counter == 12'd512)? 2'd0 : 2'd2;
                         counter <= counter + 1 ;
                         ready <= 1'b0; 
                         data_output[counter] <=  data[counter];
                     end
-                    2'b10: begin
-                        write <= 'b00;
-                        counter <= '0;
-                        ready <= 1'b1; 
-                        
-                    end 
                 endcase 
           
         end
