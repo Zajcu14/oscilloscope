@@ -26,12 +26,10 @@ module adc_control(
     input logic rst,
     inout logic sda,
     output logic scl,
-    output logic [11:0] data_output,
-    output logic ready,
-    output logic ack
+    output logic [11:0] data_output
     );
     
-    typedef enum bit [3:0] {START, CONF ,WRITE, READ, ACK_SLAVE, ACK_MASTER,ACK_MASTER_OFF, OFF, OFF_LOW, ACK_SLAVE_OFF} fsm_state;
+    typedef enum bit [3:0] {START, CONF ,WRITE, READ, ACK_SLAVE, ACK_MASTER,ACK_MASTER_OFF, OFF, OFF_LOW, ACK_SLAVE_OFF,TEST} fsm_state;
     
     localparam device_address = 8'b01010000;
    
@@ -71,9 +69,9 @@ module adc_control(
     
     assign master_all = ( state ==  OFF_LOW ) ? master_high : master;
     assign sda = ( state ==  READ  || state == ACK_SLAVE || state == ACK_SLAVE_OFF) ? 1'bZ : master_all; 
-    assign scl = ( state ==  START || state == OFF || (clk_stretch == 1'b1 && stretch_counter < 'd9) ) ? 1'b1 : !clk;
+    assign scl = ( state ==  START || state == OFF /*|| (clk_stretch == 1'b1 && stretch_counter < 'd9)*/ ) ? 1'b1 : ~clk;
     
-    always_ff @(negedge clk) begin
+   /* always_ff @(negedge clk) begin
         if(state == ACK_SLAVE && mode == 'b1) begin
             clk_stretch <= 'b1;
         end
@@ -82,6 +80,7 @@ module adc_control(
         end
     
     end
+   */
    
    always_ff @(negedge clk) begin
         if(state == OFF_LOW) 
@@ -114,7 +113,7 @@ module adc_control(
             delay_nxt = delay + 1;
             mode_nxt = mode;
         end
-        if(state == START && counter == 'b0 && delay == 'd10) begin
+        else if(state == START && counter == 'b0 && delay == 'd10) begin
             state_nxt = START;
             master = 'b1;
             counter_nxt = counter +1;
@@ -122,20 +121,18 @@ module adc_control(
             mode_nxt = mode;
         end
         else if(state == START && counter == 'b1 && delay != 'd99) begin
-  
-                state_nxt = START;
-                counter_nxt = counter;
-                master = 'b0;
-                delay_nxt = delay + 1;
-                mode_nxt = mode;
+            state_nxt = START;
+            counter_nxt = counter;
+            master = 'b0;
+            delay_nxt = delay + 1;
+            mode_nxt = mode;
         end
         else if(state == START && counter == 'b1 && delay == 'd99) begin
-         
-                state_nxt = CONF;
-                counter_nxt = counter + 1;
-                master = 'b0;
-                delay_nxt = 0;
-                mode_nxt = mode;
+            state_nxt = CONF;
+            counter_nxt = counter + 1;
+            master = 'b0;
+            delay_nxt = 0;
+            mode_nxt = mode;
         end
         else if(state == CONF) begin
             case(counter)
@@ -156,7 +153,7 @@ module adc_control(
             endcase
             
             counter_nxt = counter + 1;
-            delay_nxt = delay_nxt;
+            delay_nxt = delay;
             mode_nxt = mode;
         end
         else if(state == ACK_SLAVE) begin
@@ -166,25 +163,24 @@ module adc_control(
                 counter_nxt = 'b0;
             end
             else if(mode == 'b1) begin
-                if(stretch_counter < 'd7) begin
+                /*if(stretch_counter < 'd7) begin
                     state_nxt = ACK_SLAVE;
                     stretch_counter_nxt = stretch_counter_nxt + 1;
                     counter_nxt = counter;
                 end
-                else begin
+                else begin*/
                     state_nxt = READ;
                     mode_nxt = mode;
                     counter_nxt = counter + 1;
-                    stretch_counter_nxt = stretch_counter_nxt + 1;
-                end
+                    //stretch_counter_nxt = stretch_counter_nxt + 1;
+                //end
             end
             else begin
                 state_nxt = WRITE;
                 mode_nxt = mode;
                 counter_nxt = counter + 1;
             end
-                
-            
+            delay_nxt = delay;
             master = 'b0;
         end
         else if(state == WRITE) begin
@@ -199,13 +195,15 @@ module adc_control(
                 end
             endcase
             counter_nxt = counter + 1;
+            mode_nxt = mode;
+            delay_nxt = delay;
         end
         else if(state == ACK_SLAVE_OFF) begin
-                state_nxt = OFF_LOW;
-                counter_nxt = 0;
-                mode_nxt = 'b1;
-                master = 'b0;
-                ack <= sda;
+            state_nxt = OFF_LOW;
+            counter_nxt = 'b0;
+            mode_nxt = 'b1;
+            master = 'b0;
+            delay_nxt = delay;
         end
         else if(state == READ) begin
             case(counter)
@@ -225,17 +223,18 @@ module adc_control(
             counter_nxt = counter + 1;
         end
         else if(state == ACK_MASTER) begin
-                state_nxt = READ;
-                counter_nxt = counter + 1;
-                master = 'b0;
+            state_nxt = READ;
+            counter_nxt = counter + 1;
+            master = 'b0;
         end
         else if(state == ACK_MASTER_OFF) begin
-                state_nxt = OFF_LOW;
-                counter_nxt = 'd0;
-                master = 'b1;
-                delay_nxt = 'b0;
-             
-                
+            state_nxt = READ;
+            counter_nxt = 'd11;
+            master = 'b0;
+            delay_nxt = 'b0;
+            
+            //data_output <= adc_buffer[15:4];
+            
                 data_output[11] <= adc_buffer[4];
                 data_output[10] <= adc_buffer[5];
                 data_output[9] <= adc_buffer[6];
@@ -284,6 +283,13 @@ module adc_control(
                 end
             endcase
         end
+        else begin
+            state_nxt = state;
+            counter_nxt = counter;
+            master = 'b0;
+            delay_nxt = delay;
+            mode_nxt = mode;
+        end
     end
     
     
@@ -326,18 +332,22 @@ module adc_control(
                 2'b00: begin 
                     address = 8'b01010001;
                     channel_address = 8'b00010000;
+                    fast_mode = 8'b00001000;
                 end
                 2'b01: begin 
                     address = 8'b01010001;
                     channel_address = 8'b00010000;
+                    fast_mode = 8'b00001000;
                 end
                 2'b10: begin 
                     address = 8'b01010001;
                     channel_address = 8'b00010000;
+                    fast_mode = 8'b00001000;
                 end
                 2'b11: begin 
                     address = 8'b01010001;
                     channel_address = 8'b00010000;
+                    fast_mode = 8'b00001000;
                 end
         endcase
     end
