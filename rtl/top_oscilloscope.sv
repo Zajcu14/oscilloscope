@@ -37,10 +37,10 @@
  wire  [11:0] ypos;
  wire  [11:0] xpos_nxt;
  wire  [11:0] ypos_nxt;
- wire left_mouse_nxt, left_mouse, right_mouse_nxt, right_mouse;
+ wire left_mouse_nxt, left_mouse, right_mouse_nxt, right_mouse, middle_nxt, middle;
  wire minus_y, minus_x;
- wire [11:0] trigger_level;
- wire [23:0] trig_B2D;
+ wire [11:0] trigger_level, counter_adc, clk_trig_max;
+ wire [23:0] trig_B2D, counter_adc_B2D, clk_trig_B2D;
 //wire [3:0] scale_voltage;
  
  // Clock wires
@@ -56,6 +56,8 @@ wire clk_adc;
  //wire [3:0] delay;
  wire [10:0] x_mouse_pos, y_mouse_pos;
  wire [11:0] trigger_buffer [0:511];
+ wire [11:0] data_display [0:511];
+ wire read, ready;
  wire [11:0] data_adc;
  // Test wires
  //wire ready;
@@ -131,7 +133,7 @@ wire clk_adc;
      .xpos(xpos_nxt),
      .ypos(ypos_nxt),
      .left(left_mouse_nxt),
-     .middle(),
+     .middle(middle_nxt),
      .new_event(),
      .right(right_mouse_nxt),
      .setmax_x('d1024),
@@ -165,13 +167,13 @@ wire clk_adc;
      //.data()
  );
  
- delay #(.WIDTH(26),
+ delay #(.WIDTH(27),
    .CLK_DEL(4)) 
  u_delay_mouse(
     .clk(clk),
     .rst(rst),
-    .din({xpos_nxt,ypos_nxt,left_mouse_nxt,right_mouse_nxt}),
-    .dout({xpos,ypos,left_mouse,right_mouse})
+    .din({xpos_nxt,ypos_nxt,left_mouse_nxt,right_mouse_nxt,middle_nxt}),
+    .dout({xpos,ypos,left_mouse,right_mouse,middle})
  );
  
  draw_mouse u_draw_mouse (
@@ -188,7 +190,7 @@ wire clk_adc;
     .in(vga_bg),
     .out(vga_display), 
     .scale_voltage(4'd1),
-    .data_display(trigger_buffer),
+    .data_display(data_display),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
@@ -202,6 +204,18 @@ Binary2Decimal u_Binary2Decimal(
    .bindata(trigger_level),           //12-bit ADC values
    .decimalout(trig_B2D)
 );
+Binary2Decimal u_Binary2Decimal_2(         
+   .clk,
+   .rst,
+   .bindata(counter_adc),           //12-bit ADC values
+   .decimalout(counter_adc_B2D)
+);
+Binary2Decimal u_Binary2Decimal_3(         
+   .clk,
+   .rst,
+   .bindata(clk_trig_max),           //12-bit ADC values
+   .decimalout(clk_trig_B2D)
+);
  user_interface u_user_interface(
     .clk,
     .rst,
@@ -209,11 +223,14 @@ Binary2Decimal u_Binary2Decimal(
     .ypos(ypos),
     .left_mouse(left_mouse),
     .right_mouse(right_mouse),
+    .middle_mouse(middle),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
     .minus_x(minus_x),
-    .trigger(trigger_level)
+    .trigger(trigger_level),
+    .count_adc(counter_adc),
+    . trig_clk(clk_trig_max)
     //.delay(delay),
     //.mode(),
     //.scale_voltage()
@@ -229,22 +246,25 @@ Binary2Decimal u_Binary2Decimal(
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
-    .data_output(data_adc),
-    .ready(),
-    .ack()
+    .data_output(data_adc)
 );
+
 clock_adc u_clock_adc(
    .clk,
    .rst,
-   .clk_adc(clk_adc)
+   .clk_adc(clk_adc),
+   .counter_max(counter_adc)
 );
 
  trigger u_trigger(
-    .clk(clk_adc),
+    .clk,
     .data_input(data_adc),
     .rst,
     .LEVEL_TRIGGER(trigger_level), 
-    .trigger_buffer(trigger_buffer)
+    .trigger_buffer(trigger_buffer),
+    .clk_trig_max(clk_trig_max),
+    .read(read),
+    .ready(ready)
  );
  font_gen u_font_gen (
    .clk,
@@ -255,12 +275,21 @@ clock_adc u_clock_adc(
    .p2p('0), 
    .rms('0), 
    .frq('0),
-	.vol('0), 
-	.trig(trig_B2D),
+   .vol('0), 
+   .trig(trig_B2D),
+   .clk_adc(counter_adc_B2D),
+   .clk_trig(clk_trig_B2D),
    .in(vga_display),
    .out(vga_font_gen)
  );
- 
+ trigger_rom u_trigger_rom(
+    .clk,
+    .rst,
+    .read(read),
+    .ready(ready),
+    .data(trigger_buffer),
+    .data_output(data_display)
+    );
   // Niefunkcjonalne
  /*
  

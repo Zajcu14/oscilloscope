@@ -30,6 +30,8 @@ module font_gen
       input logic [19:0] rms,
       input logic [15:0] vol, 
       input logic [23:0] trig,
+      input logic [23:0] clk_adc,
+      input logic [23:0] clk_trig,
 
       vga_if.in in,
       vga_if.out out
@@ -95,6 +97,17 @@ module font_gen
    logic [3:0] row_addr_trig;
    logic [2:0] bit_addr_trig;
 	logic trig_on;	
+	// signal clk_adc
+   logic [6:0] char_addr_clk_adc;
+   logic [3:0] row_addr_clk_adc;
+   logic [2:0] bit_addr_clk_adc;
+	logic clk_adc_on;
+	
+// signal clk_trig
+   logic [6:0] char_addr_clk_trig;
+   logic [3:0] row_addr_clk_trig;
+   logic [2:0] bit_addr_clk_trig;
+   logic clk_trig_on;
 	
 	// text
    //wire [10:0] rom_addr_text;
@@ -387,6 +400,58 @@ module font_gen
          4'hf: char_addr_trig = 7'h00; // 
       endcase
    end
+   // MODE region
+   //  - display mode voltage
+   //-------------------------------------------
+   assign clk_adc_on = ((10'd159<in.vcount)&&(in.vcount<10'd176)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
+   assign row_addr_clk_adc = in.vcount[3:0];
+   assign bit_addr_clk_adc = in.hcount[2:0];
+   always_comb begin
+      case (in.hcount[6:3])
+         4'h0: char_addr_clk_adc = 7'h4d; // M
+         4'h1: char_addr_clk_adc = 7'h4f; // O
+         4'h2: char_addr_clk_adc = 7'h44; // D
+         4'h3: char_addr_clk_adc = 7'h45; // E
+         4'h4: char_addr_clk_adc = 7'h3a; // :
+         4'h5: char_addr_clk_adc = 7'd48 + clk_adc[23:20];   // dig0
+         4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16];   // dig1
+         4'h7: char_addr_clk_adc = 7'd48 + clk_adc[15:12];  // dig2
+         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[11:8]; // dig3
+         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[7:4]; // dig4
+         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[3:0]; // dig5
+         4'hb: char_addr_clk_adc = 7'h00; // 
+         4'hc: char_addr_clk_adc = 7'h00; // 
+         4'hd: char_addr_clk_adc = 7'h00; // 
+         4'he: char_addr_clk_adc = 7'h00; // 
+         4'hf: char_addr_clk_adc = 7'h00; // 
+      endcase
+   end
+    // MODE region
+   //  - display mode voltage
+   //-------------------------------------------
+   assign clk_trig_on = ((10'd175<in.vcount)&&(in.vcount<10'd189)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
+   assign row_addr_clk_trig = in.vcount[3:0];
+   assign bit_addr_clk_trig = in.hcount[2:0];
+   always_comb begin
+      case (in.hcount[6:3])
+         4'h0: char_addr_clk_trig = 7'h4d; // M
+         4'h1: char_addr_clk_trig = 7'h4f; // O
+         4'h2: char_addr_clk_trig = 7'h44; // D
+         4'h3: char_addr_clk_trig = 7'h45; // E
+         4'h4: char_addr_clk_trig = 7'h3a; // :
+         4'h5: char_addr_clk_trig = 7'd48 + clk_trig[23:20];   // dig0
+         4'h6: char_addr_clk_trig = 7'd48 + clk_trig[19:16];   // dig1
+         4'h7: char_addr_clk_trig = 7'd48 + clk_trig[15:12];  // dig2
+         4'h8: char_addr_clk_trig = 7'd48 + clk_trig[11:8]; // dig3
+         4'h9: char_addr_clk_trig = 7'd48 + clk_trig[7:4]; // dig4
+         4'ha: char_addr_clk_trig = 7'd48 + clk_trig[3:0]; // dig5
+         4'hb: char_addr_clk_trig = 7'h00; // 
+         4'hc: char_addr_clk_trig = 7'h00; // 
+         4'hd: char_addr_clk_trig = 7'h00; // 
+         4'he: char_addr_clk_trig = 7'h00; // 
+         4'hf: char_addr_clk_trig = 7'h00; // 
+      endcase
+   end
    // "on" region limited to top-left corner
 
    // rgb multiplexing circuit
@@ -508,11 +573,33 @@ module font_gen
 				end
 			end
 			 
-		else if(trig_on) begin             //AC/DC mode
-			char_addr <= char_addr_trig; 
+		else if(trig_on) begin             //trig
+		 char_addr <= char_addr_trig; 
          row_addr <= row_addr_trig;
          bit_addr <= bit_addr_trig;
-         if(font_bit) begin
+        if(font_bit) begin
+            out.rgb <= 12'hf_f_0;// green
+				end
+          else begin
+            out.rgb <= 12'b0;  // black
+				end
+			end
+		else if(clk_adc_on) begin             //clk_adc
+		 char_addr <= char_addr_clk_adc; 
+         row_addr <= row_addr_clk_adc;
+         bit_addr <= bit_addr_clk_adc;
+        if(font_bit) begin
+            out.rgb <= 12'hf_f_0;// green
+				end
+          else begin
+            out.rgb <= 12'b0;  // black
+				end
+			end
+			else if(clk_trig_on) begin             //clk_adc
+		 char_addr <= char_addr_clk_trig; 
+         row_addr <= row_addr_clk_trig;
+         bit_addr <= bit_addr_clk_trig;
+        if(font_bit) begin
             out.rgb <= 12'hf_f_0;// green
 				end
           else begin

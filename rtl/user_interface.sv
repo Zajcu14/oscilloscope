@@ -25,13 +25,16 @@ module user_interface(
     input logic clk,
     input logic left_mouse,
     input logic right_mouse,
+    input logic middle_mouse,
     input  logic [11:0] xpos,
     input  logic [11:0] ypos,
     output logic [10:0] x_mouse_pos,
     output logic [10:0] y_mouse_pos, 
     output logic  minus_y,
     output logic  minus_x,
-    output logic [11:0]  trigger
+    output logic [11:0]  trigger,
+    output logic [11:0] count_adc,
+    output logic [11:0] trig_clk
     //output [3:0] delay,
     //output [3:0] mode,
     //output [3:0] corner_freq,
@@ -70,39 +73,63 @@ module user_interface(
            ypos_state <= ypos_state_nxt;
         end
     end
-    reg [8:0]button_counter ;
-    reg [10:0]counter;
+    reg [19:0]button_counter ;
+    reg [19:0] counter_adc, trigger_clk_counter;
+    reg [19:0]counter;
     reg [1:0]state;
-
+////////////////////////////////////////////////////////////////////////
     always @(posedge  clk)begin
     	if(rst)begin
-    		button_counter <= '0;
-            counter        <= '0;
+    		counter_adc    <= 19'b0000_0000_0011_1100_0000 ;
+            counter        <= 19'b0000_0000_0011_1100_0000;
             state          <= '0;
+			button_counter <= 19'b0000_0000_0000_0000_0000;
+			trigger_clk_counter <= '0;
     		end
         
     	else begin
     		case(state)
             
     			2'b00:begin
-    				if(right_mouse)begin
-    					button_counter<=button_counter+3'd1;
+    			     if (counter_adc < 'd5)begin 
+    			         counter_adc <= 'd100; 
+    			         state<=2'b01;
+    			          
+    			     end else if(right_mouse & middle_mouse & xpos > 500 & xpos < 1000)begin
+    					counter_adc <= counter_adc + 1;
     					state<=2'b01;
-    					end
-                    
-    				if(left_mouse)begin
-    					button_counter<=button_counter-3'd1;
+    					
+    				end else if(left_mouse & middle_mouse & xpos > 500 & xpos < 1000)begin
+    					counter_adc <= counter_adc - 1;
     					state<=2'b01;
-    					end
+    					
+
+					end else if(right_mouse & middle_mouse & xpos < 500 & xpos > 100)begin
+    					button_counter<=button_counter + 1;
+    					state<=2'b01;
+    					
+					end else if(left_mouse  & middle_mouse & xpos < 500 & xpos > 100)begin
+    					button_counter<=button_counter - 1;
+    					state<=2'b01;
+
+    			    end else if(right_mouse & xpos < 100)begin
+    					trigger_clk_counter<= trigger_clk_counter + 1;
+    					state<=2'b01;                   
+    				end else if(left_mouse & xpos < 100)begin
+    					trigger_clk_counter <= trigger_clk_counter - 1;
+    					state<=2'b01;
+    				end else begin
+    				    state<=2'b00;
     				end
-                
+
+    			end
     			2'b01: begin
-    				if(counter==10'd10000)begin
+    				if(counter==20'd0_100_000)begin
     					counter <= '0;
     					state   <= '0;
     					end
     				else begin
-    					counter <= counter + 10'd1;
+    					counter <= counter + 1;
     					state   <= 2'b01;
     					end
     				end
@@ -111,10 +138,11 @@ module user_interface(
     			end
     			endcase	
     		end
-    	end
-    
-    assign trigger = {button_counter,3'd0};
- 
+    	end 
+///////////////////////////////////////////////////////////////////////////////////////    
+    assign trigger = {button_counter[19:4]};
+    assign count_adc = {counter_adc[19:4]};
+    assign trig_clk = {trigger_clk_counter[19:4]};
     always_comb begin
         move_chart();
     end

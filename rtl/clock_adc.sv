@@ -1,7 +1,8 @@
 module clock_adc(
     input logic clk,
     input logic rst,
-    output logic clk_adc
+    output logic clk_adc,
+    input logic [11:0] counter_max
     );
     
     
@@ -12,7 +13,7 @@ module clock_adc(
             clk_adc <= '0;
             counter <= '0;
         end
-        else if(counter == 325)begin
+        else if(counter == counter_max)begin
             clk_adc <= ~clk_adc;
             counter <= 0;
         end

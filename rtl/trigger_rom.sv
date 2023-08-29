@@ -22,9 +22,41 @@
 
 module trigger_rom(
     input logic clk,
-    input logic data,
-    output logic data_output_trigger,
-    output logic data_output_display,
-    output logic delay
+    input logic rst,
+    input logic read,
+    output logic ready,
+    input logic [11:0] data [0:511],
+    output logic [11:0] data_output [0:511]
     );
-endmodule
+    logic active;
+    logic[11:0] counter;
+    
+    always_ff @(posedge clk)begin
+        if(rst) begin
+        active <= '0;
+        ready <= 1'b1;
+        end else begin
+            if(read)
+            active <= 1'b1;
+             ready <= 1'b0;
+            if(active) begin
+            if(counter == 12'd511)begin
+                    data_output[counter] <= data[counter];
+                     ready <= 1'b1;                    
+					 counter <= 0;
+					 active <= 1'b0;
+				end else begin
+				    data_output[counter] <=  data[counter];
+					counter <= counter + 1 ;
+					active <= 1'b1;
+					 ready <= 1'b0; 
+                end 
+            end else begin
+                 ready  <= 1'b1;
+                 active <= 1'b0;
+            end   
+          
+        end
+    end
+    
+endmodule 

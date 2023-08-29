@@ -24,8 +24,11 @@ module trigger(
     input logic clk,
     input logic [11:0] data_input,
     input logic rst,
-    input logic [11:0] LEVEL_TRIGGER, 
-    output reg [11:0] trigger_buffer [0:511]
+    input logic [11:0] LEVEL_TRIGGER,
+    input logic [11:0] clk_trig_max, 
+    output reg [11:0] trigger_buffer [0:511],
+    input logic ready,
+    output logic read
     );
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -35,7 +38,7 @@ module trigger(
     logic [11:0] counter;
     reg [11:0] buffer [0:0]; 
     logic [11:0] clk_trigger;
-    logic trigger_level_case;
+    logic [1:0] trigger_level_case;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////       
     assign buffer[0] = data_input;
   
@@ -50,30 +53,43 @@ module trigger(
             trigger_level_case <= '0;
             counter <= '0;
             clk_trigger <= '0;
+            read <= '0;
 //--------------------------------------------------------------
         end else begin
-            if (clk_trigger==48)begin
+            if (ready)begin
+            if (clk_trigger==clk_trig_max * 18)begin
                 clk_trigger <= '0;
             case (trigger_level_case)
-            1'd0: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 1'd1 : 1'd0;
+            2'd0: begin
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 2'd1 : 2'd0;
+                read <= 1'b0;
+            end
+            2'd1: begin
+                trigger_level_case <= (data_input <= LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 2'd2 : 2'd1;
+                read <= 1'b0;
             end
              
-            1'd1: begin
-                if(counter == 10'd511)begin
+            2'd2: begin
+                if(counter == 12'd512)begin
+                    read <= 1'b1;
 					counter <= 0;
-					trigger_level_case <= 1'd0;
+					trigger_level_case <= 2'd0;
 				end else begin
-					trigger_buffer[0:511] <= {trigger_buffer[0:510],buffer[0]};
+				    trigger_buffer[counter] <= data_input;
+			//		trigger_buffer[0:511] <= {trigger_buffer[1:511],buffer[0]};
 					counter <= counter + 1 ;
-					trigger_level_case <= 1'd1;
+					trigger_level_case <= 2'd2;
+					read <= 1'b0;
 				end
-		  end
-		  endcase 
+		      end
+		      endcase 
             end else begin
                 clk_trigger <= clk_trigger + 1;
             end
+            end else begin
+            read <= 1'b0;
         end
+       end
 
    end 
             
