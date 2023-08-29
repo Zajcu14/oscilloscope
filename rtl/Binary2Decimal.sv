@@ -21,12 +21,13 @@
 module Binary2Decimal(         
     input             clk,
     input             rst,
-	input 		 [31:0]bindata,           //12-bit ADC values
+	input 		 [11:0]bindata,           //12-bit ADC values
 	output wire  [23:0] decimalout
 );
 	reg [3:0]dig_5,dig_4,dig_3,dig_2,dig_1,dig_0;
+    logic [23:0] bindata_24bit;
 	assign decimalout ={dig_0,dig_1,dig_2,dig_3,dig_4,dig_5};
-	
+	assign bindata_24bit = {{12'b0},bindata};
 always@(posedge clk) begin
     if (rst)begin
 
@@ -40,12 +41,12 @@ always@(posedge clk) begin
 	 end
     else begin
 
-		dig_0 <=  bindata/100000;
-        dig_1 <= (bindata-100000*( bindata/100000))/10000;
-        dig_2 <= (bindata-10000*(bindata/10000))/1000;
-		dig_3 <= (bindata-1000*(bindata/1000))/100;
+		dig_0 <=  bindata_24bit/100000; 
+        dig_1 <= (bindata_24bit-100000*( bindata_24bit/100000))/10000;
+        dig_2 <= (bindata_24bit-10000*(bindata_24bit/10000))/1000;
+		dig_3 <= (bindata_24bit-1000*(bindata_24bit/1000))/100;
 		dig_4 <= (bindata-100*(bindata/100))/10;
-		dig_5 <= (bindata-10*(bindata/10));
+		dig_5 <= (bindata_24bit-10*(bindata_24bit/10));
 		
 	end
 end

@@ -25,6 +25,7 @@ sv work ../../rtl/vga_pkg.sv \
         ../../rtl/vga_if.sv \
         ../../rtl/clock_adc.sv \
         ../../rtl/font_gen.sv \
+        ../../rtl/Binary2Decimal.sv \
         ../common/tiff_writer.sv \
         top_oscilloscope_tb.sv
         

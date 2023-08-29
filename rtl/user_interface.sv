@@ -24,12 +24,14 @@ module user_interface(
     input logic rst,
     input logic clk,
     input logic left_mouse,
+    input logic right_mouse,
     input  logic [11:0] xpos,
     input  logic [11:0] ypos,
     output logic [10:0] x_mouse_pos,
     output logic [10:0] y_mouse_pos, 
     output logic  minus_y,
-    output logic  minus_x
+    output logic  minus_x,
+    output logic [11:0]  trigger
     //output [3:0] delay,
     //output [3:0] mode,
     //output [3:0] corner_freq,
@@ -68,6 +70,50 @@ module user_interface(
            ypos_state <= ypos_state_nxt;
         end
     end
+    reg [8:0]button_counter ;
+    reg [10:0]counter;
+    reg [1:0]state;
+
+    always @(posedge  clk)begin
+    	if(rst)begin
+    		button_counter <= '0;
+            counter        <= '0;
+            state          <= '0;
+    		end
+        
+    	else begin
+    		case(state)
+            
+    			2'b00:begin
+    				if(right_mouse)begin
+    					button_counter<=button_counter+3'd1;
+    					state<=2'b01;
+    					end
+                    
+    				if(left_mouse)begin
+    					button_counter<=button_counter-3'd1;
+    					state<=2'b01;
+    					end
+    				end
+                
+    			2'b01: begin
+    				if(counter==10'd10000)begin
+    					counter <= '0;
+    					state   <= '0;
+    					end
+    				else begin
+    					counter <= counter + 10'd1;
+    					state   <= 2'b01;
+    					end
+    				end
+    			default: begin
+    				state <= '0;
+    			end
+    			endcase	
+    		end
+    	end
+    
+    assign trigger = {button_counter,3'd0};
  
     always_comb begin
         move_chart();

@@ -29,7 +29,7 @@ module font_gen
       input logic [19:0] p2p, 
       input logic [19:0] rms,
       input logic [15:0] vol, 
-      input logic mode,
+      input logic [23:0] trig,
 
       vga_if.in in,
       vga_if.out out
@@ -90,11 +90,11 @@ module font_gen
    logic [2:0] bit_addr_time;
 	logic time_on;
 
-	// signal mode
-   logic  [6:0] char_addr_mode;
-   logic [3:0] row_addr_mode;
-   logic [2:0] bit_addr_mode;
-	logic mode_on;	
+	// signal trig
+   logic [6:0] char_addr_trig;
+   logic [3:0] row_addr_trig;
+   logic [2:0] bit_addr_trig;
+	logic trig_on;	
 	
 	// text
    //wire [10:0] rom_addr_text;
@@ -287,7 +287,7 @@ module font_gen
    assign row_addr_vol = in.vcount[3:0];
 	assign bit_addr_vol = in.hcount[2:0];
    always_comb begin
-      case (in.hcount[6:3])
+      case (in.hcount[6:3]) 
          4'h0: char_addr_vol = (7'd48 + 7'd0); // digit 10vol[15:12]
          4'h1: char_addr_vol = 7'h2e; // .
          4'h2: char_addr_vol = (7'd48 + 7'd7 ); // digit 10vol[11:8]
@@ -364,27 +364,27 @@ module font_gen
    // MODE region
    //  - display mode voltage
    //-------------------------------------------
-   assign mode_on = ((10'd143<in.vcount)&&(in.vcount<10'd160)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_mode = in.vcount[3:0];
-	assign bit_addr_mode = in.hcount[2:0];
+   assign trig_on = ((10'd143<in.vcount)&&(in.vcount<10'd160)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
+   assign row_addr_trig = in.vcount[3:0];
+	assign bit_addr_trig = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
-         4'h0: char_addr_mode = 7'h4d; // M
-         4'h1: char_addr_mode = 7'h4f; // O
-         4'h2: char_addr_mode = 7'h44; // D
-         4'h3: char_addr_mode = 7'h45; // E
-         4'h4: char_addr_mode = 7'h3a; // :
-         4'h5: char_addr_mode = 7'h20; // 
-         4'h6: char_addr_mode = 7'd68-3*mode; // dig1
-         4'h7: char_addr_mode = 7'h43; // C
-         4'h8: char_addr_mode = 7'h00; //
-         4'h9: char_addr_mode = 7'h00; //
-         4'ha: char_addr_mode = 7'h00; //
-         4'hb: char_addr_mode = 7'h00; // 
-         4'hc: char_addr_mode = 7'h00; // 
-         4'hd: char_addr_mode = 7'h00; // 
-         4'he: char_addr_mode = 7'h00; // 
-         4'hf: char_addr_mode = 7'h00; // 
+         4'h0: char_addr_trig = 7'h4d; // M
+         4'h1: char_addr_trig = 7'h4f; // O
+         4'h2: char_addr_trig = 7'h44; // D
+         4'h3: char_addr_trig = 7'h45; // E
+         4'h4: char_addr_trig = 7'h3a; // :
+         4'h5: char_addr_trig = 7'd48 + trig[23:20];   // dig0
+         4'h6: char_addr_trig = 7'd48 + trig[19:16];   // dig1
+         4'h7: char_addr_trig = 7'd48 + trig[15:12];  // dig2
+         4'h8: char_addr_trig = 7'd48 + trig[11:8]; // dig3
+         4'h9: char_addr_trig = 7'd48 + trig[7:4]; // dig4
+         4'ha: char_addr_trig = 7'd48 + trig[3:0]; // dig5
+         4'hb: char_addr_trig = 7'h00; // 
+         4'hc: char_addr_trig = 7'h00; // 
+         4'hd: char_addr_trig = 7'h00; // 
+         4'he: char_addr_trig = 7'h00; // 
+         4'hf: char_addr_trig = 7'h00; // 
       endcase
    end
    // "on" region limited to top-left corner
@@ -508,10 +508,10 @@ module font_gen
 				end
 			end
 			 
-		else if(mode_on) begin             //AC/DC mode
-			char_addr <= char_addr_mode; 
-         row_addr <= row_addr_mode;
-         bit_addr <= bit_addr_mode;
+		else if(trig_on) begin             //AC/DC mode
+			char_addr <= char_addr_trig; 
+         row_addr <= row_addr_trig;
+         bit_addr <= bit_addr_trig;
          if(font_bit) begin
             out.rgb <= 12'hf_f_0;// green
 				end

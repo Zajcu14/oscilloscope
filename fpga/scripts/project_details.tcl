@@ -44,12 +44,13 @@ set sv_files {
 	../rtl/low_pass.sv
 	../rtl/sin_gen.sv
 	../rtl/trigger.sv
-	../rtl/trigger_data.sv
+	../rtl/Binary2Decimal.sv
 	../rtl/trigger_rom.sv
 	../rtl/clk_divider.sv
 	../rtl/user_interface.sv
 	../rtl/vga_if.sv
 	../rtl/clock_adc.sv
+	../rtl/font_gen.sv
     rtl/top_oscilloscope_basys3.sv
 }
 
@@ -58,6 +59,7 @@ set sv_files {
 	../rtl/delay.v
 	../rtl/clk_wiz_0_clk_wiz.v
 	../rtl/clk_wiz_0.v
+	../rtl/font_rom.v
  }
 
 # Specify VHDL design files location            -- EDIT

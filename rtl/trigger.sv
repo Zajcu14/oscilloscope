@@ -25,8 +25,7 @@ module trigger(
     input logic [11:0] data_input,
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER, 
-    output reg [11:0] trigger_buffer [0:511],
-    output logic trigger_level_case
+    output reg [11:0] trigger_buffer [0:511]
     );
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -36,6 +35,7 @@ module trigger(
     logic [11:0] counter;
     reg [11:0] buffer [0:0]; 
     logic [11:0] clk_trigger;
+    logic trigger_level_case;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////       
     assign buffer[0] = data_input;
   
