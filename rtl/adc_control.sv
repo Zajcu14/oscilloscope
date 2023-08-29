@@ -235,18 +235,18 @@ module adc_control(
             
             //data_output <= adc_buffer[15:4];
             
-                data_output[11] <= adc_buffer[4];
-                data_output[10] <= adc_buffer[5];
-                data_output[9] <= adc_buffer[6];
-                data_output[8] <= adc_buffer[7];
-                data_output[7] <= adc_buffer[8];
-                data_output[6] <= adc_buffer[9];
-                data_output[5] <= adc_buffer[10];
-                data_output[4] <= adc_buffer[11];
-                data_output[3] <= adc_buffer[12];
-                data_output[2] <= adc_buffer[13];
-                data_output[1] <= adc_buffer[14];
-                data_output[0] <= adc_buffer[15];
+                data_output[11] = adc_buffer[4];
+                data_output[10] = adc_buffer[5];
+                data_output[9] = adc_buffer[6];
+                data_output[8] = adc_buffer[7];
+                data_output[7] = adc_buffer[8];
+                data_output[6] = adc_buffer[9];
+                data_output[5] = adc_buffer[10];
+                data_output[4] = adc_buffer[11];
+                data_output[3] = adc_buffer[12];
+                data_output[2] = adc_buffer[13];
+                data_output[1] = adc_buffer[14];
+                data_output[0] = adc_buffer[15];
         end
         else if(state == OFF_LOW) begin
             state_nxt = OFF;

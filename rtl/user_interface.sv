@@ -73,9 +73,9 @@ module user_interface(
            ypos_state <= ypos_state_nxt;
         end
     end
-    reg [19:0]button_counter ;
-    reg [19:0] counter_adc, trigger_clk_counter;
-    reg [19:0]counter;
+    reg [18:0]button_counter ;
+    reg [18:0] counter_adc, trigger_clk_counter;
+    reg [18:0]counter;
     reg [1:0]state;
 ////////////////////////////////////////////////////////////////////////
     always @(posedge  clk)begin
@@ -140,9 +140,9 @@ module user_interface(
     		end
     	end 
 ///////////////////////////////////////////////////////////////////////////////////////    
-    assign trigger = {button_counter[19:4]};
-    assign count_adc = {counter_adc[19:4]};
-    assign trig_clk = {trigger_clk_counter[19:4]};
+    assign trigger = {button_counter[18:7]};
+    assign count_adc = {counter_adc[18:7]};
+    assign trig_clk = {trigger_clk_counter[18:7]};
     always_comb begin
         move_chart();
     end

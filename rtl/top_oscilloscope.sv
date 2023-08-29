@@ -269,13 +269,13 @@ clock_adc u_clock_adc(
  font_gen u_font_gen (
    .clk,
    .rst,
-	.max('0),
-   .min('0), 
-   .mea('0), 
-   .p2p('0), 
-   .rms('0), 
-   .frq('0),
-   .vol('0), 
+	.max('b0),
+   .min('b0), 
+   .mea('b0), 
+   .p2p('b0), 
+   .rms('b0), 
+   .frq('b0),
+   .vol('b0), 
    .trig(trig_B2D),
    .clk_adc(counter_adc_B2D),
    .clk_trig(clk_trig_B2D),
@@ -288,7 +288,8 @@ clock_adc u_clock_adc(
     .read(read),
     .ready(ready),
     .data(trigger_buffer),
-    .data_output(data_display)
+    .data_output(data_display),
+    .in(vga_bg)
     );
   // Niefunkcjonalne
  /*

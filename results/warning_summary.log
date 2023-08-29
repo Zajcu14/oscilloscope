@@ -1,26 +1,16 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-08-28 22:22:58
+Created: 2023-08-29 22:03:28
 
 ----SYNTHESIS----
-WARNING: [Synth 8-1102] /* in comment [rtl/adc_control.sv:467]
-WARNING: [Synth 8-1102] /* in comment [rtl/adc_control.sv:474]
-WARNING: [Synth 8-1102] /* in comment [rtl/adc_control.sv:489]
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
 WARNING: [Synth 8-6014] Unused sequential element set_x.x_inter_reg was removed.  [rtl/MouseCtl.vhd:456]
 WARNING: [Synth 8-6014] Unused sequential element set_y.inc_reg was removed.  [rtl/MouseCtl.vhd:514]
 WARNING: [Synth 8-6014] Unused sequential element set_y.y_inter_reg was removed.  [rtl/MouseCtl.vhd:520]
-WARNING: [Synth 8-6090] variable 'mode_nxt' is written by both blocking and non-blocking assignments, entire logic could be removed [rtl/adc_control.sv:276]
-WARNING: [Synth 8-87] always_comb on 'state_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:111]
-WARNING: [Synth 8-87] always_comb on 'master_reg' did not result in combinational logic [rtl/adc_control.sv:72]
-WARNING: [Synth 8-87] always_comb on 'counter_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:113]
-WARNING: [Synth 8-87] always_comb on 'delay_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:114]
-WARNING: [Synth 8-87] always_comb on 'mode_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:115]
-WARNING: [Synth 8-87] always_comb on 'ack_reg' did not result in combinational logic [rtl/adc_control.sv:208]
+WARNING: [Synth 8-87] always_comb on 'delay_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:113]
+WARNING: [Synth 8-87] always_comb on 'mode_nxt_reg' did not result in combinational logic [rtl/adc_control.sv:114]
 WARNING: [Synth 8-87] always_comb on 'data_output_reg' did not result in combinational logic [rtl/adc_control.sv:238]
-WARNING: [Synth 8-3848] Net stretch_counter in module/entity adc_control does not have driver. [rtl/adc_control.sv:62]
-WARNING: [Synth 8-3848] Net fast_mode in module/entity adc_control does not have driver. [rtl/adc_control.sv:42]
-WARNING: [Synth 8-3848] Net ready in module/entity adc_control does not have driver. [rtl/adc_control.sv:30]
+WARNING: [Synth 8-7129] Port read in module trigger_rom is either unconnected or has no load
 WARNING: [Synth 8-7129] Port frq[23] in module font_gen is either unconnected or has no load
 WARNING: [Synth 8-7129] Port frq[22] in module font_gen is either unconnected or has no load
 WARNING: [Synth 8-7129] Port frq[21] in module font_gen is either unconnected or has no load
@@ -37,54 +27,25 @@ WARNING: [Synth 8-7129] Port vol[7] in module font_gen is either unconnected or 
 WARNING: [Synth 8-7129] Port vol[6] in module font_gen is either unconnected or has no load
 WARNING: [Synth 8-7129] Port vol[5] in module font_gen is either unconnected or has no load
 WARNING: [Synth 8-7129] Port vol[4] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port ready in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-327] inferring latch for variable 'mode_nxt_reg' [rtl/adc_control.sv:115]
-WARNING: [Synth 8-327] inferring latch for variable 'state_nxt_reg' [rtl/adc_control.sv:111]
+WARNING: [Synth 8-327] inferring latch for variable 'delay_nxt_reg' [rtl/adc_control.sv:113]
+WARNING: [Synth 8-327] inferring latch for variable 'mode_nxt_reg' [rtl/adc_control.sv:114]
 WARNING: [Synth 8-327] inferring latch for variable 'data_output_reg' [rtl/adc_control.sv:238]
-WARNING: [Synth 8-327] inferring latch for variable 'ack_reg' [rtl/adc_control.sv:208]
-WARNING: [Synth 8-327] inferring latch for variable 'master_reg' [rtl/adc_control.sv:72]
-WARNING: [Synth 8-327] inferring latch for variable 'delay_nxt_reg' [rtl/adc_control.sv:114]
-WARNING: [Synth 8-327] inferring latch for variable 'counter_nxt_reg' [rtl/adc_control.sv:113]
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
-WARNING: [Synth 8-7129] Port frq[23] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port frq[22] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port frq[21] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port frq[20] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[15] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[14] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[13] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[12] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[11] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[10] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[9] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[8] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[7] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[6] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[5] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port vol[4] in module font_gen is either unconnected or has no load
-WARNING: [Synth 8-7129] Port ready in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-3332] Sequential element (u_top_oscilloscope/u_adc_control/ack_reg) is unused and will be removed from module top_oscilloscope_basys3.
 
 ----IMPLEMENTATION----
+WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[0] expects both input and output buffering but the buffers are incomplete.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
+WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[0] expects both input and output buffering but the buffers are incomplete.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
 WARNING: [Route 35-328] Router estimated timing not met.
 CRITICAL WARNING: [Timing 38-282] The design failed to meet the timing requirements. Please see the timing summary report for details on the timing violations.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/counter_nxt_reg[10]_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/counter_nxt_reg[10]_i_2/O, cell u_top_oscilloscope/u_adc_control/counter_nxt_reg[10]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/data_output_reg[11]_i_1_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/data_output_reg[11]_i_1/O, cell u_top_oscilloscope/u_adc_control/data_output_reg[11]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/delay_nxt__0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/delay_nxt_reg[21]_i_2/O, cell u_top_oscilloscope/u_adc_control/delay_nxt_reg[21]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/delay_nxt_reg[0]/G0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/delay_nxt_reg[0]/L3_2/O, cell u_top_oscilloscope/u_adc_control/delay_nxt_reg[0]/L3_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/delay_nxt_reg[1]/G0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/delay_nxt_reg[1]/L3_2/O, cell u_top_oscilloscope/u_adc_control/delay_nxt_reg[1]/L3_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/delay_nxt_reg[21]_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/delay_nxt_reg[21]_i_2/O, cell u_top_oscilloscope/u_adc_control/delay_nxt_reg[21]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
 WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/delay_nxt_reg[3]/G0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/delay_nxt_reg[3]/L3_2/O, cell u_top_oscilloscope/u_adc_control/delay_nxt_reg[3]/L3_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/master_reg_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/master_reg_i_2/O, cell u_top_oscilloscope/u_adc_control/master_reg_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_2/O, cell u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/state_nxt_reg[0]_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/state_nxt_reg[0]_i_2/O, cell u_top_oscilloscope/u_adc_control/state_nxt_reg[0]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
-WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/state_nxt_reg[3]_i_2_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/state_nxt_reg[3]_i_2/O, cell u_top_oscilloscope/u_adc_control/state_nxt_reg[3]_i_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/mode_nxt_reg[0]/G0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/mode_nxt_reg[0]/L3_2/O, cell u_top_oscilloscope/u_adc_control/mode_nxt_reg[0]/L3_2. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.
+WARNING: [DRC PDRC-153] Gated clock check: Net u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_1_n_0 is a gated clock net sourced by a combinational pin u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_1/O, cell u_top_oscilloscope/u_adc_control/mode_nxt_reg[1]_i_1. This is not good design practice and will likely impact performance. For SLICE registers, for example, use the CE pin to control the loading of data.

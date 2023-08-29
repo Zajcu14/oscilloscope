@@ -36,11 +36,11 @@ module trigger(
     parameter HIST_THRESHOLD = 0;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
     logic [11:0] counter;
-    reg [11:0] buffer [0:0]; 
+    //reg [11:0] buffer [0:0]; 
     logic [11:0] clk_trigger;
     logic [1:0] trigger_level_case;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////       
-    assign buffer[0] = data_input;
+//    assign buffer[0] = data_input;
   
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////    
     
@@ -87,7 +87,7 @@ module trigger(
                 clk_trigger <= clk_trigger + 1;
             end
             end else begin
-            read <= 1'b0;
+            read <= 1'b1;
         end
        end
 
