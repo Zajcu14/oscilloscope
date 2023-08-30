@@ -454,18 +454,18 @@ module font_gen
    assign bit_addr_clk_adc = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
-         4'h0: char_addr_clk_adc = 7'h4d; // A
-         4'h1: char_addr_clk_adc = 7'h4f; // D
-         4'h2: char_addr_clk_adc = 7'h44; // C
-         4'h3: char_addr_clk_adc = 7'h45; // 
+         4'h0: char_addr_clk_adc = 7'h41; // A
+         4'h1: char_addr_clk_adc = 7'h44; // D
+         4'h2: char_addr_clk_adc = 7'h43; // C
+         4'h3: char_addr_clk_adc = 7'h00; // 
          4'h4: char_addr_clk_adc = 7'h3a; // :
          4'h5: char_addr_clk_adc = 7'd48 + clk_adc[23:20];   // dig0
-         4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16];   // dig1
+         4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16] + clk_adc[15:12];   // dig1 + dig2 never write dig 1
          4'h7: char_addr_clk_adc = 7'h2e;                      // .
-         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[15:12];    // dig2
-         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[11:8];     // dig3
-         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[7:4];     // dig4
-         4'hb: char_addr_clk_adc = 7'd48 + clk_adc[3:0];     // dig5
+         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[11:8];    // dig3
+         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[7:4];     // dig4
+         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[3:0];     // dig5
+         4'hb: char_addr_clk_adc = 7'd00;                   
          4'hc: char_addr_clk_adc = 7'h4d; // M
          4'hd: char_addr_clk_adc = 7'h68; // h
          4'he: char_addr_clk_adc = 7'h7a; // z

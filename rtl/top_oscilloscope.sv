@@ -41,8 +41,8 @@ wire clk_adc;
  
  // Data wires
  wire [10:0] x_mouse_pos, y_mouse_pos;
- wire [11:0] trigger_buffer [0:511];
- wire [11:0] data_display [0:511];
+ wire [11:0] trigger_buffer [0:255];
+ wire [11:0] data_display [0:255];
 //wire [11:0] filtered_data [0:511];
  wire read, ready;
  wire [11:0] data_adc;

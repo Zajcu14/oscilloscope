@@ -73,26 +73,26 @@ module user_interface(
            ypos_state <= ypos_state_nxt;
         end
     end
-    reg [18:0]button_counter ;
-    reg [18:0] counter_adc, trigger_clk_counter;
+    reg [18:0]button_counter, counter_adc ;
+    reg [18:0] trigger_clk_counter;
     reg [18:0]counter;
     reg [1:0]state;
 ////////////////////////////////////////////////////////////////////////
     always @(posedge  clk)begin
     	if(rst)begin
-    		counter_adc         <= 19'b0000_0000_1111_1100_0000 ;
+    		counter_adc         <= 19'b000_0000_1111_1000_0000 ;
             counter             <= 'b0;
             state               <= '0;
-			button_counter      <= 19'b0000_0001_1111_1100_0000;
-			trigger_clk_counter <= 19'b0000_0001_1111_1100_0000;
+			button_counter      <= 19'b011_1111_1111_1000_0000 ;
+			trigger_clk_counter <= 19'b000_0000_0001_1000_0000 ;
     		end
         
     	else begin
     		case(state)
             
     			2'b00:begin
-    			     if (counter_adc < 'd5)begin 
-    			         counter_adc <= 'd100; 
+    			     if (counter_adc == 'd12)begin 
+    			         counter_adc <= 'd13; 
     			         state<=2'b01;
     			          
     			     end else if(right_mouse & middle_mouse & xpos > 500 & xpos < 1000)begin
@@ -102,9 +102,14 @@ module user_interface(
     				end else if(left_mouse & middle_mouse & xpos > 500 & xpos < 1000)begin
     					counter_adc <= counter_adc - 1;
     					state<=2'b01;
-    					
 
-					end else if(right_mouse & middle_mouse & xpos < 500 & xpos > 100)begin
+					end else if(button_counter > 4095)begin
+    					button_counter <= 4000;
+    					state<=2'b00;
+    				end else if(button_counter < 2054)begin
+    					button_counter <= 2055;
+    					state<=2'b00;
+    				end else if(right_mouse & middle_mouse & xpos < 500 & xpos > 100)begin
     					button_counter<=button_counter + 1;
     					state<=2'b01;
     					

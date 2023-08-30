@@ -25,8 +25,8 @@ module trigger_rom(
     input logic rst,
     input logic read,
     output logic ready,
-    input logic [11:0] data [0:511],
-    output logic [11:0] data_output [0:511],
+    input logic [11:0] data [0:255],
+    output logic [11:0] data_output [0:255],
     input logic [10:0] vcount,
     input logic [10:0] hcount
     );
@@ -38,7 +38,7 @@ module trigger_rom(
         ready <= 1'b1;
         counter <= '0;
         write <= '0;
-        for (int i = 0; i < 512; i++) begin
+        for (int i = 0; i < 256; i++) begin
             data_output[i] <= '0;
         end
         end else begin
@@ -54,7 +54,7 @@ module trigger_rom(
                         ready <= 1'b0; 
                     end
                     2'd2: begin
-                        write <= (counter == 12'd512)? 2'd0 : 2'd2;
+                        write <= (counter == 12'd256)? 2'd0 : 2'd2;
                         counter <= counter + 1 ;
                         ready <= 1'b0; 
                         data_output[counter] <=  data[counter];
