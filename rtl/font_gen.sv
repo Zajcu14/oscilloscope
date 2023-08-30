@@ -22,31 +22,33 @@ module font_gen
    (
       input logic clk,
       input logic rst,
-      input logic [23:0] frq,
-      input logic [19:0]max,
-      input logic [19:0] min,
-      input logic [19:0] mea,
-      input logic [19:0] p2p, 
-      input logic [19:0] rms,
-      input logic [15:0] vol, 
-      input logic [23:0] trig,
-      input logic [23:0] clk_adc,
-      input logic [23:0] clk_trig,
+     // input logic [23:0] frq,
+      input logic [11:0] max_bin,
+      input logic [11:0] min_bin,
+      input logic [11:0] mea_bin,
+     // input logic [19:0] p2p, 
+      //input logic [19:0] rms,
+     // input logic [15:0] vol, 
+      input wire [11:0] trigger_level,
+      input wire [11:0] counter_adc,
+      input wire [11:0] clk_trig_max,
 
       vga_if.in in,
       vga_if.out out
    );
-	 logic font_bit;
-	 logic [10:0] rom_addr;
-	 logic [6:0] char_addr;
-	 logic [3:0] row_addr;
-	 logic [2:0] bit_addr;
-	 logic [7:0] font_word;
+	logic font_bit;
+	logic [10:0] rom_addr;
+	logic [6:0] char_addr;
+	logic [3:0] row_addr;
+	logic [2:0] bit_addr;
+	logic [7:0] font_word;
    logic  [6:0] char_addr_mx;
    logic [3:0] row_addr_mx;
    logic [2:0] bit_addr_mx;
 	logic mx_on;
    logic [2:0] bit_addr_cor;
+
+   logic  [23:0] trig, clk_adc, clk_trig, mea, min, max;
 
 	// min signal
    logic  [6:0] char_addr_mn;
@@ -60,7 +62,7 @@ module font_gen
    logic [2:0] bit_addr_me;
 	logic me_on;
 	
-	
+	/*
 	// peak-peak signal
    logic  [6:0] char_addr_p2p;
    logic [3:0] row_addr_p2p;
@@ -87,11 +89,11 @@ module font_gen
 	logic vol_on;
 	
 	// time_scale
-   logic  [6:0] char_addr_time;
+   logic [6:0] char_addr_time;
    logic [3:0] row_addr_time;
    logic [2:0] bit_addr_time;
 	logic time_on;
-
+*/
 	// signal trig
    logic [6:0] char_addr_trig;
    logic [3:0] row_addr_trig;
@@ -124,6 +126,42 @@ module font_gen
    logic  hblnk_delay;
    logic  [11:0] rgb_delay;
 
+   Binary2Decimal u_Binary2Decimal(         
+      .clk,
+      .rst,
+      .bindata(trigger_level),           //12-bit ADC values
+      .decimalout(trig)
+   );
+   Binary2Decimal u_Binary2Decimal_2(         
+      .clk,
+      .rst,
+      .bindata(counter_adc),           //12-bit ADC values
+      .decimalout(clk_adc)
+   );
+   Binary2Decimal u_Binary2Decimal_3(         
+      .clk,
+      .rst,
+      .bindata(clk_trig_max),           //12-bit ADC values
+      .decimalout(clk_trig)
+   );
+   Binary2Decimal u_Binary2Decimal_4(         
+      .clk,
+      .rst,
+      .bindata(mea_bin),           //12-bit ADC values
+      .decimalout(mea)
+   );
+   Binary2Decimal u_Binary2Decimal_5(         
+      .clk,
+      .rst,
+      .bindata(min_bin),           //12-bit ADC values
+      .decimalout(min)
+   );
+   Binary2Decimal u_Binary2Decimal_6(         
+      .clk,
+      .rst,
+      .bindata(max_bin),           //12-bit ADC values
+      .decimalout(max)
+   );
 	delay #(
       .WIDTH(38),
       .CLK_DEL(2)) 
@@ -238,6 +276,7 @@ module font_gen
          4'hf: char_addr_me = 7'h00; // 
       endcase
    end
+   /*
    //-------------------------------------------
    // peak-peak region
    //  - display peak-peak voltage
@@ -373,6 +412,7 @@ module font_gen
          4'hf: char_addr_time = 7'h00; // 
       endcase
    end
+   */
    //-------------------------------------------
    // MODE region
    //  - display mode voltage
@@ -512,7 +552,7 @@ module font_gen
             out.rgb <= 12'b0;  // black
 				end
 			end
-
+/*
 		else if(p2p_on) begin              //Vp2p
 			char_addr <= char_addr_p2p;
          row_addr <= row_addr_p2p;
@@ -572,7 +612,7 @@ module font_gen
             out.rgb <= 12'b0;  // black
 				end
 			end
-			 
+			 */
 		else if(trig_on) begin             //trig
 		 char_addr <= char_addr_trig; 
          row_addr <= row_addr_trig;

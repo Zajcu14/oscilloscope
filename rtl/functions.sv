@@ -20,40 +20,40 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module functions #(parameter SAMPLES = 79) (
+module functions #(parameter SAMPLES = 80) (
     input logic clk,
     input logic rst,
     input logic [11:0] data [79:0],
-    logic [11:0] average,
-    logic [11:0] min,
-    logic [11:0] max
+    output logic [11:0] average,
+    output logic [11:0] min,
+    output logic [11:0] max
     );
    
    
-   
-/*logic [11:0] sum;
+/*
+logic [11:0] sum;
 logic [11:0] minimun;
-logic [11:0] maximum;*/
+logic [11:0] maximum;
 
 assign average = Sum( data ) / SAMPLES;
 assign min = Minimum( data );
 assign max = Maximum( data );
+*/
 
 
-
-/*always_ff @(posedge clk) begin
+always_ff @(posedge clk) begin
     if(rst) begin
-        sum <= 'd0;
-        minimun <= 'd0;
-        maximum <= 'd0; 
+        average <= 'd0;
+        min <= 'd0;
+        max <= 'd0; 
     end
     else begin
-        sum <= 'd0;
-        minimun <= 'd0;
-        maximum <= 'd0; 
+        average <= Sum( data ) / SAMPLES;
+        min <= Minimum( data );
+        max <= Maximum( data );
     end
     
-end*/
+end
 
 function logic [11:0] Sum(logic [11:0] data [79:0]);
         logic [11:0] sum;

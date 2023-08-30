@@ -31,7 +31,7 @@ module adc_control(
     
     typedef enum bit [3:0] {START, CONF ,WRITE, READ, ACK_SLAVE, ACK_MASTER,ACK_MASTER_OFF, OFF, OFF_LOW, ACK_SLAVE_OFF,TEST} fsm_state;
     
-    localparam device_address = 8'b01010000;
+    //localparam device_address = 8'b01010000;
    
     fsm_state state;
     fsm_state state_nxt;
@@ -40,25 +40,26 @@ module adc_control(
     bit [7:0] fast_mode;
     bit [9:0] address;
     
+    logic [11:0] data_output_nxt;
     bit master_all;
     bit master_high;
     bit master;
    
-    logic [10:0] counter;
-    logic [10:0] counter_read;
-    logic [10:0] counter_read_nxt;
-    logic [10:0] counter_nxt;
+    logic [5:0] counter;
+    logic [5:0] counter_read;
+    logic [5:0] counter_read_nxt;
+    logic [5:0] counter_nxt;
     
-    logic [21:0] delay;
-    logic [21:0] delay_nxt;
+    logic [6:0] delay;
+    logic [6:0] delay_nxt;
     
     logic [1:0] mode;
     logic [1:0] mode_nxt;
     
-    logic clk_stretch;
+    //logic clk_stretch;
     
-    logic [3:0] stretch_counter;
-    logic [3:0] stretch_counter_nxt;
+    //logic [3:0] stretch_counter;
+    //logic [3:0] stretch_counter_nxt;
     
     logic [15:0] adc_buffer;
 
@@ -95,48 +96,54 @@ module adc_control(
             counter <= 'b0;
             delay <= 'b0;
             mode <= 2'b11;
+            data_output <= 12'b0;
         end
         else begin
             state <= state_nxt;
             counter <= counter_nxt;
             delay <= delay_nxt;
             mode <= mode_nxt;
+            data_output <= data_output_nxt;
         end
     end
     
     
     always_comb begin
-        if(state == START && counter == 'b0 &&  delay != 'd10 ) begin
+        if(state == START && counter == 6'b0 &&  delay != 7'd10 ) begin
             state_nxt = START;
             master = 'b1;
             counter_nxt = counter;
             delay_nxt = delay + 1;
             mode_nxt = mode;
+            data_output_nxt = data_output;
         end
-        else if(state == START && counter == 'b0 && delay == 'd10) begin
+        else if(state == START && counter == 6'b0 && delay == 7'd10) begin
             state_nxt = START;
             master = 'b1;
             counter_nxt = counter +1;
             delay_nxt = delay + 1;
             mode_nxt = mode;
+            data_output_nxt = data_output;
         end
-        else if(state == START && counter == 'b1 && delay != 'd99) begin
+        else if(state == START && counter == 6'b1 && delay != 7'd99) begin
             state_nxt = START;
             counter_nxt = counter;
             master = 'b0;
             delay_nxt = delay + 1;
             mode_nxt = mode;
+            data_output_nxt = data_output;
         end
-        else if(state == START && counter == 'b1 && delay == 'd99) begin
+        else if(state == START && counter == 6'b1 && delay == 7'd99) begin
             state_nxt = CONF;
             counter_nxt = counter + 1;
             master = 'b0;
             delay_nxt = 0;
             mode_nxt = mode;
+            data_output_nxt = data_output;
         end
         else if(state == CONF) begin
             case(counter)
-                'd9: begin
+                6'd9: begin
                     state_nxt = ACK_SLAVE;
                     if(mode == 'b1)
                         master = 'b1;
@@ -151,7 +158,7 @@ module adc_control(
                         master = address[9 - counter];
                 end
             endcase
-            
+            data_output_nxt = data_output;
             counter_nxt = counter + 1;
             delay_nxt = delay;
             mode_nxt = mode;
@@ -180,12 +187,13 @@ module adc_control(
                 mode_nxt = mode;
                 counter_nxt = counter + 1;
             end
+            data_output_nxt = data_output;
             delay_nxt = delay;
             master = 'b0;
         end
         else if(state == WRITE) begin
             case(counter)
-                'd18: begin
+                6'd18: begin
                     state_nxt = ACK_SLAVE_OFF;
                     master = 'b0;
                 end
@@ -194,6 +202,7 @@ module adc_control(
                     master = channel_address[18 - counter];
                 end
             endcase
+            data_output_nxt = data_output;
             counter_nxt = counter + 1;
             mode_nxt = mode;
             delay_nxt = delay;
@@ -204,14 +213,15 @@ module adc_control(
             mode_nxt = 'b1;
             master = 'b0;
             delay_nxt = delay;
+            data_output_nxt = data_output;
         end
         else if(state == READ) begin
             case(counter)
-                'd27: begin
+                6'd27: begin
                     state_nxt = ACK_MASTER_OFF;
                     master = 'b0;
                 end
-                'd18: begin
+                6'd18: begin
                     state_nxt = ACK_MASTER;
                     master = 'b0;
                 end
@@ -220,55 +230,64 @@ module adc_control(
                     master = 'b0;
                 end
             endcase
+            data_output_nxt = data_output;
             counter_nxt = counter + 1;
+            delay_nxt = delay;
+            mode_nxt = mode;
         end
         else if(state == ACK_MASTER) begin
             state_nxt = READ;
             counter_nxt = counter + 1;
             master = 'b0;
+            delay_nxt = delay;
+            mode_nxt = mode;
+            data_output_nxt = data_output;
         end
         else if(state == ACK_MASTER_OFF) begin
             state_nxt = READ;
             counter_nxt = 'd11;
             master = 'b0;
             delay_nxt = 'b0;
+            mode_nxt = mode;
             
             //data_output <= adc_buffer[15:4];
             
-                data_output[11] = adc_buffer[4];
-                data_output[10] = adc_buffer[5];
-                data_output[9] = adc_buffer[6];
-                data_output[8] = adc_buffer[7];
-                data_output[7] = adc_buffer[8];
-                data_output[6] = adc_buffer[9];
-                data_output[5] = adc_buffer[10];
-                data_output[4] = adc_buffer[11];
-                data_output[3] = adc_buffer[12];
-                data_output[2] = adc_buffer[13];
-                data_output[1] = adc_buffer[14];
-                data_output[0] = adc_buffer[15];
+            data_output_nxt[11] = adc_buffer[4];
+            data_output_nxt[10] = adc_buffer[5];
+            data_output_nxt[9]  = adc_buffer[6];
+            data_output_nxt[8]  = adc_buffer[7];
+            data_output_nxt[7]  = adc_buffer[8];
+            data_output_nxt[6]  = adc_buffer[9];
+            data_output_nxt[5]  = adc_buffer[10];
+            data_output_nxt[4]  = adc_buffer[11];
+            data_output_nxt[3]  = adc_buffer[12];
+            data_output_nxt[2]  = adc_buffer[13];
+            data_output_nxt[1]  = adc_buffer[14];
+            data_output_nxt[0]  = adc_buffer[15];
         end
         else if(state == OFF_LOW) begin
             state_nxt = OFF;
             master = 'b0;
             counter_nxt = 'd29;
             delay_nxt = 0;
+            mode_nxt = mode;
+            data_output_nxt = data_output;
             //mode_nxt <= 'b1;
         end
         else if(state == OFF) begin
             case(counter)
-                'd30: begin
+                6'd30: begin
                     state_nxt = OFF;
                     master = 'b1;
                     counter_nxt = counter + 1;
                 end
-                'd29: begin
+                6'd29: begin
                     state_nxt = OFF;
                     master = 'b1;
                     counter_nxt = counter + 1;
                 end
                 default: begin
-                    if(counter == 'd45) begin
+                    if(counter == 6'd45) begin
                         state_nxt = START;
                         counter_nxt = 0;
                         master = 'b1;
@@ -278,12 +297,14 @@ module adc_control(
                         counter_nxt = counter + 1;
                         master = 'b1;
                     end
-                    
-                    delay_nxt = 0;
                 end
             endcase
+            delay_nxt = 0;
+            mode_nxt = mode;
+            data_output_nxt = data_output;
         end
         else begin
+            data_output_nxt = data_output;
             state_nxt = state;
             counter_nxt = counter;
             master = 'b0;

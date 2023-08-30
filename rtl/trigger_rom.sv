@@ -27,7 +27,8 @@ module trigger_rom(
     output logic ready,
     input logic [11:0] data [0:511],
     output logic [11:0] data_output [0:511],
-    vga_if.in in
+    input logic [10:0] vcount,
+    input logic [10:0] hcount
     );
     logic[11:0] counter;
     logic [1:0] write;
@@ -48,7 +49,7 @@ module trigger_rom(
                         ready <= 1'b1; 
                     end
                     2'd1: begin
-                        write <= (in.hcount == 600 || in.vcount < 3)? 2'd2 : 2'd1;
+                        write <= (hcount == 600 || vcount < 3)? 2'd2 : 2'd1;
                         counter <= '0;
                         ready <= 1'b0; 
                     end

@@ -72,10 +72,11 @@ module filter(
                         filtered_data[counter] = RejectPass(filtered_data[counter - 1], data[counter],freq_corner, freq_stop);
                 end
         endcase
+        counter_nxt = counter + 1;
     end
     
     
-    function logic signed [11:0] LowPass(logic signed [12:0] y_prev, logic signed [12:0] x, logic [11:0] freq);
+    function logic signed [11:0] LowPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq);
         logic signed [11:0] y;
         y = Add( Multiply(freq,x ) , Multiply(freq,y_prev ));
         
@@ -83,7 +84,7 @@ module filter(
         
     endfunction
     
-    function logic signed [11:0] HighPass(logic signed [12:0] y_prev, logic signed [12:0] x, logic [11:0] freq);
+    function logic signed [11:0] HighPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq);
         logic signed [11:0] y;
         y = Add( Multiply(freq,x ) , Multiply(freq,y_prev ));
         
@@ -91,7 +92,7 @@ module filter(
         
     endfunction
     
-    function logic signed [11:0] BandPass(logic signed [12:0] y_prev, logic signed [12:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
+    function logic signed [11:0] BandPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
         logic signed [11:0] low_pass;
         logic signed [11:0] high_pass;
         
@@ -102,7 +103,7 @@ module filter(
         
     endfunction
     
-    function logic signed [11:0] RejectPass(logic signed [12:0] y_prev, logic signed [12:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
+    function logic signed [11:0] RejectPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
         logic signed [11:0] low_pass;
         logic signed [11:0] high_pass;
         
