@@ -49,7 +49,7 @@ module trigger_rom(
                         ready <= 1'b1; 
                     end
                     2'd1: begin
-                        write <= (hcount == 600 || vcount < 3)? 2'd2 : 2'd1;
+                        write <= (hcount == 600 || vcount < 6)? 2'd2 : 2'd1;
                         counter <= '0;
                         ready <= 1'b0; 
                     end

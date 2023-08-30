@@ -33,7 +33,7 @@ module trigger(
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
-    parameter HIST_THRESHOLD = 15;
+    parameter HIST_THRESHOLD = 50;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
     logic [11:0] counter;
     //reg [11:0] buffer [0:0]; 
@@ -65,7 +65,8 @@ module trigger(
                 read <= 1'b0;
             end
             3'd1: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd2 : 3'd0;
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
+                3'd2 : ((data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0);
                 read <= 1'b0;
             end
             3'd2: begin
@@ -73,19 +74,11 @@ module trigger(
                 read <= 1'b0;
             end
             3'd3: begin
-                trigger_level_case <= (data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd0;
+                trigger_level_case <= (data_input <= LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)?
+                 3'd4 : ((data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd0);
                 read <= 1'b0;
-            end
+            end            
             3'd4: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd5 : 3'd4;
-                read <= 1'b0;
-            end
-             3'd5: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd6 : 3'd0;
-                read <= 1'b0;
-            end
-             
-            3'd6: begin
                 if(counter == 12'd512)begin
                     read <= 1'b1;
 					counter <= 0;
@@ -94,7 +87,7 @@ module trigger(
 				    trigger_buffer[counter] <= data_input;
 			//		trigger_buffer[0:511] <= {trigger_buffer[1:511],buffer[0]};
 					counter <= counter + 1 ;
-					trigger_level_case <= 3'd6;
+					trigger_level_case <= 3'd4;
 					read <= 1'b0;
 				end
 		      end
