@@ -29,9 +29,9 @@ module font_gen
      // input logic [19:0] p2p, 
       //input logic [19:0] rms,
      // input logic [15:0] vol, 
-      input logic [11:0] trigger_level,
-      input logic [11:0] counter_adc,
-      input logic [11:0] clk_trig_max,
+      input wire [11:0] trigger_level,
+      input wire [11:0] counter_adc,
+      input wire [11:0] clk_trig_max,
 
       vga_if.in in,
       vga_if.out out
@@ -125,49 +125,43 @@ module font_gen
    logic  hsync_delay;
    logic  hblnk_delay;
    logic  [11:0] rgb_delay;
-   /////////////////////////////////////////////////////////////
-  // logic [11:0] counter_adc_hz;
-   // assign counter_adc_hz = 65000/(counter_adc * 2);
-   ////////////////////////////////////////////////////////////
-   
+
    Binary2Decimal u_Binary2Decimal(         
       .clk,
       .rst,
-      .bindata(trigger_level * 3),           
+      .bindata(trigger_level),           //12-bit ADC values
       .decimalout(trig)
    );
    Binary2Decimal u_Binary2Decimal_2(         
       .clk,
       .rst,
-      .bindata(counter_adc),           
+      .bindata(counter_adc),           //12-bit ADC values
       .decimalout(clk_adc)
    );
    Binary2Decimal u_Binary2Decimal_3(         
       .clk,
       .rst,
-      .bindata(clk_trig_max),           
+      .bindata(clk_trig_max),           //12-bit ADC values
       .decimalout(clk_trig)
    );
    Binary2Decimal u_Binary2Decimal_4(         
       .clk,
       .rst,
-      .bindata(mea_bin * 3),           
+      .bindata(mea_bin),           //12-bit ADC values
       .decimalout(mea)
    );
    Binary2Decimal u_Binary2Decimal_5(         
       .clk,
       .rst,
-      .bindata(min_bin * 3),           
+      .bindata(min_bin),           //12-bit ADC values
       .decimalout(min)
    );
    Binary2Decimal u_Binary2Decimal_6(         
       .clk,
       .rst,
-      .bindata(max_bin * 3),           
+      .bindata(max_bin),           //12-bit ADC values
       .decimalout(max)
    );
-   
-   ////////////////////////////////////////////////////////////
 	delay #(
       .WIDTH(38),
       .CLK_DEL(2)) 
@@ -215,13 +209,13 @@ module font_gen
          4'h2: char_addr_mx = 7'h61; // a
          4'h3: char_addr_mx = 7'h78; // x
          4'h4: char_addr_mx = 7'h3d; // =
-         4'h5: char_addr_mx = (7'd48 + max[23:20]); // digit 0
-         4'h6: char_addr_mx = (7'd48 + max[19:16]); // digit 1
-         4'h7: char_addr_mx = (7'd48 + max[15:12]); // digit 2
-         4'h8: char_addr_mx = (7'd48 +  max[11:8]); // digit 3
-         4'h9: char_addr_mx = (7'd48 +  max[7:4]);  // digit 4
-         4'ha: char_addr_mx = (7'd48 +  max[3:0]);  // digit 5
-         4'hb: char_addr_mx = 7'h6d; // m
+         4'h5: char_addr_mx = (7'd48 + max[19:16]); // digit 10
+         4'h6: char_addr_mx = 7'h2e; // .
+         4'h7: char_addr_mx = (7'd48 + max[15:12]); // digit 10
+         4'h8: char_addr_mx = (7'd48 +  max[11:8]); // digit 10
+         4'h9: char_addr_mx = (7'd48 +  max[7:4]); // digit 10
+         4'ha: char_addr_mx = (7'd48 +  max[3:0]); // digit 10
+         4'hb: char_addr_mx = 7'h00; // 
          4'hc: char_addr_mx = 7'h56; // V
          4'hd: char_addr_mx = 7'h00; // 
          4'he: char_addr_mx = 7'h00; // 
@@ -242,13 +236,13 @@ module font_gen
          4'h2: char_addr_mn = 7'h69; // i
          4'h3: char_addr_mn = 7'h6e; // n
          4'h4: char_addr_mn = 7'h3d; // =
-         4'h5: char_addr_mn = (7'd48 + min[23:20]); // digit 0
-         4'h6: char_addr_mn = (7'd48 + min[19:16]); // digit 1
-         4'h7: char_addr_mn = (7'd48 + min[15:12]); // digit 2
-         4'h8: char_addr_mn = (7'd48 + min[11:8]);  // digit 3
-         4'h9: char_addr_mn = (7'd48 + min[7:4]);   // digit 4
-         4'ha: char_addr_mn = (7'd48 + min[3:0]);   // digit 5
-         4'hb: char_addr_mn = 7'h6d; //  m
+         4'h5: char_addr_mn = (7'd48 + min[19:16]); // digit 10
+         4'h6: char_addr_mn = 7'h2e; // .
+         4'h7: char_addr_mn = (7'd48 + min[15:12]); // digit 10
+         4'h8: char_addr_mn = (7'd48 + min[11:8]); // digit 10
+         4'h9: char_addr_mn = (7'd48 + min[7:4]); // digit 10
+         4'ha: char_addr_mn = (7'd48 + min[3:0]); // digit 10
+         4'hb: char_addr_mn = 7'h00; // 
          4'hc: char_addr_mn = 7'h56; //  V
          4'hd: char_addr_mn = 7'h00; // 
          4'he: char_addr_mn = 7'h00; // 
@@ -269,13 +263,13 @@ module font_gen
          4'h2: char_addr_me = 7'h65; // e
          4'h3: char_addr_me = 7'h61; // a
          4'h4: char_addr_me = 7'h3d; // =
-         4'h5: char_addr_me = (7'd48 +  mea[23:20]); // digit 0
-         4'h6: char_addr_me = (7'd48 +  mea[19:16]); // digit 1
-         4'h7: char_addr_me = (7'd48 +  mea[15:12]); // digit 2
-         4'h8: char_addr_me = (7'd48 +  mea[11:8]);  // digit 3
-         4'h9: char_addr_me = (7'd48 +  mea[7:4]);   // digit 4
-         4'ha: char_addr_me = (7'd48 +  mea[3:0]);   // digit 5
-         4'hb: char_addr_me = 7'h6d; // m
+         4'h5: char_addr_me = (7'd48 +  mea[19:16]); // digit 10
+         4'h6: char_addr_me = 7'h2e; // .
+         4'h7: char_addr_me = (7'd48 +  mea[15:12]); // digit 10
+         4'h8: char_addr_me = (7'd48 +  mea[11:8]); // digit 10
+         4'h9: char_addr_me = (7'd48 +  mea[7:4]); // digit 10
+         4'ha: char_addr_me = (7'd48 +  mea[3:0]); // digit 10
+         4'hb: char_addr_me = 7'h00; // 
          4'hc: char_addr_me = 7'h56; // V
          4'hd: char_addr_me = 7'h00; // 
          4'he: char_addr_me = 7'h00; // 
@@ -410,7 +404,7 @@ module font_gen
          4'h7: char_addr_time = 7'h2f; // /
          4'h8: char_addr_time = 7'h64; // d
          4'h9: char_addr_time = 7'h69; // i
-         4'ha: char_addr_time = 7'h76; // v
+         4'ha: char_addr_time = 7'h76; //	v
          4'hb: char_addr_time = 7'h00; // 
          4'hc: char_addr_time = 7'h00; // 
          4'hd: char_addr_time = 7'h00; // 
@@ -428,20 +422,20 @@ module font_gen
 	assign bit_addr_trig = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
-         4'h0: char_addr_trig = 7'h54; // T
-         4'h1: char_addr_trig = 7'h6c; // l
-         4'h2: char_addr_trig = 7'h76; // v
-         4'h3: char_addr_trig = 7'h6c; // l
+         4'h0: char_addr_trig = 7'h4d; // M
+         4'h1: char_addr_trig = 7'h4f; // O
+         4'h2: char_addr_trig = 7'h44; // D
+         4'h3: char_addr_trig = 7'h45; // E
          4'h4: char_addr_trig = 7'h3a; // :
          4'h5: char_addr_trig = 7'd48 + trig[23:20];   // dig0
          4'h6: char_addr_trig = 7'd48 + trig[19:16];   // dig1
-         4'h7: char_addr_trig = 7'd48 + trig[15:12];   // dig2
-         4'h8: char_addr_trig = 7'd48 + trig[11:8];    // dig3
-         4'h9: char_addr_trig = 7'd48 + trig[7:4];     // dig4
-         4'ha: char_addr_trig = 7'd48 + trig[3:0];     // dig5
+         4'h7: char_addr_trig = 7'd48 + trig[15:12];  // dig2
+         4'h8: char_addr_trig = 7'd48 + trig[11:8]; // dig3
+         4'h9: char_addr_trig = 7'd48 + trig[7:4]; // dig4
+         4'ha: char_addr_trig = 7'd48 + trig[3:0]; // dig5
          4'hb: char_addr_trig = 7'h00; // 
-         4'hc: char_addr_trig = 7'h6d; // m
-         4'hd: char_addr_trig = 7'h56; // V
+         4'hc: char_addr_trig = 7'h00; // 
+         4'hd: char_addr_trig = 7'h00; // 
          4'he: char_addr_trig = 7'h00; // 
          4'hf: char_addr_trig = 7'h00; // 
       endcase
@@ -449,52 +443,52 @@ module font_gen
    // MODE region
    //  - display mode voltage
    //-------------------------------------------
-   assign clk_adc_on = ((10'd159<in.vcount)&&(in.vcount<10'd176)) && ((in.hcount>10'd767)&&(in.hcount<10'd895));
+   assign clk_adc_on = ((10'd159<in.vcount)&&(in.vcount<10'd176)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
    assign row_addr_clk_adc = in.vcount[3:0];
    assign bit_addr_clk_adc = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
-         4'h0: char_addr_clk_adc = 7'h4d; // A
-         4'h1: char_addr_clk_adc = 7'h4f; // D
-         4'h2: char_addr_clk_adc = 7'h44; // C
-         4'h3: char_addr_clk_adc = 7'h45; // 
+         4'h0: char_addr_clk_adc = 7'h4d; // M
+         4'h1: char_addr_clk_adc = 7'h4f; // O
+         4'h2: char_addr_clk_adc = 7'h44; // D
+         4'h3: char_addr_clk_adc = 7'h45; // E
          4'h4: char_addr_clk_adc = 7'h3a; // :
          4'h5: char_addr_clk_adc = 7'd48 + clk_adc[23:20];   // dig0
          4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16];   // dig1
-         4'h7: char_addr_clk_adc = 7'h2e;                      // .
-         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[15:12];    // dig2
-         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[11:8];     // dig3
-         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[7:4];     // dig4
-         4'hb: char_addr_clk_adc = 7'd48 + clk_adc[3:0];     // dig5
-         4'hc: char_addr_clk_adc = 7'h4d; // M
-         4'hd: char_addr_clk_adc = 7'h68; // h
-         4'he: char_addr_clk_adc = 7'h7a; // z
+         4'h7: char_addr_clk_adc = 7'd48 + clk_adc[15:12];  // dig2
+         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[11:8]; // dig3
+         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[7:4]; // dig4
+         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[3:0]; // dig5
+         4'hb: char_addr_clk_adc = 7'h00; // 
+         4'hc: char_addr_clk_adc = 7'h00; // 
+         4'hd: char_addr_clk_adc = 7'h00; // 
+         4'he: char_addr_clk_adc = 7'h00; // 
          4'hf: char_addr_clk_adc = 7'h00; // 
       endcase
    end
     // MODE region
    //  - display mode voltage
    //-------------------------------------------
-   assign clk_trig_on = ((10'd175<in.vcount)&&(in.vcount<10'd189)) && ((in.hcount>10'd767)&&(in.hcount<10'd895));
+   assign clk_trig_on = ((10'd175<in.vcount)&&(in.vcount<10'd189)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
    assign row_addr_clk_trig = in.vcount[3:0];
    assign bit_addr_clk_trig = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
-         4'h0: char_addr_clk_trig = 7'h54; // T
-         4'h1: char_addr_clk_trig = 7'h43; // C
-         4'h2: char_addr_clk_trig = 7'h4c; // L
-         4'h3: char_addr_clk_trig = 7'h4b; // K
+         4'h0: char_addr_clk_trig = 7'h4d; // M
+         4'h1: char_addr_clk_trig = 7'h4f; // O
+         4'h2: char_addr_clk_trig = 7'h44; // D
+         4'h3: char_addr_clk_trig = 7'h45; // E
          4'h4: char_addr_clk_trig = 7'h3a; // :
          4'h5: char_addr_clk_trig = 7'd48 + clk_trig[23:20];   // dig0
          4'h6: char_addr_clk_trig = 7'd48 + clk_trig[19:16];   // dig1
-         4'h7: char_addr_clk_trig = 7'd48 + clk_trig[15:12];   // dig2
-         4'h8: char_addr_clk_trig = 7'd48 + clk_trig[11:8];    // dig3
-         4'h9: char_addr_clk_trig = 7'd48 + clk_trig[7:4];     // dig4
-         4'ha: char_addr_clk_trig = 7'd48 + clk_trig[3:0];     // dig5
+         4'h7: char_addr_clk_trig = 7'd48 + clk_trig[15:12];  // dig2
+         4'h8: char_addr_clk_trig = 7'd48 + clk_trig[11:8]; // dig3
+         4'h9: char_addr_clk_trig = 7'd48 + clk_trig[7:4]; // dig4
+         4'ha: char_addr_clk_trig = 7'd48 + clk_trig[3:0]; // dig5
          4'hb: char_addr_clk_trig = 7'h00; // 
-         4'hc: char_addr_clk_trig = 7'h78; // x
-         4'hd: char_addr_clk_trig = 7'd49; // 1
-         4'he: char_addr_clk_trig = 7'd56; // 8
+         4'hc: char_addr_clk_trig = 7'h00; // 
+         4'hd: char_addr_clk_trig = 7'h00; // 
+         4'he: char_addr_clk_trig = 7'h00; // 
          4'hf: char_addr_clk_trig = 7'h00; // 
       endcase
    end

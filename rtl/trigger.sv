@@ -33,7 +33,7 @@ module trigger(
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
-    parameter HIST_THRESHOLD = 50;
+    parameter HIST_THRESHOLD = 15;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
     logic [11:0] counter;
     //reg [11:0] buffer [0:0]; 
@@ -65,8 +65,7 @@ module trigger(
                 read <= 1'b0;
             end
             3'd1: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
-                3'd2 : ((data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0);
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd2 : 3'd0;
                 read <= 1'b0;
             end
             3'd2: begin
@@ -74,11 +73,19 @@ module trigger(
                 read <= 1'b0;
             end
             3'd3: begin
-                trigger_level_case <= (data_input <= LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)?
-                 3'd4 : ((data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd0);
+                trigger_level_case <= (data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd0;
                 read <= 1'b0;
-            end            
+            end
             3'd4: begin
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd5 : 3'd4;
+                read <= 1'b0;
+            end
+             3'd5: begin
+                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd6 : 3'd0;
+                read <= 1'b0;
+            end
+             
+            3'd6: begin
                 if(counter == 12'd512)begin
                     read <= 1'b1;
 					counter <= 0;
@@ -87,7 +94,7 @@ module trigger(
 				    trigger_buffer[counter] <= data_input;
 			//		trigger_buffer[0:511] <= {trigger_buffer[1:511],buffer[0]};
 					counter <= counter + 1 ;
-					trigger_level_case <= 3'd4;
+					trigger_level_case <= 3'd6;
 					read <= 1'b0;
 				end
 		      end
@@ -108,7 +115,7 @@ endmodule
 
  /*   always_ff @(posedge clk) begin
         if (rst) begin
-            // SygnaÅ‚ resetu aktywny - zresetuj stan wyjÅ›Ä‡ triggerÃ³w i indeksÃ³w buforÃ³w
+            // Sygna³ resetu aktywny - zresetuj stan wyjœæ triggerów i indeksów buforów
             trigger_buffer[0] <= 'bz;
             trigger_index <= 'b0;
             trigger_level_case <= 'b0;
@@ -159,10 +166,10 @@ always_comb begin
 end
 end
 */
-    // Monitorowanie wejÅ›cia i triggerowanie
+    // Monitorowanie wejœcia i triggerowanie
     /*always_ff @(posedge clk) begin
         if (rst) begin
-            // SygnaÅ‚ resetu aktywny - zresetuj stan wyjÅ›Ä‡ triggerÃ³w i indeksÃ³w buforÃ³w
+            // Sygna³ resetu aktywny - zresetuj stan wyjœæ triggerów i indeksów buforów
             for (int i = 0; i < 256; i++) begin
                 trigger_buffer[i] <= 12'bz;
             end
@@ -182,7 +189,7 @@ end
             end 
             
         end
-            // Zapisz bieÅ¼Ä…ce wartoÅ›ci jako poprzednie do kolejnej iteracji
+            // Zapisz bie¿¹ce wartoœci jako poprzednie do kolejnej iteracji
          //   prev_data_input <= data_input;
     end
     
@@ -217,4 +224,3 @@ always_comb begin
 end
 
 */
-
