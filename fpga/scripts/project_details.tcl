@@ -51,6 +51,8 @@ set sv_files {
 	../rtl/vga_if.sv
 	../rtl/clock_adc.sv
 	../rtl/font_gen.sv
+	../rtl/filter.sv
+	../rtl/functions.sv
     rtl/top_oscilloscope_basys3.sv
 }
 

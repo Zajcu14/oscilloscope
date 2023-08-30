@@ -57,6 +57,7 @@ wire clk_adc;
  wire [10:0] x_mouse_pos, y_mouse_pos;
  wire [11:0] trigger_buffer [0:511];
  wire [11:0] data_display [0:511];
+wire [11:0] filtered_data [0:511];
  wire read, ready;
  wire [11:0] data_adc;
  // Test wires
@@ -99,7 +100,11 @@ wire clk_adc;
 
  ?*/
  
- //reg dft_analysis;
+
+// functions variables
+ logic [11:0] average;
+ logic [11:0]     min;
+ logic [11:0]     max;
  
  
  // VGA signals from timing
@@ -166,6 +171,25 @@ wire clk_adc;
      .out(vga_bg)
      //.data()
  );
+
+/*functions #(.SAMPLES(512)) u_functions(
+    .clk,
+    .rst,
+    .data(data_display),
+    .average,
+    .min,
+    .max
+    );*/
+
+filter u_filter(
+    .clk,
+    .rst,
+    .data(data_display),
+    .freq_corner(12'(int'(0.6*(2**11)))),
+    .freq_stop('b0),
+    .mode(2'b00),
+    .filtered_data(filtered_data)
+    );
  
  delay #(.WIDTH(27),
    .CLK_DEL(4)) 
