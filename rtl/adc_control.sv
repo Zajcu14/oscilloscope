@@ -63,7 +63,7 @@ module adc_control(
     //logic [3:0] stretch_counter_nxt;
     
     logic [15:0] adc_buffer;
-    logic [13:0] counter_clk;
+    logic [13:0] counter_clk, counter_clk_1;
 
     /**
      * Assigments
@@ -85,12 +85,20 @@ module adc_control(
    */
    
    always_ff @(negedge clk) begin
-        if (counter_clk == counter_max)begin
-        if(state == OFF_LOW) 
-            master_high <= 'b1;
-        else
-            master_high <= 'b0;
-        end
+    if(rst) begin
+        counter_clk_1 <= '0;
+        end else begin
+        if (counter_clk_1 >= counter_max)begin
+            if(state == OFF_LOW)begin 
+                master_high <= 'b1;
+           end else begin
+                master_high <= 'b0;
+            end
+            counter_clk_1 <= '0;
+      end else begin
+            counter_clk_1 <=  counter_clk_1 + 1;
+         end
+         end
     end
    
     always_ff @(posedge clk , posedge rst ) begin
@@ -102,7 +110,7 @@ module adc_control(
             data_output <= 12'b0;
             counter_clk <= '0;
         end
-        else if (counter_clk == counter_max) begin
+        else if (counter_clk >= counter_max) begin
             counter_clk <= '0;
             state <= state_nxt;
             counter <= counter_nxt;
