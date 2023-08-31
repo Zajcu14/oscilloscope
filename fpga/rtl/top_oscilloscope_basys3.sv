@@ -1,18 +1,25 @@
-/**
- * San Jose State University
- * EE178 Lab #4
- * Author: prof. Eric Crabilla
- *
- * Modified by:
- * 2023  AGH University of Science and Technology
- * MTM UEC2
- * Piotr Kaczmarczyk
- *
- * Description:
- * Top level synthesizable module including the project top and all the FPGA-referred modules.
- */
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01.07.2023 18:56:45
+// Design Name: Pawe³ Mozgowiec
+// Module Name: draw_display
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 
-`timescale 1 ns / 1 ps
+
 
 module top_oscilloscope_basys3 (
     input  wire clk,
@@ -29,49 +36,7 @@ module top_oscilloscope_basys3 (
 );
 wire pclk, mclk;
 wire pclk_mirror;
-/*
-logic clk_100MHz;
-logic clk_10MHz;
-logic clk_65MHz;
-logic clk_100KHz;
 
-/**
- * Clock divide
- */ 
- /*
-clk_divider u_clk_divider_1(
-    .clk(clk),
-    .pclk(clk_1MHz)
-);
-
-clk_divider #( .DIVIDE(15.500)) u_clk_divider_2(
-    .clk(clk),
-    .pclk(clk_65MHz)
-);
-
- logic [10:0] clk_divider;
- 
- always_ff @(posedge clk_10MHz) begin
-        if(clk_100KHz === 'bx) begin
-            clk_100KHz <= 0;
-        end
-        else if(clk_divider == 49) begin
-            clk_100KHz <= ~clk_100KHz;
-            clk_divider <= 0;
-        end
-        else begin
-            clk_100KHz <= clk_100KHz;
-            clk_divider <= clk_divider + 1;
-        end
- end
- 
- /**
- *  Assignments
- */
- /*
- assign clk_100MHz = clk;
- 
-*/
 clk_wiz_0 u_clk_wiz_0(
     .clk_100Mhz(mclk),
     .clk_65Mhz(pclk),

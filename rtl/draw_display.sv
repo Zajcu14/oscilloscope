@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 01.07.2023 18:56:45
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: draw_display
 // Project Name: 
 // Target Devices: 
@@ -26,7 +26,7 @@ module draw_display(
     input reg [11:0] data_display [0:255],
  //   input reg [11:0] data_display_filter [0:255],
   //  input reg [11:0] data_display_dft [0:63],
-    input logic [10:0] x_mouse_pos,
+    input logic [8:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
     input logic  minus_y,
     input logic  minus_x,
@@ -122,7 +122,7 @@ module draw_display(
     
 
     function void Draw_data_display (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
-         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
+         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [8:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
         case_minus = {minus_y, minus_x};
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             case(case_minus)
@@ -156,7 +156,7 @@ module draw_display(
 
 
     function void Draw_data_display_2 (input [11:0] data_display [0:63], [10:0] hcount, [10:0] vcount,
-        [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos);
+        [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [8:0] x_mouse_pos, [10:0] y_mouse_pos);
        case_minus = {minus_y, minus_x};
        if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
            case(case_minus)
@@ -180,7 +180,7 @@ module draw_display(
        end
    endfunction
    function void Draw_data_display_filter (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
-         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [10:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
+         [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [8:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
         case_minus = {minus_y, minus_x};
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             case(case_minus)

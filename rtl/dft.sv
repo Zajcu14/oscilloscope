@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 04.07.2023 10:09:54
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: dft
 // Project Name: 
 // Target Devices: 

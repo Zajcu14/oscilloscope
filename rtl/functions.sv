@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 30.08.2023 09:06:35
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: functions
 // Project Name: 
 // Target Devices: 

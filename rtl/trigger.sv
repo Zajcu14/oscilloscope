@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 04.07.2023 10:15:13
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: trigger
 // Project Name: 
 // Target Devices: 
@@ -26,7 +26,6 @@ module trigger(
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER,
     input logic [11:0] clk_trig_max, 
-    input logic [11:0] counter_max,
     output reg [11:0] trigger_buffer [0:255],
     input logic ready,
     output logic read

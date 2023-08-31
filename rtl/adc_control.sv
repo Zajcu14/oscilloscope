@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 19.06.2023 13:27:38
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: adc_control
 // Project Name: 
 // Target Devices: 

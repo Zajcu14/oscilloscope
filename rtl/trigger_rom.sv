@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 04.07.2023 09:31:41
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: trigger_rom
 // Project Name: 
 // Target Devices: 

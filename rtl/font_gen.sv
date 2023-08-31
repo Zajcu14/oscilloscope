@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 20.07.2023 11:16:25
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: font_gen
 // Project Name: 
 // Target Devices: 

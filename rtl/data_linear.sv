@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 01.07.2023 18:56:45
-// Design Name: 
+// Design Name: Pawel Mozgowiec
 // Module Name: data_linear
 // Project Name: 
 // Target Devices: 

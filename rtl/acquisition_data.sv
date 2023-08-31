@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 24.08.2023 23:26:55
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: sampled_data
 // Project Name: 
 // Target Devices: 

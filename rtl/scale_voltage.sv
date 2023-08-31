@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 22.08.2023 10:15:13
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: scale_voltage
 // Project Name: 
 // Target Devices: 
@@ -19,7 +19,7 @@
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
-
+/*
 module scale_voltage(
     input logic clk,
     input logic rst,
@@ -74,3 +74,4 @@ module scale_voltage(
 
 
 endmodule
+*/

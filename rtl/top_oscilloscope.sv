@@ -1,6 +1,6 @@
 /**
  *
- * Author:
+ * Author: Pawe³ Mozgowiec & Jakub Zaj¹c
  *
  * Description:
  * The project top module.
@@ -179,7 +179,7 @@ filter u_filter(
     //.data_display_filter(data_display_filter),
    // .data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
-    .x_mouse_pos(x_mouse_pos),
+    .x_mouse_pos(x_mouse_pos[8:0]),
     .minus_y(minus_y),
     .minus_x(minus_x)
    // .graph_scale({Y_scale,X_scale})
@@ -228,7 +228,6 @@ clock_adc u_clock_adc(
     .clk,
     .data_input(data_adc),
     .rst,
-    .counter_max(counter_adc),
     .LEVEL_TRIGGER(trigger_level), 
     .trigger_buffer(trigger_buffer),
     .clk_trig_max(clk_trig_max),

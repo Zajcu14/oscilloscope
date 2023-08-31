@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 10.08.2023 10:32:12
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: filter
 // Project Name: 
 // Target Devices: 

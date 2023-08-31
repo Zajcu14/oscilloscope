@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 12.07.2023 11:16:25
-// Design Name: 
+// Design Name: Jakub Zaj¹c
 // Module Name: sin_gen
 // Project Name: 
 // Target Devices: 

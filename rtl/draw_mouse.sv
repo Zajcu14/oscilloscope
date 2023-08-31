@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 28.03.2023 22:48:46
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec & Jakub Zaj¹c
 // Module Name: draw_mouse
 // Project Name: 
 // Target Devices: 

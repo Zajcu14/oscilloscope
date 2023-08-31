@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 30.06.2023 21:16:12
-// Design Name: 
+// Design Name: Pawe³ Mozgowiec
 // Module Name: user_interface
 // Project Name: oscilloscope
 // Target Devices: 

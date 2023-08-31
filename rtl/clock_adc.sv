@@ -1,3 +1,23 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 01.07.2023 18:56:45
+// Design Name: Pawe³ Mozgowiec & Jakub Zaj¹c
+// Module Name: draw_display
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
 module clock_adc(
     input logic clk,
     input logic rst,
