@@ -34,7 +34,7 @@ module trigger(
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
-    parameter HIST_THRESHOLD = 50;
+    parameter HIST_THRESHOLD = 0;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
     logic [11:0] counter;
     //reg [11:0] buffer [0:0]; 
