@@ -43,6 +43,7 @@
  wire [10:0] x_mouse_pos, y_mouse_pos;
  wire [11:0] trigger_buffer [0:255];
  wire [11:0] data_display [0:255];
+ wire data_display_dft [0:63];
  //wire [11:0] filtered_data [0:255];
  wire read, ready;
  wire clk_adc;
@@ -258,28 +259,12 @@ clock_adc u_clock_adc(
     .data_output(data_display),
     .vcount(vga_bg.vcount)
     );
-  // Niefunkcjonalne
- /*
- 
- data_acqusition u_data_acquisition(
-    .clk(clk),
-    .read(ready),
-    .data(data),
-    .input_data(adc_series_data)
- );
 
-  low_pass u_low_pass(
-    .clk(clk),
-    .data(trigger_data),
-    .filtered_data(filtered_data),
-    .corner_freq(corner_freq)
-  );
- 
  dft u_dtt(
       .clk,
-      .data(triger_data),
-      .dft_analysis(dft_analysis)
+      .rst,
+      .data(data_display),
+      .dft(data_display_dft)
   );
- */
  endmodule
 
