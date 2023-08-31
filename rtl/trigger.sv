@@ -34,7 +34,7 @@ module trigger(
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
-    parameter HIST_THRESHOLD = 0;
+    parameter HIST_THRESHOLD = 40;
     parameter ATTITUDE_LEVEL_TRIGGER = 8;
     logic [11:0] counter;
     //reg [11:0] buffer [0:0]; 
@@ -56,11 +56,11 @@ module trigger(
 //--------------------------------------------------------------
         end else begin
             if (ready)begin
-            if (clk_trigger == ((clk_trig_max * 18) + counter_max))begin
+            if (clk_trigger == ((clk_trig_max * 18)))begin
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin
-                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd0;
+                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
                 read <= 1'b0;
             end
             3'd1: begin

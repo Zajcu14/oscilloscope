@@ -14,7 +14,7 @@ localparam HOR_PIXELS = 1024;
 localparam VER_PIXELS = 768;
 localparam V_DISPLAY_1 = 530;
 localparam H_DISPLAY_1 = 45;
-localparam [10:0] LENGTH_DISPLAY_1 = 768;
+localparam [10:0] LENGTH_DISPLAY_1 = 512;
 localparam [10:0] HEIGHT_DISPLAY_1 = 512;
 
 localparam V_DISPLAY_2 = 730;

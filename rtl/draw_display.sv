@@ -24,7 +24,7 @@ module draw_display(
     input logic clk,
     input logic rst,
     input reg [11:0] data_display [0:255],
-//    input reg [11:0] data_display_filter [0:255],
+    input reg [11:0] data_display_filter [0:255],
     input logic [10:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
     input logic  minus_y,
@@ -90,8 +90,15 @@ module draw_display(
         Draw_data_display(data_display , in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
-     //   Draw_data_display_filter(data_display_filter, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-     //   HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+        
+       // Draw_data_display_filter(data_display_filter, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+        
+        // Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+        
+       //  Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
     //draw checkered on display
         Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
         //DISPLAY__2
@@ -119,19 +126,19 @@ module draw_display(
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             case(case_minus)
                 2'b00: begin
-                    if(V_DISPLAY   + y_mouse_pos == ((data_display[hcount - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8))+ vcount)
+                    if(V_DISPLAY   + y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8))+ vcount)
                     rgb_nxt = 12'ha_a_0;
                 end
                 2'b01: begin
-                    if(V_DISPLAY  + y_mouse_pos == ((data_display[hcount - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
+                    if(V_DISPLAY  + y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'ha_a_0;
                 end
                 2'b10: begin
-                    if(V_DISPLAY - y_mouse_pos == ((data_display[hcount - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
+                    if(V_DISPLAY - y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'ha_a_0;
                 end
                 2'b11: begin
-                    if(V_DISPLAY  - y_mouse_pos == ((data_display[hcount - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
+                    if(V_DISPLAY  - y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'ha_a_0; 
                 end
             endcase
@@ -177,23 +184,23 @@ module draw_display(
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             case(case_minus)
                 2'b00: begin
-                    if(V_DISPLAY   + y_mouse_pos == ((data_display[hcount - H_DISPLAY - x_mouse_pos]- 12'd2047)/(scale_voltage * 12'd4))+ vcount)
+                    if(V_DISPLAY   + y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8))+ vcount)
                     rgb_nxt = 12'hf_0_f;
                 end
                 2'b01: begin
-                    if(V_DISPLAY  + y_mouse_pos == ((data_display[hcount - H_DISPLAY + x_mouse_pos] - 12'd2047)/(scale_voltage * 12'd4)) + vcount)
+                    if(V_DISPLAY  + y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'hf_0_f;
                 end
                 2'b10: begin
-                    if(V_DISPLAY - y_mouse_pos == ((data_display[hcount - H_DISPLAY - x_mouse_pos] - 12'd2047)/(scale_voltage * 12'd4)) + vcount)
+                    if(V_DISPLAY - y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'hf_0_f;
                 end
                 2'b11: begin
-                    if(V_DISPLAY  - y_mouse_pos == ((data_display[hcount - H_DISPLAY + x_mouse_pos] - 12'd2047)/(scale_voltage * 12'd4)) + vcount)
+                    if(V_DISPLAY  - y_mouse_pos == ((data_display[((hcount)/2) - H_DISPLAY + x_mouse_pos])/(scale_voltage * 12'd8)) + vcount)
                     rgb_nxt = 12'hf_0_f; 
                 end
             endcase
-        end
+            end
     endfunction
     
 

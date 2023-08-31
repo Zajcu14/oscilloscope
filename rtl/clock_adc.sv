@@ -13,7 +13,7 @@ module clock_adc(
             clk_adc <= '0;
             counter <= '0;
         end
-        else if(counter == (counter_max/2))begin
+        else if(counter == (counter_max))begin
             clk_adc <= ~clk_adc;
             counter <= 0;
         end

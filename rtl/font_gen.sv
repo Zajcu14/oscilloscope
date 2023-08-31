@@ -22,13 +22,9 @@ module font_gen
    (
       input logic clk,
       input logic rst,
-     // input logic [23:0] frq,
       input logic [11:0] max_bin,
       input logic [11:0] min_bin,
       input logic [11:0] mea_bin,
-     // input logic [19:0] p2p, 
-      //input logic [19:0] rms,
-     // input logic [15:0] vol, 
       input logic [11:0] trigger_level,
       input logic [11:0] counter_adc,
       input logic [11:0] clk_trig_max,
@@ -62,38 +58,6 @@ module font_gen
    logic [2:0] bit_addr_me;
 	logic me_on;
 	
-	/*
-	// peak-peak signal
-   logic  [6:0] char_addr_p2p;
-   logic [3:0] row_addr_p2p;
-   logic [2:0] bit_addr_p2p;
-	logic p2p_on;
-	
-	
-	// rms signal
-   logic  [6:0] char_addr_rms;
-   logic [3:0] row_addr_rms;
-   logic [2:0] bit_addr_rms;
-	logic rms_on;
-	
-	// Frequency1
-   logic  [6:0] char_addr_frq;
-   logic [3:0] row_addr_frq;
-   logic [2:0] bit_addr_frq;
-	logic frq_on;
-
-	// voltage scaling
-   logic [6:0] char_addr_vol;
-   logic [3:0] row_addr_vol;
-   logic [2:0] bit_addr_vol;
-	logic vol_on;
-	
-	// time_scale
-   logic [6:0] char_addr_time;
-   logic [3:0] row_addr_time;
-   logic [2:0] bit_addr_time;
-	logic time_on;
-*/
 	// signal trig
    logic [6:0] char_addr_trig;
    logic [3:0] row_addr_trig;
@@ -131,7 +95,7 @@ module font_gen
  logic [11:0] min_bin_1;
  logic [11:0] max_bin_1;
  logic [11:0] trigger_level_1;
- assign counter_adc_hz = 65000/(counter_adc);
+ assign counter_adc_hz = 65000/(counter_adc * 2);
  assign mea_bin_1 = mea_bin * 3;
  assign min_bin_1 = min_bin * 3;
  assign max_bin_1 = max_bin * 3;
@@ -290,146 +254,10 @@ module font_gen
          4'hf: char_addr_me = 7'h00; // 
       endcase
    end
-   /*
+   
    //-------------------------------------------
-   // peak-peak region
-   //  - display peak-peak voltage
-   //-------------------------------------------
-   assign p2p_on = ((10'd63<in.vcount)&&(in.vcount<10'd80)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_p2p = in.vcount[3:0];
-   assign bit_addr_p2p = in.hcount[2:0];
-   always_comb begin
-      case (in.hcount[6:3])
-         4'h0: char_addr_p2p = 7'h56; // V
-         4'h1: char_addr_p2p = 7'h70; // p
-         4'h2: char_addr_p2p = 7'h32; // 2
-         4'h3: char_addr_p2p = 7'h70; // p
-         4'h4: char_addr_p2p = 7'h3d; // =
-         4'h5: char_addr_p2p = (7'd48 +  p2p[19:16]); // digit 10
-         4'h6: char_addr_p2p = 7'h2e; // .
-         4'h7: char_addr_p2p = (7'd48 +  p2p[15:12]); // digit 10
-         4'h8: char_addr_p2p = (7'd48 +  p2p[11:8]); // digit 10
-         4'h9: char_addr_p2p = (7'd48 +  p2p[7:4]); // digit 10
-         4'ha: char_addr_p2p = (7'd48 + p2p[3:0]); // digit 10
-         4'hb: char_addr_p2p = 7'h00; // 
-         4'hc: char_addr_p2p = 7'h56; // V
-         4'hd: char_addr_p2p = 7'h00; // 
-         4'he: char_addr_p2p = 7'h00; // 
-         4'hf: char_addr_p2p = 7'h00; // 
-      endcase
-   end
-   //-------------------------------------------
-   // RMS region
-   //  - display rms voltage
-   //-------------------------------------------
-   assign rms_on = ((10'd79<in.vcount)&&(in.vcount<10'd97)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_rms = in.vcount[3:0];
-   assign bit_addr_rms = in.hcount[2:0];
-   always_comb begin
-      case (in.hcount[6:3])
-         4'h0: char_addr_rms = 7'h56; // V
-         4'h1: char_addr_rms = 7'h72; // r
-         4'h2: char_addr_rms = 7'h6d; // m
-         4'h3: char_addr_rms = 7'h73; // s
-         4'h4: char_addr_rms = 7'h3d; // =
-         4'h5: char_addr_rms = (7'd48 +  rms[19:16]); // digit 10
-         4'h6: char_addr_rms = 7'h2e; // .
-         4'h7: char_addr_rms = (7'd48 +  rms[15:12]); // digit 10
-         4'h8: char_addr_rms = (7'd48 +  rms[11:8]); // digit 10
-         4'h9: char_addr_rms = (7'd48 +  rms[7:4]); // digit 10
-         4'ha: char_addr_rms = (7'd48 +  rms[3:0]); // digit 10
-         4'hb: char_addr_rms = 7'h00; // 
-         4'hc: char_addr_rms = 7'h56; // V
-         4'hd: char_addr_rms = 7'h00; // 
-         4'he: char_addr_rms = 7'h00; // 
-         4'hf: char_addr_rms = 7'h00; // 
-      endcase
-   end
-   //-------------------------------------------
-   // Volts/div region
-   //  - display scale voltage
-   //-------------------------------------------
-   assign vol_on = ((10'd96<in.vcount)&&(in.vcount<10'd112)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_vol = in.vcount[3:0];
-	assign bit_addr_vol = in.hcount[2:0];
-   always_comb begin
-      case (in.hcount[6:3]) 
-         4'h0: char_addr_vol = (7'd48 + 7'd0); // digit 10vol[15:12]
-         4'h1: char_addr_vol = 7'h2e; // .
-         4'h2: char_addr_vol = (7'd48 + 7'd7 ); // digit 10vol[11:8]
-         4'h3: char_addr_vol = (7'd48 + 7'd5 ); // digit 10vol[7:4]
-         4'h4: char_addr_vol = {3'b011, vol[3:0]}; // digit 10
-         4'h5: char_addr_vol = 7'h56; // V
-         4'h6: char_addr_vol = 7'h2f; // /
-         4'h7: char_addr_vol = 7'h64; // d
-         4'h8: char_addr_vol = 7'h69; // i
-         4'h9: char_addr_vol = 7'h76; // v
-         4'ha: char_addr_vol = 7'h00; //
-         4'hb: char_addr_vol = 7'h00; // 
-         4'hc: char_addr_vol = 7'h00; // 
-         4'hd: char_addr_vol = 7'h00; // 
-         4'he: char_addr_vol = 7'h00; // 
-         4'hf: char_addr_vol = 7'h00; // 
-      endcase
-		end
-   //-------------------------------------------
-   // Frequency region
-   //  - display frequency value
-   //-------------------------------------------
-   assign frq_on = ((10'd111<in.vcount)&&(in.vcount<10'd128)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_frq = in.vcount[3:0];
-	assign bit_addr_frq = in.hcount[2:0];
-   always_comb begin
-      case (in.hcount[6:3])
-			4'h0: char_addr_frq = (7'd48 +  frq[19:16]); // digit 10
-         4'h1: char_addr_frq = (7'd48 +  frq[15:12]); // digit 10
-         4'h2: char_addr_frq = 7'h2c; // ,
-         4'h3: char_addr_frq = (7'd48 +  frq[11:8]); // digit 10
-         4'h4: char_addr_frq = (7'd48 +  frq[7:4]); // digit 10
-         4'h5: char_addr_frq = (7'd48 +  frq[3:0]); // digit 10
-         4'h6: char_addr_frq = 7'h00; // digit 10
-         4'h7: char_addr_frq = 7'h48; // H
-         4'h8: char_addr_frq = 7'h7a; // z
-         4'h9: char_addr_frq = 7'h00; // 
-         4'ha: char_addr_frq = 7'h00; // 
-         4'hb: char_addr_frq = 7'h00; //
-         4'hc: char_addr_frq = 7'h00; // 
-         4'hd: char_addr_frq = 7'h00; // 
-         4'he: char_addr_frq = 7'h00; // 
-         4'hf: char_addr_frq = 7'h00; // 
-      endcase
-   end
-   //-------------------------------------------
-   // TIme/div region
-   //  - display scale time
-   //-------------------------------------------
-   assign time_on = ((10'd127<in.vcount)&&(in.vcount<10'd144)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
-   assign row_addr_time = in.vcount[3:0];
-	assign bit_addr_time = in.hcount[2:0];
-   always_comb begin
-      case (in.hcount[6:3])
-         4'h0: char_addr_time = (7'd48 +7'd6); // digit 10 time1[15:12]
-         4'h1: char_addr_time = 7'h2e; // .
-         4'h2: char_addr_time = (7'd48 + 7'd8); // digit 10time1[11:8]
-         4'h3: char_addr_time = (7'd48 + 7'd6);  // digit 10time1[7:4]);
-         4'h4: char_addr_time = (7'd48 + 7'd0); // digit 10time1[3:0]
-         4'h5: char_addr_time = 7'h6d; // m
-         4'h6: char_addr_time = 7'h73; // s
-         4'h7: char_addr_time = 7'h2f; // /
-         4'h8: char_addr_time = 7'h64; // d
-         4'h9: char_addr_time = 7'h69; // i
-         4'ha: char_addr_time = 7'h76; // v
-         4'hb: char_addr_time = 7'h00; // 
-         4'hc: char_addr_time = 7'h00; // 
-         4'hd: char_addr_time = 7'h00; // 
-         4'he: char_addr_time = 7'h00; // 
-         4'hf: char_addr_time = 7'h00; // 
-      endcase
-   end
-   */
-   //-------------------------------------------
-   // MODE region
-   //  - display mode voltage
+   // Trig region
+   //  - display trig voltage
    //-------------------------------------------
    assign trig_on = ((10'd143<in.vcount)&&(in.vcount<10'd160)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
    assign row_addr_trig = in.vcount[3:0];
@@ -454,8 +282,8 @@ module font_gen
          4'hf: char_addr_trig = 7'h00; // 
       endcase
    end
-   // MODE region
-   //  - display mode voltage
+   // clk_adc region
+   //  - display clk_adc Hz
    //-------------------------------------------
    assign clk_adc_on = ((10'd159<in.vcount)&&(in.vcount<10'd176)) && ((in.hcount>10'd767)&&(in.hcount<10'd895));
    assign row_addr_clk_adc = in.vcount[3:0];
@@ -480,8 +308,8 @@ module font_gen
          4'hf: char_addr_clk_adc = 7'h00; // 
       endcase
    end
-    // MODE region
-   //  - display mode voltage
+    // clk_trig region
+   //  - display clk_trig  peak
    //-------------------------------------------
    assign clk_trig_on = ((10'd175<in.vcount)&&(in.vcount<10'd189)) && ((in.hcount>10'd767)&&(in.hcount<10'd895));
    assign row_addr_clk_trig = in.vcount[3:0];
@@ -566,67 +394,6 @@ module font_gen
             out.rgb <= 12'b0;  // black
 				end
 			end
-/*
-		else if(p2p_on) begin              //Vp2p
-			char_addr <= char_addr_p2p;
-         row_addr <= row_addr_p2p;
-         bit_addr <= bit_addr_p2p;
-         if(font_bit) begin
-            out.rgb <= 12'hf_f_0;// green
-				end
-          else begin
-            out.rgb <= 12'b0;  // black
-				end
-			end
-			
-		else if(rms_on) begin              //Vrms
-			char_addr <= char_addr_rms;
-         row_addr <= row_addr_rms;
-         bit_addr <= bit_addr_rms;
-         if(font_bit) begin
-            out.rgb <= 12'hf_f_0;// green
-				end
-          else begin
-            out.rgb <= 12'b0;  // black
-				end
-			end
-			
-		else if(frq_on) begin              //Frquency
-			char_addr <= char_addr_frq;
-         row_addr <= row_addr_frq;
-         bit_addr <= bit_addr_frq;
-         if(font_bit) begin
-            out.rgb <= 12'hf_f_0;// green
-				end
-          else begin
-            out.rgb <= 12'b0;  // black
-				end
-			end
-			
-		else if(vol_on) begin              //Volts/div
-			char_addr <= char_addr_vol;
-         row_addr <= row_addr_vol;
-         bit_addr <= bit_addr_vol;
-         if(font_bit) begin
-            out.rgb <= 12'hf_f_0;// green
-				end
-          else begin
-            out.rgb <= 12'b0;  // black
-				end
-			end
-			 
-		else if(time_on) begin             //Secs/div
-			char_addr <= char_addr_time;
-         row_addr <= row_addr_time;
-         bit_addr <= bit_addr_time;
-         if(font_bit) begin
-            out.rgb <= 12'hf_f_0;// green
-				end
-          else begin
-            out.rgb <= 12'b0;  // black
-				end
-			end
-			 */
 		else if(trig_on) begin             //trig
 		 char_addr <= char_addr_trig; 
          row_addr <= row_addr_trig;
@@ -649,7 +416,7 @@ module font_gen
             out.rgb <= 12'b0;  // black
 				end
 			end
-			else if(clk_trig_on) begin             //clk_adc
+			else if(clk_trig_on) begin             //clk_trig
 		 char_addr <= char_addr_clk_trig; 
          row_addr <= row_addr_clk_trig;
          bit_addr <= bit_addr_clk_trig;
