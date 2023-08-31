@@ -47,9 +47,7 @@ module trigger(
     always_ff @(posedge clk) begin
         if (rst) begin
         
-            for (int i = 0; i < 256; i++) begin
-                trigger_buffer[i] <= '0;
-            end
+            trigger_buffer[0] <= '0;
             trigger_level_case <= '0;
             counter <= '0;
             clk_trigger <= '0;
