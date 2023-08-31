@@ -61,20 +61,20 @@ module trigger(
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0;
+                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0;
                 read <= 1'b0;
             end
             3'd1: begin
-                trigger_level_case <= (data_input >= LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
+                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
                 3'd2 : ((data_input >= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0);
                 read <= 1'b0;
             end
             3'd2: begin
-                trigger_level_case <= (data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd2;
+                trigger_level_case <= (data_input <=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd2;
                 read <= 1'b0;
             end
             3'd3: begin
-                trigger_level_case <= (data_input <= LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)?
+                trigger_level_case <= (data_input <=  + 2054 +  LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)?
                  3'd4 : ((data_input <= LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd0);
                 read <= 1'b0;
             end            

@@ -83,7 +83,7 @@ module user_interface(
     		counter_adc         <= 19'b000_0000_1111_1000_0000 ;
             counter             <= 'b0;
             state               <= '0;
-			button_counter      <= 19'b011_1111_1111_1000_0000 ;
+			button_counter      <= 19'b000_0011_1111_1000_0000 ;
 			trigger_clk_counter <= 19'b000_0000_0001_1000_0000 ;
     		end
         
@@ -102,12 +102,8 @@ module user_interface(
     				end else if(left_mouse & middle_mouse & xpos > 500 & xpos < 1000)begin
     					counter_adc <= counter_adc - 1;
     					state<=2'b01;
-
-					end else if(button_counter > 4095)begin
-    					button_counter <= 4000;
-    					state<=2'b00;
-    				end else if(button_counter < 2054)begin
-    					button_counter <= 2055;
+    				end else if(button_counter[18:7] > 2054)begin
+    					button_counter <= 2040;
     					state<=2'b00;
     				end else if(right_mouse & middle_mouse & xpos < 500 & xpos > 100)begin
     					button_counter<=button_counter + 1;

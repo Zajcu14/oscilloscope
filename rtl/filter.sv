@@ -23,11 +23,11 @@
 module filter(
     input logic clk,
     input logic rst,
-    input logic [11:0] data [0:511],
+    input logic [11:0] data [0:255],
     input logic [11:0] freq_corner,
     input logic [11:0] freq_stop,
     input logic [1:0] mode,
-    output logic  [11:0] filtered_data [0:511]
+    output logic  [11:0] filtered_data [0:255]
     );
     
     logic [8:0] counter;
