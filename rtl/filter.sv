@@ -58,7 +58,10 @@ module filter(
                         filtered_data[counter] = HighPass(filtered_data[counter - 1], data[counter]);
                 end 
         endcase
-        counter_nxt = counter + 1;
+        if(counter == 255)
+            counter_nxt = 'b0;
+        else
+            counter_nxt = counter + 1;
     end
     
     
