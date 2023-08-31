@@ -24,7 +24,7 @@ module data_linear(
     input logic clk,
     input logic rst,
     input reg [11:0] data_display [0:255],
-    output reg [11:0] data_display [0:255],
+    output reg [11:0] data_display_linear [0:767],
     vga_if.in in
     );
     import vga_pkg::*;
@@ -40,7 +40,7 @@ module data_linear(
 
     always_ff @(posedge clk) begin
         if (rst) begin
-            
+
         end else begin
         end
     end
