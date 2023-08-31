@@ -43,7 +43,7 @@
  wire [10:0] x_mouse_pos, y_mouse_pos;
  wire [11:0] trigger_buffer [0:255];
  wire [11:0] data_display [0:255];
- wire data_display_dft [0:63];
+ wire [11:0] data_display_dft [0:63];
  //wire [11:0] filtered_data [0:255];
  wire read, ready;
  wire clk_adc;
@@ -176,6 +176,7 @@ filter u_filter(
     .scale_voltage(4'd1),
     .data_display(data_display),
     .data_display_filter(data_display_filter),
+    .data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
