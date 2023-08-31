@@ -80,7 +80,7 @@ module user_interface(
 ////////////////////////////////////////////////////////////////////////
     always @(posedge  clk)begin
     	if(rst)begin
-    		counter_adc         <= 19'b000_1111_1111_1000_0000 ;
+    		counter_adc         <= 19'b000_0011_1111_1000_0000 ;
             counter             <= 'b0;
             state               <= '0;
 			button_counter      <= 19'b000_0011_1111_1000_0000 ;
