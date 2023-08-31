@@ -192,22 +192,20 @@ filter u_filter(
  );
  
  adc_control u_adc_control (
-    .clk,
+    .clk(clk_adc),
     .channel(2'b00),
     .rst,
-    .counter_max(counter_adc),
     .sda(i2c[0]),
     .scl(i2c[1]),
     .data_output(data_adc)
 );
-/*
+
 clock_adc u_clock_adc(
-   .clk,
+   .clk(clk_adc),
    .rst,
    .clk_adc(clk_adc),
    .counter_max(counter_adc)
 );
-*/
  trigger u_trigger(
     .clk,
     .data_input(data_adc),

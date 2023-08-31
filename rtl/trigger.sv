@@ -49,14 +49,14 @@ module trigger(
         if (rst) begin
         
             trigger_buffer[0] <= '0;
-            trigger_level_case <= '0;
+            trigger_level_case <= 2'd0;
             counter <= '0;
             clk_trigger <= '0;
             read <= '0;
 //--------------------------------------------------------------
         end else begin
             if (ready)begin
-            if (clk_trigger==((clk_trig_max * 18) + counter_max))begin
+            if (clk_trigger==((clk_trig_max * 18) + (counter_max/2)))begin
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin

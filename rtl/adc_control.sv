@@ -23,7 +23,6 @@
 module adc_control(
     input logic clk,
     input logic [1:0] channel,
-    input logic [11:0] counter_max,
     input logic rst,
     inout logic sda,
     output logic scl,
@@ -63,7 +62,7 @@ module adc_control(
     //logic [3:0] stretch_counter_nxt;
     
     logic [15:0] adc_buffer;
-    logic [13:0] counter_clk, counter_clk_1;
+
 
     /**
      * Assigments
@@ -85,20 +84,10 @@ module adc_control(
    */
    
    always_ff @(negedge clk) begin
-    if(rst) begin
-        counter_clk_1 <= '0;
-        end else begin
-        if (counter_clk_1 >= counter_max)begin
-            if(state == OFF_LOW)begin 
-                master_high <= 'b1;
-           end else begin
-                master_high <= 'b0;
-            end
-            counter_clk_1 <= '0;
-      end else begin
-            counter_clk_1 <=  counter_clk_1 + 1;
-         end
-         end
+        if(state == OFF_LOW) 
+            master_high <= 'b1;
+        else
+            master_high <= 'b0;
     end
    
     always_ff @(posedge clk , posedge rst ) begin
@@ -108,17 +97,14 @@ module adc_control(
             delay <= 'b0;
             mode <= 2'b11;
             data_output <= 12'b0;
-            counter_clk <= '0;
         end
-        else if (counter_clk >= counter_max) begin
-            counter_clk <= '0;
+        else begin
             state <= state_nxt;
             counter <= counter_nxt;
             delay <= delay_nxt;
             mode <= mode_nxt;
             data_output <= data_output_nxt;
-        end else 
-        counter_clk <= counter_clk + 1;
+        end
     end
     
     
@@ -335,7 +321,7 @@ module adc_control(
             counter_read <= 'd0;
             adc_buffer <= 'b0;
         end
-        else if(state == READ & counter_clk == counter_max) begin
+        else if(state == READ) begin
              adc_buffer[counter_read] <= sda;
              counter_read <= counter_read_nxt;
         end
