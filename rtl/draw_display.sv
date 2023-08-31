@@ -43,10 +43,17 @@ module draw_display(
 
     logic [11:0] rgb_nxt;
     logic [1:0] case_minus;
-    /**
+    /*reg [11:0] data_display_linear [0:511];
+    
      * Internal logic
-     */
-
+    
+    data_linear u_data_linear(
+        .clk,
+        .rst,
+        .data_display,
+        .data_display_linear,
+        .vcount(in.vcount)
+        ); */
     always_ff @(posedge clk) begin : bg_ff_blk
         if (rst) begin
             out.vcount <= '0;
@@ -91,7 +98,7 @@ module draw_display(
     //draw Shape display
         Draw_Shape_display(in.hcount, in.vcount, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, V_DISPLAY_2, H_DISPLAY_2);
     //draw data_display on display
-        Draw_data_display_2(data_display, in.hcount, in.vcount, V_DISPLAY_2, H_DISPLAY_2, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, x_mouse_pos, y_mouse_pos);
+     //   Draw_data_display_2(data_display, in.hcount, in.vcount, V_DISPLAY_2, H_DISPLAY_2, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, x_mouse_pos, y_mouse_pos);
     //draw checkered on display
         Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_2, HEIGHT_DISPLAY_2, V_DISPLAY_2, H_DISPLAY_2);
         

@@ -26,6 +26,7 @@ module trigger(
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER,
     input logic [11:0] clk_trig_max, 
+    input logic [11:0] counter_max,
     output reg [11:0] trigger_buffer [0:255],
     input logic ready,
     output logic read
@@ -55,7 +56,7 @@ module trigger(
 //--------------------------------------------------------------
         end else begin
             if (ready)begin
-            if (clk_trigger==clk_trig_max * 9)begin
+            if (clk_trigger==((clk_trig_max * 18) + counter_max))begin
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin

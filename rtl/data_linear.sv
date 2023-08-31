@@ -42,7 +42,7 @@ module data_linear(
     
     always_ff @(posedge clk) begin
         if (rst) begin
-         data_display_linear[0] = '0;
+         data_display_linear[0] <= '0;
          index <= 0;
          state <= 0;
         end else begin
@@ -58,7 +58,7 @@ module data_linear(
                 state <= 2'd0;
             end    
             2'd2: begin
-                index <= (vcount > 6 & vcount < 30);
+                index <= (vcount > 8 & vcount < 30);
                 state <= 2'd0;
             end    
             endcase

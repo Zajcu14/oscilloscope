@@ -53,6 +53,7 @@ set sv_files {
 	../rtl/font_gen.sv
 	../rtl/filter.sv
 	../rtl/functions.sv
+	../rtl/data_linear.sv
     rtl/top_oscilloscope_basys3.sv
 }
 

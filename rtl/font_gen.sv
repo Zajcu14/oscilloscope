@@ -127,13 +127,21 @@ module font_gen
    logic  [11:0] rgb_delay;
    /////////////////////////////////////////////////////////////
  logic [11:0] counter_adc_hz;
- assign counter_adc_hz = 65000/(counter_adc * 2);
+ logic [11:0] mea_bin_1;
+ logic [11:0] min_bin_1;
+ logic [11:0] max_bin_1;
+ logic [11:0] trigger_level_1;
+ assign counter_adc_hz = 65000/(counter_adc);
+ assign mea_bin_1 = mea_bin * 3;
+ assign min_bin_1 = min_bin * 3;
+ assign max_bin_1 = max_bin * 3;
+ assign trigger_level_1 = trigger_level * 3;
    ////////////////////////////////////////////////////////////
    
    Binary2Decimal u_Binary2Decimal(         
       .clk,
       .rst,
-      .bindata(trigger_level * 3),           
+      .bindata(trigger_level_1),           
       .decimalout(trig)
    );
    Binary2Decimal u_Binary2Decimal_2(         
@@ -151,19 +159,19 @@ module font_gen
    Binary2Decimal u_Binary2Decimal_4(         
       .clk,
       .rst,
-      .bindata(mea_bin * 3),           
+      .bindata(mea_bin_1),           
       .decimalout(mea)
    );
    Binary2Decimal u_Binary2Decimal_5(         
       .clk,
       .rst,
-      .bindata(min_bin * 3),           
+      .bindata(min_bin_1),           
       .decimalout(min)
    );
    Binary2Decimal u_Binary2Decimal_6(         
       .clk,
       .rst,
-      .bindata(max_bin * 3),           
+      .bindata(max_bin_1),           
       .decimalout(max)
    );
    

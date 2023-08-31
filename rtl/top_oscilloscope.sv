@@ -37,7 +37,6 @@
 //wire [3:0] scale_voltage;
  
  // Clock wires
-wire clk_adc;
  
  // Data wires
  wire [10:0] x_mouse_pos, y_mouse_pos;
@@ -193,25 +192,27 @@ filter u_filter(
  );
  
  adc_control u_adc_control (
-    .clk(clk_adc),
+    .clk,
     .channel(2'b00),
     .rst,
+    .counter_max(counter_adc),
     .sda(i2c[0]),
     .scl(i2c[1]),
     .data_output(data_adc)
 );
-
+/*
 clock_adc u_clock_adc(
    .clk,
    .rst,
    .clk_adc(clk_adc),
    .counter_max(counter_adc)
 );
-
+*/
  trigger u_trigger(
     .clk,
     .data_input(data_adc),
     .rst,
+    .counter_max(counter_adc),
     .LEVEL_TRIGGER(trigger_level), 
     .trigger_buffer(trigger_buffer),
     .clk_trig_max(clk_trig_max),
