@@ -64,7 +64,7 @@ module filter(
     
     function logic signed [11:0] LowPass(logic signed [11:0] y_prev, logic signed [11:0] x);
         logic signed [11:0] y;
-        y = Add( Multiply(12'(int'(0.5*2*11)),x ) , Multiply(12'(int'(0.5*2*11)),y_prev ));
+        y = Add( Multiply(12'(int'(0.9*2*11)),x ) , Multiply(12'(int'(0.9*2*11)),y_prev ));
         
         return y;
         
@@ -72,7 +72,7 @@ module filter(
     
     function logic signed [11:0] HighPass(logic signed [11:0] y_prev, logic signed [11:0] x);
         logic signed [11:0] y;
-        y = Add( Multiply(12'(int'(0.5*2*11)),x ) , Multiply(12'(int'(0.5*2*11)),y_prev ));
+        y = Add( Multiply(12'(int'(0.9*2*11)),x ) , Multiply(12'(int'(0.9*2*11)),y_prev ));
         
         return 12'(Add((-1)*y,x));
         
