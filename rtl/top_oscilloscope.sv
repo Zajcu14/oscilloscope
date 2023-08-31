@@ -29,9 +29,10 @@
   
  wire  [11:0] xpos;
  wire  [11:0] ypos;
- wire  [11:0] xpos_nxt;
- wire  [11:0] ypos_nxt;
+ wire  [11:0] xpos_nxt, xpos_nxt_1;
+ wire  [11:0] ypos_nxt, ypos_nxt_1;
  wire left_mouse_nxt, left_mouse, right_mouse_nxt, right_mouse, middle_nxt, middle;
+ wire left_mouse_nxt_1, right_mouse_nxt_1, middle_nxt_1;
  wire minus_y, minus_x;
  wire [11:0] trigger_level, counter_adc, clk_trig_max;
 //wire [3:0] scale_voltage;
@@ -81,12 +82,12 @@
      .ps2_clk(ps2_clk),
      .clk(clk_mouse),
      .rst(rst),
-     .xpos(xpos_nxt),
-     .ypos(ypos_nxt),
-     .left(left_mouse_nxt),
-     .middle(middle_nxt),
+     .xpos(xpos_nxt_1),
+     .ypos(ypos_nxt_1),
+     .left(left_mouse_nxt_1),
+     .middle(middle_nxt_1),
      .new_event(),
-     .right(right_mouse_nxt),
+     .right(right_mouse_nxt_1),
      .setmax_x('d1024),
      .setmax_y('d768),
      .setx('0),
@@ -141,7 +142,23 @@ filter u_filter(
     .din({xpos_nxt,ypos_nxt,left_mouse_nxt,right_mouse_nxt,middle_nxt}),
     .dout({xpos,ypos,left_mouse,right_mouse,middle})
  );
- 
+
+ data_sync u_data_sync(
+    .mclk(clk_mouse), 
+    .pclk(clk), 
+    .rst, 
+    .x_pos(xpos_nxt_1), 
+    .x_pos_sync(xpos_nxt),
+    .y_pos(ypos_nxt_1), 
+    .y_pos_sync(ypos_nxt),
+    .left_mouse_sync(left_mouse_nxt),
+    .right_mouse_sync(right_mouse_nxt),
+    .middle_sync(middle_nxt),
+    .left_mouse(left_mouse_nxt_1),
+    .right_mouse(right_mouse_nxt_1),
+    .middle(middle_nxt_1)
+
+);
  draw_mouse u_draw_mouse (
      .clk,
      .xpos(xpos),

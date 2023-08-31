@@ -91,14 +91,14 @@ module draw_display(
         HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
         
-       // Draw_data_display_filter(data_display_filter, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+        Draw_data_display_filter(data_display_filter, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
-        // Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+         Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
-       //  Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-       // HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+         Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
     //draw checkered on display
         Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
         //DISPLAY__2

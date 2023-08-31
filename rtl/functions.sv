@@ -23,7 +23,7 @@
 module functions #(parameter SAMPLES = 80) (
     input logic clk,
     input logic rst,
-    input logic [11:0] data [79:0],
+    input logic [11:0] data [0:79],
     output logic [11:0] average,
     output logic [11:0] min,
     output logic [11:0] max

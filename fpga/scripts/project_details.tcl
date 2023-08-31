@@ -54,6 +54,7 @@ set sv_files {
 	../rtl/filter.sv
 	../rtl/functions.sv
 	../rtl/data_linear.sv
+	../rtl/data_sync.sv
     rtl/top_oscilloscope_basys3.sv
 }
 
