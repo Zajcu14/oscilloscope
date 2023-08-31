@@ -24,7 +24,7 @@ module draw_display(
     input logic clk,
     input logic rst,
     input reg [11:0] data_display [0:255],
-    input reg [11:0] data_display_filter [0:255],
+//    input reg [11:0] data_display_filter [0:255],
     input logic [10:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
     input logic  minus_y,
@@ -76,11 +76,11 @@ module draw_display(
     //draw data_display on display
         Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
-        
-        Draw_data_display(data_display, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-        HEIGHT_DISPLAY_1, (x_mouse_pos + 1), y_mouse_pos, scale_voltage);
 
         Draw_data_display(data_display, in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+
+        Draw_data_display(data_display, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
      //   Draw_data_display_filter(data_display_filter, in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 

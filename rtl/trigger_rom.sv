@@ -27,8 +27,7 @@ module trigger_rom(
     output logic ready,
     input logic [11:0] data [0:255],
     output logic [11:0] data_output [0:255],
-    input logic [10:0] vcount,
-    input logic [10:0] hcount
+    input logic [10:0] vcount
     );
     logic[11:0] counter;
     logic [1:0] write;
@@ -49,7 +48,7 @@ module trigger_rom(
                         ready <= 1'b1; 
                     end
                     2'd1: begin
-                        write <= (hcount == 600 || vcount < 6)? 2'd2 : 2'd1;
+                        write <= (vcount < 6)? 2'd2 : 2'd1;
                         counter <= '0;
                         ready <= 1'b0; 
                     end
