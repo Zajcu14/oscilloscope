@@ -1,6 +1,6 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-08-31 15:27:34
+Created: 2023-08-31 16:57:42
 
 ----SYNTHESIS----
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
@@ -11,8 +11,8 @@ WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnec
 WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[10] in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7129] Port x_mouse_pos[9] in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
+WARNING: [Synth 8-7129] Port x_mouse_pos[8] in module draw_display is either unconnected or has no load
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
 
 ----IMPLEMENTATION----
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.

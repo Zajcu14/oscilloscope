@@ -45,7 +45,7 @@
  //wire [11:0] filtered_data [0:255];
  wire read, ready;
  wire [11:0] data_adc;
- //wire [11:0] data_display_filter [0:255];
+ wire [11:0] data_display_filter [0:255];
 // functions variables
  logic [11:0] average;
  logic [11:0]     min;
@@ -124,17 +124,15 @@ functions u_functions (
      .out(vga_bg)
      //.data()
  );
-/*
+
 filter u_filter(
     .clk,
     .rst,
     .data(data_display),
-    .freq_corner(12'(int'(0.6*(2**11)))),
-    .freq_stop('b0),
-    .mode(2'b00),
+    .mode(1'b1),
     .filtered_data(data_display_filter)
     );
- */
+
  delay #(.WIDTH(27),
    .CLK_DEL(4)) 
  u_delay_mouse(

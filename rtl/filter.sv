@@ -24,9 +24,7 @@ module filter(
     input logic clk,
     input logic rst,
     input logic [11:0] data [0:255],
-    input logic [11:0] freq_corner,
-    input logic [11:0] freq_stop,
-    input logic [1:0] mode,
+    input logic mode,
     output logic  [11:0] filtered_data [0:255]
     );
     
@@ -46,76 +44,40 @@ module filter(
     always_comb begin
         
         case (mode)
-                2'b00: begin
+                1'b0: begin
                     if(counter == 'b0)
-                        filtered_data[counter] = LowPass('b0, data[counter],freq_corner);
+                        filtered_data[counter] = LowPass('b0, data[counter]);
                     else
-                        filtered_data[counter] = LowPass(filtered_data[counter - 1], data[counter],freq_corner);
+                        filtered_data[counter] = LowPass(filtered_data[counter - 1], data[counter]);
                 end
-                2'b01:
+                1'b1:
                     begin
                     if(counter == 'b0)
-                        filtered_data[counter] = HighPass('b0, data[counter],freq_corner);
+                        filtered_data[counter] = HighPass('b0, data[counter]);
                     else
-                        filtered_data[counter] = HighPass(filtered_data[counter - 1], data[counter],freq_corner);
+                        filtered_data[counter] = HighPass(filtered_data[counter - 1], data[counter]);
                 end 
-                2'b10: begin
-                    if(counter == 'b0)
-                        filtered_data[counter] = BandPass('b0, data[counter],freq_corner, freq_stop);
-                    else
-                        filtered_data[counter] = BandPass(filtered_data[counter - 1], data[counter],freq_corner, freq_stop);
-                end
-                2'b11: begin
-                    if(counter == 'b0)
-                        filtered_data[counter] = RejectPass('b0, data[counter],freq_corner, freq_stop);
-                    else
-                        filtered_data[counter] = RejectPass(filtered_data[counter - 1], data[counter],freq_corner, freq_stop);
-                end
         endcase
         counter_nxt = counter + 1;
     end
     
     
-    function logic signed [11:0] LowPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq);
+    function logic signed [11:0] LowPass(logic signed [11:0] y_prev, logic signed [11:0] x);
         logic signed [11:0] y;
-        y = Add( Multiply(freq,x ) , Multiply(freq,y_prev ));
+        y = Add( Multiply(12'(int'(0.5*2*11)),x ) , Multiply(12'(int'(0.5*2*11)),y_prev ));
         
         return y;
         
     endfunction
     
-    function logic signed [11:0] HighPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq);
+    function logic signed [11:0] HighPass(logic signed [11:0] y_prev, logic signed [11:0] x);
         logic signed [11:0] y;
-        y = Add( Multiply(freq,x ) , Multiply(freq,y_prev ));
+        y = Add( Multiply(12'(int'(0.5*2*11)),x ) , Multiply(12'(int'(0.5*2*11)),y_prev ));
         
         return 12'(Add((-1)*y,x));
         
     endfunction
-    
-    function logic signed [11:0] BandPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
-        logic signed [11:0] low_pass;
-        logic signed [11:0] high_pass;
-        
-        low_pass = LowPass(y_prev,x,freq_start);
-        high_pass = HighPass(y_prev,x,freq_stop);
-        
-        return (x - low_pass - high_pass);
-        
-    endfunction
-    
-    function logic signed [11:0] RejectPass(logic signed [11:0] y_prev, logic signed [11:0] x, logic [11:0] freq_start, logic [11:0] freq_stop);
-        logic signed [11:0] low_pass;
-        logic signed [11:0] high_pass;
-        
-        low_pass = LowPass(y_prev,x,freq_start);
-        high_pass = HighPass(y_prev,x,freq_stop);
-        
-        return (low_pass + high_pass);
-        
-    endfunction
-    
-    
-    
+     
     function logic signed [11:0]  Add ( input logic signed [31:0] a, logic signed [31:0] b);
         if( a + b > 13'sd2047 ) begin       
             return 12'sd2047;
