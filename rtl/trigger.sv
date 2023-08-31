@@ -56,11 +56,11 @@ module trigger(
 //--------------------------------------------------------------
         end else begin
             if (ready)begin
-            if (clk_trigger==((clk_trig_max * 18) + (counter_max/2)))begin
+            if (clk_trigger == ((clk_trig_max * 18) + counter_max))begin
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin
-                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0;
+                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd0;
                 read <= 1'b0;
             end
             3'd1: begin
