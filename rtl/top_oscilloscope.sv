@@ -43,12 +43,12 @@
  wire [10:0] x_mouse_pos, y_mouse_pos;
  wire [11:0] trigger_buffer [0:255];
  wire [11:0] data_display [0:255];
- wire [11:0] data_display_dft [0:63];
+// wire [11:0] data_display_dft [0:63];
  //wire [11:0] filtered_data [0:255];
  wire read, ready;
  wire clk_adc;
  wire [11:0] data_adc;
- wire [11:0] data_display_filter [0:255];
+ //wire [11:0] data_display_filter [0:255];
 // functions variables
  logic [11:0] average;
  logic [11:0]     min;
@@ -127,6 +127,7 @@ functions u_functions (
      .out(vga_bg)
      //.data()
  );
+ /*
 filter u_filter(
     .clk,
     .rst,
@@ -134,7 +135,7 @@ filter u_filter(
     .mode(1'b1),
     .filtered_data(data_display_filter)
     );
-    
+*/
  delay #(.WIDTH(27),
    .CLK_DEL(4)) 
  u_delay_mouse(
@@ -175,8 +176,8 @@ filter u_filter(
     .out(vga_display), 
     .scale_voltage(4'd1),
     .data_display(data_display),
-    .data_display_filter(data_display_filter),
-    .data_display_dft (data_display_dft),
+    //.data_display_filter(data_display_filter),
+   // .data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos),
     .minus_y(minus_y),
@@ -260,12 +261,14 @@ clock_adc u_clock_adc(
     .data_output(data_display),
     .vcount(vga_bg.vcount)
     );
-
+/*
+ * 
  dft u_dtt(
       .clk,
       .rst,
       .data(data_display),
       .dft(data_display_dft)
   );
+  */
  endmodule
 
