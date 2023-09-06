@@ -28,7 +28,8 @@ module trigger(
     input logic [11:0] clk_trig_max, 
     output reg [11:0] trigger_buffer [0:255],
     input logic ready,
-    output logic read
+    output logic read,
+    input logic [10:0] vcount
     );
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -55,7 +56,7 @@ module trigger(
 //--------------------------------------------------------------
         end else begin
             if (ready)begin
-            if (clk_trigger == ((clk_trig_max * 18)))begin
+            if (clk_trigger == ((clk_trig_max)))begin
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin
@@ -68,14 +69,15 @@ module trigger(
                 read <= 1'b0;
             end
             3'd2: begin
-                trigger_level_case <= (data_input <=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd2;
+                trigger_level_case <= (vcount < 10 || vcount > 500 )? 3'd4 : 3'd0;
                 read <= 1'b0;
             end
+            /*
             3'd3: begin
                 trigger_level_case <= (data_input <=  + 2054 +  LEVEL_TRIGGER - HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)?
                  3'd4 : ((data_input <= LEVEL_TRIGGER + 2054 - ATTITUDE_LEVEL_TRIGGER)? 3'd3 : 3'd0);
                 read <= 1'b0;
-            end            
+            end       */     
             3'd4: begin
                 if(counter == 12'd256)begin
                     read <= 1'b1;

@@ -268,7 +268,7 @@ module font_gen
          4'h1: char_addr_trig = 7'h6c; // l
          4'h2: char_addr_trig = 7'h76; // v
          4'h3: char_addr_trig = 7'h6c; // l
-         4'h4: char_addr_trig = 7'h3a; // :
+         4'h4: char_addr_trig = 7'h3d; // =
          4'h5: char_addr_trig = 7'd48 + trig[23:20];   // dig0
          4'h6: char_addr_trig = 7'd48 + trig[19:16];   // dig1
          4'h7: char_addr_trig = 7'd48 + trig[15:12];   // dig2
@@ -294,7 +294,7 @@ module font_gen
          4'h1: char_addr_clk_adc = 7'h44; // D
          4'h2: char_addr_clk_adc = 7'h43; // C
          4'h3: char_addr_clk_adc = 7'h00; // 
-         4'h4: char_addr_clk_adc = 7'h3a; // :
+         4'h4: char_addr_clk_adc = 7'h3d; // =
          4'h5: char_addr_clk_adc = 7'd48 + clk_adc[23:20];   // dig0
          4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16] + clk_adc[15:12];   // dig1 + dig2 never write dig 1
          4'h7: char_addr_clk_adc = 7'h2e;                      // .
@@ -328,9 +328,9 @@ module font_gen
          4'h9: char_addr_clk_trig = 7'd48 + clk_trig[7:4];     // dig4
          4'ha: char_addr_clk_trig = 7'd48 + clk_trig[3:0];     // dig5
          4'hb: char_addr_clk_trig = 7'h00; // 
-         4'hc: char_addr_clk_trig = 7'h78; // x
-         4'hd: char_addr_clk_trig = 7'd49; // 1
-         4'he: char_addr_clk_trig = 7'd56; // 8
+         4'hc: char_addr_clk_trig = 7'h00; // 
+         4'hd: char_addr_clk_trig = 7'd00; //
+         4'he: char_addr_clk_trig = 7'd00; // 
          4'hf: char_addr_clk_trig = 7'h00; // 
       endcase
    end

@@ -72,7 +72,7 @@ module draw_bg (
                 rgb_nxt = 12'h0_0_f;                // - - make a blue line.
             else                                 // The rest of active display pixels:
                 rgb_nxt = 12'h0_0_0;              // - fill with gray.                             
-            
+
      /*       DrawRectBorder(11'd100, 11'd100, 11'd400, 11'd400);
             DrawRectBorder(11'd100, 11'd100, 11'd200, 11'd200);
             DrawRectBorder(11'd300, 11'd100, 11'd200, 11'd200);

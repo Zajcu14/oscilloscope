@@ -232,7 +232,8 @@ clock_adc u_clock_adc(
     .trigger_buffer(trigger_buffer),
     .clk_trig_max(clk_trig_max),
     .read(read),
-    .ready(ready)
+    .ready(ready),
+    .vcount(vga_bg.vcount)
  );
  font_gen u_font_gen (
    .clk,
@@ -257,8 +258,7 @@ clock_adc u_clock_adc(
     .read(read),
     .ready(ready),
     .data(trigger_buffer),
-    .data_output(data_display),
-    .vcount(vga_bg.vcount)
+    .data_output(data_display)
     );
 /*
  * 
