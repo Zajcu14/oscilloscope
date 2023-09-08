@@ -56,40 +56,38 @@
 //  Output     Output      Phase    Duty Cycle   Pk-to-Pk     Phase
 //   Clock     Freq (MHz)  (degrees)    (%)     Jitter (ps)  Error (ps)
 //----------------------------------------------------------------------------
-// clk_100Mhz__100.00000______0.000______50.0______130.067_____99.281
-// clk_65Mhz__65.00000______0.000______50.0______142.278_____99.281
+// clk_105Mhz__105.00000______0.000______50.0______131.510____101.633
+// clk_63Mhz__63.00000______0.000______50.0______146.183____101.633
 //
 //----------------------------------------------------------------------------
 // Input Clock   Freq (MHz)    Input Jitter (UI)
 //----------------------------------------------------------------------------
-// __primary_________100.000____________0.010
+// __primary_________105.000____________0.010
 
 `timescale 1ps/1ps
 
-(* CORE_GENERATION_INFO = "clk_wiz_0,clk_wiz_v6_0_11_0_0,{component_name=clk_wiz_0,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=MMCM,num_out_clk=2,clkin1_period=10.000,clkin2_period=10.000,use_power_down=false,use_reset=true,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *)
+(* CORE_GENERATION_INFO = "clk_wiz_0,clk_wiz_v6_0_11_0_0,{component_name=clk_wiz_0,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,enable_axi=0,feedback_source=FDBK_AUTO,PRIMITIVE=MMCM,num_out_clk=2,clkin1_period=9.524,clkin2_period=10.000,use_power_down=false,use_reset=false,use_locked=true,use_inclk_stopped=false,feedback_type=SINGLE,CLOCK_MGR_TYPE=NA,manual_override=false}" *)
 
 module clk_wiz_0 
  (
   // Clock out ports
-  output        clk_100Mhz,
-  output        clk_65Mhz,
+  output        clk_105Mhz,
+  output        clk_63Mhz,
   // Status and control signals
-  input         reset,
   output        locked,
  // Clock in ports
-  input         clk_in_100Mhz
+  input         clk
  );
 
   clk_wiz_0_clk_wiz inst
   (
   // Clock out ports  
-  .clk_100Mhz(clk_100Mhz),
-  .clk_65Mhz(clk_65Mhz),
+  .clk_105Mhz(clk_105Mhz),
+  .clk_63Mhz(clk_63Mhz),
   // Status and control signals               
-  .reset(reset), 
   .locked(locked),
  // Clock in ports
-  .clk_in_100Mhz(clk_in_100Mhz)
+  .clk(clk)
   );
 
 endmodule

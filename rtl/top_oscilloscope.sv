@@ -7,7 +7,6 @@
  */
 
  `timescale 1 ns / 1 ps
-
  module top_oscilloscope (
      input  logic clk,
      input  logic clk_mouse,
@@ -74,6 +73,7 @@
  assign {r,g,b} = vga_mouse.rgb;
  
  
+ 
  /**
   * Submodules instances
   */
@@ -96,7 +96,7 @@
      .value('0),
      .zpos()
  );
- 
+ /*
 functions u_functions (
    .clk,
    .rst,
@@ -105,6 +105,7 @@ functions u_functions (
    .min,
    .max
    );
+   */
  vga_timing u_vga_timing (
      .clk,
      .rst,
@@ -137,7 +138,7 @@ filter u_filter(
     );
 */
  delay #(.WIDTH(27),
-   .CLK_DEL(4)) 
+   .CLK_DEL(1)) 
  u_delay_mouse(
     .clk(clk),
     .rst(rst),
@@ -179,7 +180,7 @@ filter u_filter(
     //.data_display_filter(data_display_filter),
    // .data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
-    .x_mouse_pos(x_mouse_pos[8:0]),
+    .x_mouse_pos(x_mouse_pos[7:0]),
     .minus_y(minus_y),
     .minus_x(minus_x)
    // .graph_scale({Y_scale,X_scale})
@@ -212,6 +213,7 @@ filter u_filter(
  adc_control u_adc_control (
     .clk(clk_adc),
     .channel(2'b00),
+    //.clk_enable(clk_adc),
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
@@ -224,6 +226,7 @@ clock_adc u_clock_adc(
    .clk_adc(clk_adc),
    .counter_max(counter_adc)
 );
+
  trigger u_trigger(
     .clk,
     .data_input(data_adc),
@@ -238,9 +241,9 @@ clock_adc u_clock_adc(
  font_gen u_font_gen (
    .clk,
    .rst,
-	.max_bin(max),
-   .min_bin(min), 
-   .mea_bin(average), 
+	.max_bin('b0),
+   .min_bin('b0), 
+   .mea_bin('b0), 
    //.p2p('b0), 
    //.rms('b0), 
    //.frq('b0),

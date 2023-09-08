@@ -28,7 +28,7 @@ module trigger_rom(
     input logic [11:0] data [0:255],
     output logic [11:0] data_output [0:255]
     );
-    logic[11:0] counter;
+    logic[11:0] counter, counter_nxt;
     logic [1:0] write;
     
     always_ff @(posedge clk)begin
@@ -36,9 +36,7 @@ module trigger_rom(
         ready <= 1'b1;
         counter <= '0;
         write <= '0;
-        for (int i = 0; i < 256; i++) begin
-            data_output[i] <= '0;
-        end
+        data_output[0] <= '0;
         end else begin
                 case (write)
                     2'd0: begin
@@ -53,13 +51,19 @@ module trigger_rom(
                     end
                     2'd2: begin
                         write <= (counter == 12'd256)? 2'd0 : 2'd2;
-                        counter <= counter + 1 ;
+                        counter <= counter_nxt;
                         ready <= 1'b0; 
                         data_output[counter] <=  data[counter];
                     end
                 endcase 
           
         end
+    end
+    always_comb begin
+    if (write == 2'd2)begin
+        counter_nxt = counter + 1;
+    end
+        counter_nxt = '0;
     end
     
 endmodule 

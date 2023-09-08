@@ -56,29 +56,13 @@ module user_interface(
       * Internal logic
       */
  
-    always_ff @(posedge clk) begin : bg_ff_blk
-        if (rst) begin
-           x_mouse_pos <= '0;
-           y_mouse_pos <= '0;
-           minus_y <= '0;
-           minus_x <= '0;
-           xpos_state <= '0;
-           ypos_state <= '0;
-        end else begin
-           x_mouse_pos <= x_mouse_pos_nxt;
-           y_mouse_pos <= y_mouse_pos_nxt; 
-           minus_y <= minus_y_nxt;
-           minus_x <= minus_x_nxt;
-           xpos_state <= xpos_state_nxt;
-           ypos_state <= ypos_state_nxt;
-        end
-    end
+
     reg [18:0]button_counter, counter_adc ;
     reg [18:0] trigger_clk_counter;
     reg [18:0]counter;
     reg [1:0]state;
 ////////////////////////////////////////////////////////////////////////
-    always @(posedge  clk)begin
+    always_ff @(posedge  clk)begin
     	if(rst)begin
     		counter_adc         <= 19'b000_0000_1000_0000_0000 ;
             counter             <= 'b0;
@@ -136,6 +120,9 @@ module user_interface(
     					state<=2'b01;
     				end else begin
     				    state<=2'b00;
+    				    trigger_clk_counter <= trigger_clk_counter;
+    				    button_counter <= button_counter;
+    				    counter_adc <= counter_adc;
     				end
 
     			end
@@ -148,9 +135,16 @@ module user_interface(
     					counter <= counter + 1;
     					state   <= 2'b01;
     					end
+    			     trigger_clk_counter <= trigger_clk_counter;
+    				 button_counter <= button_counter;
+    				 counter_adc <= counter_adc;
     				end
+    				
     			default: begin
     				state <= '0;
+    				trigger_clk_counter <= trigger_clk_counter;
+    				button_counter <= button_counter;
+    				counter_adc <= counter_adc;
     			end
     			endcase	
     		end
@@ -159,6 +153,31 @@ module user_interface(
     assign trigger = {button_counter[18:7]};
     assign count_adc = {counter_adc[18:7]};
     assign trig_clk = {trigger_clk_counter[18:7]};
+    
+    
+ /////////////////////////////////////////////////////////////////////////////////////
+ ///////////////////////////////////////////////////////////////////////////////////////   
+ always_ff @(posedge clk) begin : bg_ff_blk
+        if (rst) begin
+           x_mouse_pos <= '0;
+           y_mouse_pos <= '0;
+           minus_y <= '0;
+           minus_x <= '0;
+           xpos_state <= '0;
+           ypos_state <= '0;
+        end else begin
+           x_mouse_pos <= x_mouse_pos_nxt;
+           y_mouse_pos <= y_mouse_pos_nxt; 
+           minus_y <= minus_y_nxt;
+           minus_x <= minus_x_nxt;
+           xpos_state <= xpos_state_nxt;
+           ypos_state <= ypos_state_nxt;
+        end
+    end   
+    
+    
+    
+    
     always_comb begin
         move_chart();
     end

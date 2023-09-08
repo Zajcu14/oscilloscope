@@ -95,11 +95,46 @@ module font_gen
  logic [11:0] min_bin_1;
  logic [11:0] max_bin_1;
  logic [11:0] trigger_level_1;
- assign counter_adc_hz = 65000/(counter_adc * 2);
+ logic [11:0] counter_adc_hz_nxt;
+ logic [11:0] clk_trig_max_1;
+ logic [11:0] clk_trig_max_1_nxt;
+ logic [11:0] mea_bin_1_nxt;
+ logic [11:0] min_bin_1_nxt;
+ logic [11:0] max_bin_1_nxt;
+ logic [11:0] trigger_level_1_nxt;
+/* assign counter_adc_hz = 65000/(counter_adc * 2);
  assign mea_bin_1 = mea_bin * 3;
  assign min_bin_1 = min_bin * 3;
  assign max_bin_1 = max_bin * 3;
  assign trigger_level_1 = trigger_level * 3;
+ assign clk_trig_max_1 = clk_trig_max;*/
+   always_ff @(posedge clk)begin
+      if (rst) begin
+         mea_bin_1 <= '0;
+         min_bin_1 <= '0;
+         max_bin_1 <= '0;
+         counter_adc_hz <= '0;
+         trigger_level_1 <= '0;
+         clk_trig_max_1 <= '0;
+     end else begin
+        mea_bin_1 <= mea_bin_1_nxt;
+        min_bin_1 <= min_bin_1_nxt; 
+        max_bin_1 <= max_bin_1_nxt;
+        counter_adc_hz <= counter_adc_hz_nxt;
+        trigger_level_1 <= trigger_level_1_nxt;
+        clk_trig_max_1 <= clk_trig_max_1_nxt;
+     end 
+   end
+   always_comb begin
+    mea_bin_1_nxt = mea_bin * 3;
+    min_bin_1_nxt = min_bin * 3; 
+    max_bin_1_nxt = max_bin * 3;
+    counter_adc_hz_nxt = 31500 * ( 1 / counter_adc );
+    trigger_level_1_nxt = trigger_level * 3;
+    clk_trig_max_1_nxt = clk_trig_max;
+    
+   end
+   
    ////////////////////////////////////////////////////////////
    
    Binary2Decimal u_Binary2Decimal(         
@@ -117,7 +152,7 @@ module font_gen
    Binary2Decimal u_Binary2Decimal_3(         
       .clk,
       .rst,
-      .bindata(clk_trig_max),           
+      .bindata(clk_trig_max_1),           
       .decimalout(clk_trig)
    );
    Binary2Decimal u_Binary2Decimal_4(         

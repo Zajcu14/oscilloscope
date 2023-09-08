@@ -23,7 +23,7 @@
 module functions #(parameter SAMPLES = 80) (
     input logic clk,
     input logic rst,
-    input logic [11:0] data [0:79],
+    input reg [11:0] data [0:79],
     output logic [11:0] average,
     output logic [11:0] min,
     output logic [11:0] max
@@ -39,7 +39,7 @@ assign average = Sum( data ) / SAMPLES;
 assign min = Minimum( data );
 assign max = Maximum( data );
 */
-
+logic [11:0] average_nxt, min_nxt, max_nxt;
 
 always_ff @(posedge clk) begin
     if(rst) begin
@@ -48,12 +48,19 @@ always_ff @(posedge clk) begin
         max <= 'd0; 
     end
     else begin
-        average <= Sum( data ) / SAMPLES;
-        min <= Minimum( data );
-        max <= Maximum( data );
+        average <= average_nxt;
+        min <= min_nxt;
+        max <= max_nxt;
     end
     
 end
+
+always_comb begin
+        average_nxt <= Sum( data ) / SAMPLES;
+        min_nxt <= Minimum( data );
+        max_nxt <= Maximum( data );
+end
+
 
 function logic [11:0] Sum(logic [11:0] data [79:0]);
         logic [11:0] sum;

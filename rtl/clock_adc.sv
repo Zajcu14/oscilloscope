@@ -18,6 +18,7 @@
 // Additional Comments:
 // 
 //////////////////////////////////////////////////////////////////////////////////
+//(* CLOCK_PIN = "clk_adc" *)
 module clock_adc(
     input logic clk,
     input logic rst,
@@ -33,7 +34,7 @@ module clock_adc(
             clk_adc <= '0;
             counter <= '0;
         end
-        else if(counter == (counter_max))begin
+        else if(counter == counter_max)begin
             clk_adc <= ~clk_adc;
             counter <= 0;
         end

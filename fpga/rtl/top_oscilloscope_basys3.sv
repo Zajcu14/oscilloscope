@@ -38,11 +38,10 @@ wire pclk, mclk;
 wire pclk_mirror;
 
 clk_wiz_0 u_clk_wiz_0(
-    .clk_100Mhz(mclk),
-    .clk_65Mhz(pclk),
+    .clk_105Mhz(mclk),
+    .clk_63Mhz(pclk),
     .locked(),
-    .clk_in_100Mhz(clk),
-    .reset()
+    .clk(clk)
 );
 
 ODDR pclk_oddr (

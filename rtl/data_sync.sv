@@ -5,7 +5,7 @@
  *  *
  * 
  * Description:
- * sync form 100 to 40 Mhz use gray code.
+ * sync form 100 to 65 Mhz.
  */
 
 
@@ -64,31 +64,28 @@ module data_sync(
 
 // Synchronization Register Chain - 3 poziomy (2 rejestry synchronizacyjne)
 logic [26:0] synced_x_0;
+logic [26:0] synced_x_0_nxt;
 logic [26:0] synced_x_1;
 logic [26:0] synced_x_2;
 
 // Pierwszy rejestr synchronizacyjny na wejściu
-always_ff @(posedge mclk) begin
+always_ff @(posedge mclk or posedge rst) begin
     if(rst)begin
-        synced_x_0 <= 0;
+        synced_x_0 <= '0;
     end else begin
         synced_x_0 <= {x_pos, y_pos,left_mouse,right_mouse,middle};
     end
 end
-// Drugi rejestr synchronizacyjny
-always_ff @(posedge pclk) begin
-    if(rst)begin
-        synced_x_1 <= 0;
-    end else begin
-        synced_x_1 <= synced_x_0;
-    end
+always_comb begin 
+synced_x_0_nxt = synced_x_0;
 end
-
-// Trzeci rejestr synchronizacyjny, który wyjmuje wartość z zegarem docelowym
-always_ff @(posedge pclk) begin
+// Drugi rejestr synchronizacyjny
+always_ff @(posedge pclk or posedge rst) begin
     if(rst)begin
-        synced_x_2 <= 0;
+        synced_x_1 <= '0;
+        synced_x_2 <= '0;
     end else begin
+        synced_x_1 <= synced_x_0_nxt;
         synced_x_2 <= synced_x_1;
     end
 end
