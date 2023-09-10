@@ -1,6 +1,6 @@
 /**
  *
- * Author: Pawe³ Mozgowiec & Jakub Zaj¹c
+ * Author: Paweï¿½ Mozgowiec & Jakub Zajï¿½c
  *
  * Description:
  * The project top module.
@@ -47,7 +47,7 @@
  wire read, ready;
  wire clk_adc;
  wire [11:0] data_adc;
- //wire [11:0] data_display_filter [0:255];
+ wire [11:0] data_display_filter [0:255];
 // functions variables
  logic [11:0] average;
  logic [11:0]     min;
@@ -128,7 +128,7 @@ functions u_functions (
      .out(vga_bg)
      //.data()
  );
- /*
+ 
 filter u_filter(
     .clk,
     .rst,
@@ -136,7 +136,7 @@ filter u_filter(
     .mode(1'b1),
     .filtered_data(data_display_filter)
     );
-*/
+
  delay #(.WIDTH(27),
    .CLK_DEL(1)) 
  u_delay_mouse(
@@ -224,7 +224,7 @@ clock_adc u_clock_adc(
    .clk,
    .rst,
    .clk_adc(clk_adc),
-   .counter_max(counter_adc)
+   .counter_max('d21)
 );
 
  trigger u_trigger(
