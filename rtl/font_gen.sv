@@ -129,7 +129,7 @@ module font_gen
     mea_bin_1_nxt = mea_bin * 3;
     min_bin_1_nxt = min_bin * 3; 
     max_bin_1_nxt = max_bin * 3;
-    counter_adc_hz_nxt = 31500 * ( 1 / counter_adc );
+    counter_adc_hz_nxt = 31500/counter_adc ;
     trigger_level_1_nxt = trigger_level * 3;
     clk_trig_max_1_nxt = clk_trig_max;
     

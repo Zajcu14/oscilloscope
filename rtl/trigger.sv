@@ -91,6 +91,10 @@ module trigger(
 					read <= 1'b0;
 				end
 		      end
+		      default: begin
+		      trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
+                read <= 1'b0;
+                end
 		      endcase 
             end else begin
                 clk_trigger <= clk_trigger + 1;
