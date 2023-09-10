@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 19.06.2023 13:27:38
-// Design Name: Jakub Zaj?c
+// Design Name: Jakub Zaj¹c
 // Module Name: adc_control
 // Project Name: 
 // Target Devices: 
@@ -25,6 +25,7 @@ module adc_control(
     input logic [1:0] channel,
     input logic rst,
     inout logic sda,
+    input logic [11:0] counter_max,
     output logic scl,
     output logic [11:0] data_output
     );
@@ -32,7 +33,8 @@ module adc_control(
     typedef enum bit [3:0] {START, CONF ,WRITE, READ, ACK_SLAVE, ACK_MASTER,ACK_MASTER_OFF, OFF, OFF_LOW, ACK_SLAVE_OFF,TEST} fsm_state;
     
     //localparam device_address = 8'b01010000;
-   
+    logic [11:0] counter_time;
+    logic [11:0] counter_time_nxt;
     fsm_state state;
     fsm_state state_nxt;
     
@@ -62,7 +64,8 @@ module adc_control(
     //logic [3:0] stretch_counter_nxt;
     
     logic [15:0] adc_buffer;
-
+    logic [11:0] counter_scl;
+    
 
     /**
      * Assigments
@@ -70,8 +73,24 @@ module adc_control(
     
     assign master_all = ( state ==  OFF_LOW ) ? master_high : master;
     assign sda = ( state ==  READ  || state == ACK_SLAVE || state == ACK_SLAVE_OFF) ? 1'bZ : master_all; 
-    assign scl = ( state ==  START || state == OFF /*|| (clk_stretch == 1'b1 && stretch_counter < 'd9)*/ ) ? 1'b1 : ~clk;
+    //assign scl = ( state ==  START || state == OFF /*|| (clk_stretch == 1'b1 && stretch_counter < 'd9)*/ ) ? 1'b1 : ((counter_time == (counter_max * 2))? ~scl : scl);
     
+    always_ff @( posedge clk) begin
+        if(rst) begin
+            scl <= '0;
+            counter_scl <= '0;
+        end
+        else if ( state ==  START || state == OFF) begin
+        scl <= 1'b1;
+        end
+        else if(counter_scl == counter_max * 2)begin
+            scl <= ~scl;
+            counter_scl <= 0;
+        end
+        else begin
+            counter_scl <= counter_scl + 1;
+        end
+    end
    /* always_ff @(negedge clk) begin
         if(state == ACK_SLAVE && mode == 'b1) begin
             clk_stretch <= 'b1;
@@ -97,6 +116,7 @@ module adc_control(
             delay <= 'b0;
             mode <= 2'b11;
             data_output <= 12'b0;
+            counter_time <= 'b0;
         end
         else begin
             state <= state_nxt;
@@ -104,11 +124,15 @@ module adc_control(
             delay <= delay_nxt;
             mode <= mode_nxt;
             data_output <= data_output_nxt;
+            counter_time <= counter_time_nxt;
         end
     end
     
     
     always_comb begin
+    if(counter_time == (counter_max * 2))begin
+        counter_time_nxt = 0;
+    
         if(state == START && counter == 6'b0 &&  delay != 7'd10 ) begin
             state_nxt = START;
             master = 'b1;
@@ -311,6 +335,21 @@ module adc_control(
             delay_nxt = delay;
             mode_nxt = mode;
         end
+            
+        if(state == READ )begin
+            counter_read_nxt = counter_read + 1;
+        end else begin
+            counter_read_nxt = counter_read;
+            end
+     end else begin 
+        counter_time_nxt = counter_time + 1;
+        state_nxt = state;
+        counter_nxt = counter;
+        delay_nxt = delay;
+        mode_nxt = mode;
+        data_output_nxt = data_output;
+        counter_read_nxt = counter_read;
+        end
     end
     
     
@@ -328,14 +367,15 @@ module adc_control(
  
     end
     
-    always_comb begin
+   /* always_comb begin
+    
         if(state == READ )
             counter_read_nxt = counter_read + 1;
         else 
             counter_read_nxt = counter_read;
     end
        
-       
+       */
        
        
        

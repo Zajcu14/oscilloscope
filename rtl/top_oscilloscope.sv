@@ -128,7 +128,7 @@ functions u_functions (
      .out(vga_bg)
      //.data()
  );
- 
+ /*
 filter u_filter(
     .clk,
     .rst,
@@ -136,7 +136,7 @@ filter u_filter(
     .mode(1'b1),
     .filtered_data(data_display_filter)
     );
-
+*/
  delay #(.WIDTH(27),
    .CLK_DEL(1)) 
  u_delay_mouse(
@@ -177,7 +177,7 @@ filter u_filter(
     .out(vga_display), 
     .scale_voltage(4'd1),
     .data_display(data_display),
-    .data_display_filter(data_display_filter),
+    //.data_display_filter(data_display_filter),
     //.data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos[7:0]),
@@ -203,9 +203,9 @@ filter u_filter(
  );
  
  adc_control u_adc_control (
-    .clk(clk_adc),
+    .clk,
     .channel(2'b00),
-    //.clk_enable(clk_adc),
+    .counter_max(counter_adc),
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
