@@ -90,14 +90,16 @@ module font_gen
    logic  hblnk_delay;
    logic  [11:0] rgb_delay;
    /////////////////////////////////////////////////////////////
- logic [11:0] counter_adc_hz;
+ logic [11:0] counter_adc_2;
  logic [11:0] mea_bin_1;
  logic [11:0] min_bin_1;
  logic [11:0] max_bin_1;
  logic [11:0] trigger_level_1;
- logic [11:0] counter_adc_hz_nxt;
+ logic [11:0] counter_adc_1;
  logic [11:0] clk_trig_max_1;
  logic [11:0] clk_trig_max_1_nxt;
+ logic [11:0] counter_adc_3;
+ 
  logic [11:0] mea_bin_1_nxt;
  logic [11:0] min_bin_1_nxt;
  logic [11:0] max_bin_1_nxt;
@@ -113,14 +115,12 @@ module font_gen
          mea_bin_1 <= '0;
          min_bin_1 <= '0;
          max_bin_1 <= '0;
-         counter_adc_hz <= '0;
          trigger_level_1 <= '0;
          clk_trig_max_1 <= '0;
      end else begin
         mea_bin_1 <= mea_bin_1_nxt;
         min_bin_1 <= min_bin_1_nxt; 
         max_bin_1 <= max_bin_1_nxt;
-        counter_adc_hz <= counter_adc_hz_nxt;
         trigger_level_1 <= trigger_level_1_nxt;
         clk_trig_max_1 <= clk_trig_max_1_nxt;
      end 
@@ -129,13 +129,22 @@ module font_gen
     mea_bin_1_nxt = mea_bin * 3;
     min_bin_1_nxt = min_bin * 3; 
     max_bin_1_nxt = max_bin * 3;
-    counter_adc_hz_nxt = 31500/counter_adc ;
     trigger_level_1_nxt = trigger_level * 3;
     clk_trig_max_1_nxt = clk_trig_max;
-    
    end
    
-   ////////////////////////////////////////////////////////////
+   always_ff @(posedge clk)begin
+      if (rst) begin
+        counter_adc_1 <= '0;
+        counter_adc_2 <= '0;
+        counter_adc_3 <= '0;
+      end else begin
+        counter_adc_1 <= counter_adc;
+        counter_adc_2 <= 12'd100 / counter_adc_1;
+        counter_adc_3 <= counter_adc_2 * 12'd315;
+      end
+    end  
+     ////////////////////////////////////////////////////////////
    
    Binary2Decimal u_Binary2Decimal(         
       .clk,
@@ -146,7 +155,7 @@ module font_gen
    Binary2Decimal u_Binary2Decimal_2(         
       .clk,
       .rst,
-      .bindata(counter_adc_hz),           
+      .bindata(counter_adc_3),           
       .decimalout(clk_adc)
    );
    Binary2Decimal u_Binary2Decimal_3(         

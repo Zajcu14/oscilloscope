@@ -25,8 +25,8 @@ module filter(
     input logic rst,
     input logic [11:0] data [0:255],
     input logic mode,
-    input logic [11:0] freq_corner,
-    input logic [11:0] freq_stop,
+    //input logic [11:0] freq_corner,
+    //input logic [11:0] freq_stop,
     output logic  [11:0] filtered_data [0:255]
     );
     

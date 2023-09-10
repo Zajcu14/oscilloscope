@@ -177,13 +177,12 @@ filter u_filter(
     .out(vga_display), 
     .scale_voltage(4'd1),
     .data_display(data_display),
-    //.data_display_filter(data_display_filter),
-   // .data_display_dft (data_display_dft),
+    .data_display_filter(data_display_filter),
+    //.data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos[7:0]),
     .minus_y(minus_y),
     .minus_x(minus_x)
-   // .graph_scale({Y_scale,X_scale})
  );
 
  user_interface u_user_interface(
@@ -201,13 +200,6 @@ filter u_filter(
     .trigger(trigger_level),
     .count_adc(counter_adc),
     . trig_clk(clk_trig_max)
-    //.delay(delay),
-    //.mode(),
-    //.scale_voltage()
-    //.threshold(threshold),
-   // .corner_freq(),
-   // .amplitude_scale(Y_scale),
-   // .time_scale(X_scale)
  );
  
  adc_control u_adc_control (
@@ -224,7 +216,7 @@ clock_adc u_clock_adc(
    .clk,
    .rst,
    .clk_adc(clk_adc),
-   .counter_max('d21)
+   .counter_max(counter_adc)
 );
 
  trigger u_trigger(
@@ -241,13 +233,9 @@ clock_adc u_clock_adc(
  font_gen u_font_gen (
    .clk,
    .rst,
-	.max_bin('b0),
-   .min_bin('b0), 
-   .mea_bin('b0), 
-   //.p2p('b0), 
-   //.rms('b0), 
-   //.frq('b0),
-   //.vol('b0), 
+	.max_bin(12'd12),
+   .min_bin(12'd12), 
+   .mea_bin(12'd12), 
    .trigger_level(trigger_level),
    .counter_adc(counter_adc),
    .clk_trig_max(clk_trig_max),
