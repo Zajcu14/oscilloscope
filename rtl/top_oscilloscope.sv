@@ -133,7 +133,7 @@ filter u_filter(
     .clk,
     .rst,
     .data(data_display),
-    .mode(1'b1),
+    .mode(1'b0),
     .filtered_data(data_display_filter)
     );
 */
@@ -177,7 +177,7 @@ filter u_filter(
     .out(vga_display), 
     .scale_voltage(4'd1),
     .data_display(data_display),
-    //.data_display_filter(data_display_filter),
+   // .data_display_filter(data_display_filter),
     //.data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos[7:0]),
@@ -186,8 +186,8 @@ filter u_filter(
  );
 
  user_interface u_user_interface(
-    .clk,
-    .rst,
+    .clk(clk),
+    .rst(rst),
     .xpos(xpos),
     .ypos(ypos),
     .left_mouse(left_mouse),
@@ -205,7 +205,8 @@ filter u_filter(
  adc_control u_adc_control (
     .clk,
     .channel(2'b00),
-    .counter_max(counter_adc),
+    .counter_max(clk_adc),
+    .clk_scl(clk_scl),
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
@@ -216,7 +217,8 @@ clock_adc u_clock_adc(
    .clk,
    .rst,
    .clk_adc(clk_adc),
-   .counter_max(counter_adc)
+   .clk_scl(clk_scl),
+   .counter_max(12'd50)
 );
 
  trigger u_trigger(

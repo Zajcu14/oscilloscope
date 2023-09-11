@@ -37,8 +37,8 @@
   */
  
  logic clk, rst;
- wire vs;
- wire [3:0] r, g, b;
+// wire vs;
+// wire [3:0] r, g, b;
  
  
  /**
@@ -54,7 +54,20 @@
  /**
   * Submodules instances
   */
- 
+ top_oscilloscope_basys3 U_top_oscilloscope_basys3 (
+    .clk,
+    .btnC(rst),
+    .Vsync(),
+    .Hsync(),
+    .vgaRed(),
+    .vgaGreen(),
+    .vgaBlue(),
+    .JB(),
+    .PS2Clk(),
+    .PS2Data(),
+    .JA1()
+);
+/*
  top_oscilloscope dut (
      .clk(clk),
      .rst(rst),
@@ -68,7 +81,8 @@
      .ps2_data(),
      .i2c()
  );
- 
+ */
+ /*
  tiff_writer #(
      .XDIM(16'd1344),
      .YDIM(16'd806),
@@ -81,27 +95,27 @@
      .go(vs)
  );
  
- 
+ */
  /**
   * Main test
   */
  
  initial begin
      rst = 1'b0;
-     # 30 rst = 1'b1;
-     # 30 rst = 1'b0;
+     # 60 rst = 1'b1;
+     # 150 rst = 1'b0;
  
      $display("If simulation ends before the testbench");
      $display("completes, use the menu option to run all.");
      $display("Prepare to wait a long time...");
  
-     wait (vs == 1'b0);
-     @(negedge vs) $display("Info: negedge VS at %t",$time);
-     @(negedge vs) $display("Info: negedge VS at %t",$time);
+   //  wait (vs == 1'b0);
+  //   @(negedge vs) $display("Info: negedge VS at %t",$time);
+   //  @(negedge vs) $display("Info: negedge VS at %t",$time);
  
      // End the simulation.
-     $display("Simulation is over, check the waveforms.");
-     $finish;
+  //   $display("Simulation is over, check the waveforms.");
+   //  $finish;
  end
  
  endmodule

@@ -57,12 +57,12 @@ module user_interface(
       */
  
 
-    reg [18:0]button_counter, counter_adc ;
-    reg [18:0] trigger_clk_counter;
-    reg [18:0]counter;
-    reg [1:0]state;
+    logic [18:0]button_counter, counter_adc ;
+    logic [18:0] trigger_clk_counter;
+    logic [18:0]counter;
+    logic [1:0]state;
 ////////////////////////////////////////////////////////////////////////
-    always_ff @(posedge  clk)begin
+    always_ff @(posedge clk)begin
     	if(rst)begin
     		counter_adc         <= 19'b000_0000_1000_0000_0000 ;
             counter             <= 'b0;
@@ -75,7 +75,13 @@ module user_interface(
     		case(state)
             
     			2'b00:begin
-    			     if (counter_adc == 'd12)begin 
+    			     if( counter_adc == 'x || counter == 'x || button_counter == 'x || trigger_clk_counter == 'x)begin
+    			        counter_adc         <= 19'b000_0000_1000_0000_0000 ;
+                        counter             <= 'b0;
+                        state               <= '0;
+			            button_counter      <= 19'b000_0011_1111_1000_0000 ;
+			            trigger_clk_counter <= 19'b000_0000_0001_1000_0000 ;
+    			     end else if (counter_adc == 'd12)begin 
     			         counter_adc <= 'd13; 
     			         state<=2'b01;
     			          
@@ -93,7 +99,7 @@ module user_interface(
     					state<=2'b01;
     				end else if(button_counter[18:7] > 2054)begin
     					button_counter <= 2040;
-    					state<=2'b00;
+    					state<=2'b01;
     				end else if(right_mouse & middle_mouse & xpos < 700 & xpos > 300)begin
     					button_counter<=button_counter + 10;
     					state<=2'b01;
@@ -140,12 +146,13 @@ module user_interface(
     				 counter_adc <= counter_adc;
     				end
     				
-    			default: begin
+    			/*default: begin
     				state <= '0;
     				trigger_clk_counter <= trigger_clk_counter;
     				button_counter <= button_counter;
     				counter_adc <= counter_adc;
     			end
+    			*/
     			endcase	
     		end
     	end 
