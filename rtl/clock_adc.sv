@@ -23,6 +23,7 @@ module clock_adc(
     input logic clk,
     output logic clk_adc
     );
+    wire divided_first_stage;
     BUFR #(
        .BUFR_DIVIDE("8"),   // Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8"
        .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"

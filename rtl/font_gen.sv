@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 20.07.2023 11:16:25
-// Design Name: Pawe³ Mozgowiec
+// Design Name: Paweï¿½ Mozgowiec
 // Module Name: font_gen
 // Project Name: 
 // Target Devices: 
@@ -46,8 +46,8 @@ module font_gen
 	logic mx_on;
    logic [2:0] bit_addr_cor;
 
-   logic  [23:0] trig, clk_adc, clk_trig, min, max, Vsk;
-   //logic  [23:0]  [23:0]mea
+   logic  [23:0] trig, clk_trig, min, max, Vsk;
+   //logic  [23:0]  mea  clk_adc,
 	// min signal
    logic [6:0] char_addr_mn;
    logic [3:0] row_addr_mn;

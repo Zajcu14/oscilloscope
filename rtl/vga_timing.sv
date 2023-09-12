@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2023  AGH University of Science and Technology
  * MTM UEC2
- * Author: Jakub Zaj¹c
+ * Author: Jakub Zajï¿½c
  *
  * Description:
  * Vga timing controller.

@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 30.08.2023 09:06:35
-// Design Name: Jakub Zaj¹c
+// Design Name: Jakub Zajï¿½c
 // Module Name: functions
 // Project Name: 
 // Target Devices: 
@@ -45,7 +45,7 @@ assign max = Maximum( data );
 
 //logic [11:0] average_1; 
 logic [11:0] min_nxt, max_nxt, min_delay, max_delay, Vsk_delay ;
-logic [11:0] counter, counter_nxt;
+logic [11:0] counter;
 logic [22:0]  sum_sk; //max sum = 256* max_one_sample(4054)
 logic [26:0] counter_delay;
 //logic [20:0]  sum; //max sum = 256* max_one_sample(4054)

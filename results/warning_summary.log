@@ -1,25 +1,14 @@
 Warnings, critical warnings and errors from synthesis and implementation
 
-Created: 2023-09-12 10:34:28
+Created: 2023-09-12 22:53:21
 
 ----SYNTHESIS----
 WARNING: [Synth 8-6014] Unused sequential element set_x.inc_reg was removed.  [rtl/MouseCtl.vhd:450]
 WARNING: [Synth 8-6014] Unused sequential element set_x.x_inter_reg was removed.  [rtl/MouseCtl.vhd:456]
 WARNING: [Synth 8-6014] Unused sequential element set_y.inc_reg was removed.  [rtl/MouseCtl.vhd:514]
 WARNING: [Synth 8-6014] Unused sequential element set_y.y_inter_reg was removed.  [rtl/MouseCtl.vhd:520]
-WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port minus_y in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port minus_x in module draw_display is either unconnected or has no load
 WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
-WARNING: [Synth 8-7129] Port channel[1] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port channel[0] in module adc_control is either unconnected or has no load
-WARNING: [Synth 8-7129] Port minus_y in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-7129] Port minus_x in module draw_display is either unconnected or has no load
-WARNING: [Synth 8-3332] Sequential element (FSM_onehot_mode_reg[1]) is unused and will be removed from module adc_control.
 
 ----IMPLEMENTATION----
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
 WARNING: [DRC RPBF-3] IO port buffering is incomplete: Device port JB[1] expects both input and output buffering but the buffers are incomplete.
-WARNING: [DRC DPIP-1] Input pipelining: DSP u_top_oscilloscope/u_font_gen/counter_adc_3_reg input u_top_oscilloscope/u_font_gen/counter_adc_3_reg/A[29:0] is not pipelined. Pipelining DSP48 input will improve performance.
-WARNING: [DRC DPOP-2] MREG Output pipelining: DSP u_top_oscilloscope/u_font_gen/counter_adc_3_reg multiplier stage u_top_oscilloscope/u_font_gen/counter_adc_3_reg/P[47:0] is not pipelined (MREG=0). Pipelining the multiplier function will improve performance and will save significant power so it is suggested whenever possible to fully pipeline this function.  If this multiplier was inferred, it is suggested to describe an additional register stage after this function.  If there is no registered adder/accumulator following the multiply function, two pipeline stages are suggested to allow both the MREG and PREG registers to be used.  If the DSP48 was instantiated in the design, it is suggested to set both the MREG and PREG attributes to 1 when performing multiply functions.

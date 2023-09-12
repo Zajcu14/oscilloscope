@@ -78,7 +78,7 @@ module draw_display(
            y4 <= '0;
            case_minus <= '0;                //  (V_DISPLAY   + y_mouse_pos == ((data_display[hcount/2 - H_DISPLAY - x_mouse_pos])/(scale_voltage * 12'd8))+ vcount)
         end else begin
-        case_minus <= {minus_y, minus_x}; 
+        case_minus <= case_minus_nxt; 
         case(case_minus)
         2'b00: begin
            x1 <= (in.hcount + 2) - H_DISPLAY_1 - x_mouse_pos;

@@ -33,7 +33,7 @@
  wire left_mouse_nxt, left_mouse, right_mouse_nxt, right_mouse, middle_nxt, middle;
  wire left_mouse_nxt_1, right_mouse_nxt_1, middle_nxt_1;
  wire minus_y, minus_x;
- wire [11:0] trigger_level, counter_adc, clk_trig_max;
+ wire [11:0] trigger_level, clk_trig_max;
 //wire [3:0] scale_voltage;
  
  // Clock wires
@@ -47,7 +47,7 @@
  wire read, ready;
  wire clk_adc;
  wire [11:0] data_adc;
- wire [11:0] data_display_filter [0:255];
+ //wire [11:0] data_display_filter [0:255];
 // functions variables
  //logic [11:0] average;
  logic [11:0]     min;
@@ -202,7 +202,7 @@ delay #(.WIDTH(27),
     .minus_y(minus_y),
     .minus_x(minus_x),
     .trigger(trigger_level),
-    .count_adc(counter_adc),
+    .count_adc(),
     . trig_clk(clk_trig_max)
  );
 

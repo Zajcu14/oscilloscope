@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 04.07.2023 10:15:13
-// Design Name: Pawe³ Mozgowiec
+// Design Name: Paweï¿½ Mozgowiec
 // Module Name: trigger
 // Project Name: 
 // Target Devices: 
@@ -50,7 +50,7 @@ module trigger(
         if (rst) begin
         
             trigger_buffer[0] <= '0;
-            trigger_level_case <= 2'd0;
+            trigger_level_case <= 3'd0;
             counter <= '0;
             clk_trigger <= '0;
             read <= '0;
