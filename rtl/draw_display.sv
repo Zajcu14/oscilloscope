@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 01.07.2023 18:56:45
-// Design Name: Pawe³ Mozgowiec
+// Design Name: Paweï¿½ Mozgowiec
 // Module Name: draw_display
 // Project Name: 
 // Target Devices: 
@@ -24,7 +24,7 @@ module draw_display(
     input logic clk,
     input logic rst,
     input reg [11:0] data_display [0:255],
-   // input reg [11:0] data_display_filter [0:255],
+    input reg [11:0] data_display_filter [0:255],
   //  input reg [11:0] data_display_dft [0:63],
     input logic [7:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
@@ -102,7 +102,7 @@ module draw_display(
         endcase
     end
     end
-    /*
+    
      logic [11:0]x2_1, y3_1;
      always_ff @(posedge clk) begin
         if (rst) begin   
@@ -113,7 +113,7 @@ module draw_display(
            y3_1 <= x2_1 / (scale_voltage * 12'd8);
         end
     end
-*/
+
     always_comb begin
         rgb_nxt = in.rgb;
         case_minus_nxt = {minus_y, minus_x};
@@ -137,8 +137,8 @@ module draw_display(
        // Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
       //  HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
         
-      //   Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-      //   HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
+         Draw_data_display_filter(data_display_filter, in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+         HEIGHT_DISPLAY_1, x_mouse_pos, y_mouse_pos, scale_voltage);
     //draw checkered on display
         Draw_checkered_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
         //DISPLAY__2
@@ -176,14 +176,14 @@ module draw_display(
                     end
     endfunction
     
-   /*     function void Draw_data_display_filter (input [10:0] hcount, [10:0] vcount,
+        function void Draw_data_display_filter (input [10:0] hcount, [10:0] vcount,
          [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height);
         if ((vcount <= V_DISPLAY && vcount + height >= V_DISPLAY) && (hcount >= H_DISPLAY && hcount <= H_DISPLAY + length)) begin
             if(V_DISPLAY   + y_mouse_pos == y3_1 + vcount)
                     rgb_nxt = 12'hf_0_f;
                     end
     endfunction
-*/
+
  /*   function void Draw_data_display (input [11:0] data_display [0:255], [10:0] hcount, [10:0] vcount,
          [10:0] V_DISPLAY, [10:0] H_DISPLAY, [10:0] length, [10:0] height, [7:0] x_mouse_pos, [10:0] y_mouse_pos, [3:0] scale_voltage);
         case_minus = {minus_y, minus_x};
