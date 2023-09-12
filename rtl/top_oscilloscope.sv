@@ -1,6 +1,6 @@
 /**
  *
- * Author: Pawe� Mozgowiec & Jakub Zaj�c
+ * Author: Pawe? Mozgowiec & Jakub Zaj?c
  *
  * Description:
  * The project top module.
@@ -40,8 +40,8 @@
  
  // Data wires
  wire [10:0] x_mouse_pos, y_mouse_pos;
- wire [11:0] trigger_buffer [0:255];
- wire [11:0] data_display [0:255];
+ wire [11:0] trigger_buffer [0:511];
+ wire [11:0] data_display [0:511];
 // wire [11:0] data_display_dft [0:63];
  //wire [11:0] filtered_data [0:255];
  wire read, ready;
@@ -49,9 +49,11 @@
  wire [11:0] data_adc;
  wire [11:0] data_display_filter [0:255];
 // functions variables
- logic [11:0] average;
+ //logic [11:0] average;
  logic [11:0]     min;
  logic [11:0]     max;
+ logic [11:0]     Vsk;
+ //logic minus_average;
  
  
  // VGA signals from timing
@@ -96,16 +98,18 @@
      .value('0),
      .zpos()
  );
- /*
+ 
 functions u_functions (
    .clk,
    .rst,
-   .data(data_display[0:79]),
-   .average,
+   .data(data_display),
+   //.average,
+   //.minus_average,
+   .Vsk,
    .min,
    .max
    );
-   */
+   
  vga_timing u_vga_timing (
      .clk,
      .rst,
@@ -137,7 +141,7 @@ filter u_filter(
     .filtered_data(data_display_filter)
     );
 */
- delay #(.WIDTH(27),
+delay #(.WIDTH(27),
    .CLK_DEL(1)) 
  u_delay_mouse(
     .clk(clk),
@@ -177,7 +181,7 @@ filter u_filter(
     .out(vga_display), 
     .scale_voltage(4'd1),
     .data_display(data_display),
-   // .data_display_filter(data_display_filter),
+    //.data_display_filter(data_display_filter),
     //.data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos[7:0]),
@@ -201,12 +205,10 @@ filter u_filter(
     .count_adc(counter_adc),
     . trig_clk(clk_trig_max)
  );
- 
-adc_control u_adc_control (
-    .clk,
-    .channel(2'b00),
-    .counter_max(12'd21),
-    //.clk_enable(clk_adc),
+
+ adc_control u_adc_control (
+    .clk(clk_adc),
+    //.channel(2'b00),
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
@@ -215,11 +217,8 @@ adc_control u_adc_control (
 
 clock_adc u_clock_adc(
    .clk,
-   .rst,
-   .clk_adc(clk_adc),
-   .counter_max('d21)
+   .clk_adc(clk_adc)
 );
-
 
  trigger u_trigger(
     .clk,
@@ -235,11 +234,13 @@ clock_adc u_clock_adc(
  font_gen u_font_gen (
    .clk,
    .rst,
-	.max_bin(12'd12),
-   .min_bin(12'd12), 
-   .mea_bin(12'd12), 
+	.max_bin(max),
+   .min_bin(min), 
+   //.mea_bin(average), 
+   //.minus_average(minus_average),
    .trigger_level(trigger_level),
-   .counter_adc(counter_adc),
+   .Vsk_bin(Vsk),
+   //.counter_adc(counter_adc),
    .clk_trig_max(clk_trig_max),
    .in(vga_display),
    .out(vga_font_gen)
@@ -263,4 +264,3 @@ clock_adc u_clock_adc(
   );
   */
  endmodule
-

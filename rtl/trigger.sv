@@ -26,7 +26,7 @@ module trigger(
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER,
     input logic [11:0] clk_trig_max, 
-    output reg [11:0] trigger_buffer [0:255],
+    output reg [11:0] trigger_buffer [0:511],
     input logic ready,
     output logic read,
     input logic [10:0] vcount
@@ -34,8 +34,9 @@ module trigger(
     
 /////////////////////////////////////////////////////////////////////////////////////////////////////////// 
    
-    parameter HIST_THRESHOLD = 40;
-    parameter ATTITUDE_LEVEL_TRIGGER = 8;
+    localparam HIST_THRESHOLD = 300;
+    localparam ATTITUDE_LEVEL_TRIGGER = 8;
+    localparam GND = 12'd2048;
     logic [11:0] counter;
     //reg [11:0] buffer [0:0]; 
     logic [11:0] clk_trigger;
@@ -60,12 +61,12 @@ module trigger(
                 clk_trigger <= '0;
             case (trigger_level_case)
             3'd0: begin
-                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
+                trigger_level_case <= (data_input >=  + GND + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
                 read <= 1'b0;
             end
             3'd1: begin
-                trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
-                3'd2 : ((data_input >= LEVEL_TRIGGER + 2054 - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0);
+                trigger_level_case <= (data_input >=  + GND + LEVEL_TRIGGER + HIST_THRESHOLD - ATTITUDE_LEVEL_TRIGGER)? 
+                3'd2 : ((data_input >= LEVEL_TRIGGER + GND - ATTITUDE_LEVEL_TRIGGER)? 3'd1 : 3'd0);
                 read <= 1'b0;
             end
             3'd2: begin
@@ -79,7 +80,7 @@ module trigger(
                 read <= 1'b0;
             end       */     
             3'd4: begin
-                if(counter == 12'd256)begin
+                if(counter == 12'd512)begin
                     read <= 1'b1;
 					counter <= 0;
 					trigger_level_case <= 3'd0;
@@ -92,7 +93,7 @@ module trigger(
 				end
 		      end
 		      default: begin
-		      trigger_level_case <= (data_input >=  + 2054 + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
+		      trigger_level_case <= (data_input >=  + GND + LEVEL_TRIGGER - ATTITUDE_LEVEL_TRIGGER)? 3'd4 : 3'd1;
                 read <= 1'b0;
                 end
 		      endcase 

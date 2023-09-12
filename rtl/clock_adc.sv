@@ -21,26 +21,29 @@
 //(* CLOCK_PIN = "clk_adc" *)
 module clock_adc(
     input logic clk,
-    input logic rst,
-    output logic clk_adc,
-    input logic [11:0] counter_max
+    output logic clk_adc
+    );
+    BUFR #(
+       .BUFR_DIVIDE("8"),   // Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8"
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )
+    BUFR_first_stage (
+       .O(divided_first_stage),     // 1-bit output: Clock output port
+       .CE('b1),   // 1-bit input: Active high, clock enable (Divided modes only)
+       .CLR('b0), // 1-bit input: Active high, asynchronous clear (Divided modes only)
+       .I(clk)      // 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
     );
     
     
-    int counter;
-    
-    always_ff @( posedge clk) begin
-        if(rst) begin
-            clk_adc <= '0;
-            counter <= '0;
-        end
-        else if(counter == counter_max)begin
-            clk_adc <= ~clk_adc;
-            counter <= 0;
-        end
-        else begin
-            counter <= counter +1;
-        end
-    end
+    BUFR #(
+       .BUFR_DIVIDE("4"),   // Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8"
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )
+    BUFR_second_stage (
+       .O(clk_adc),     // 1-bit output: Clock output port
+       .CE('b1),   // 1-bit input: Active high, clock enable (Divided modes only)
+       .CLR('b0), // 1-bit input: Active high, asynchronous clear (Divided modes only)
+       .I(divided_first_stage)      // 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
+    );
     
 endmodule

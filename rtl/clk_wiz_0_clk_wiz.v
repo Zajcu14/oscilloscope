@@ -203,7 +203,9 @@ wire clk_in2_clk_wiz_0;
 
 
 
-  BUFGCE clkout1_buf
+    BUFGCE #(
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )clkout1_buf
    (.O   (clk_105Mhz),
     .CE  (seq_reg1[7]),
     .I   (clk_105Mhz_clk_wiz_0));
@@ -214,8 +216,9 @@ wire clk_in2_clk_wiz_0;
   always @(posedge clk_105Mhz_clk_wiz_0_en_clk)
         seq_reg1 <= {seq_reg1[6:0],locked_int};
 
-
-  BUFGCE clkout2_buf
+  BUFGCE #(
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )clkout2_buf
    (.O   (clk_63Mhz),
     .CE  (seq_reg2[7]),
     .I   (clk_63Mhz_clk_wiz_0));

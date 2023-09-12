@@ -4,7 +4,7 @@
 // Engineer: 
 // 
 // Create Date: 10.08.2023 10:32:12
-// Design Name: Jakub Zaj�c
+// Design Name: Jakub Zaj?c
 // Module Name: filter
 // Project Name: 
 // Target Devices: 
@@ -110,7 +110,7 @@ module filter(
         a_extended = 23'(a);
         b_extended = 23'(b);
         
-        return 12'(a_extended*b_extended / (2**11));
+        return 12'(a_extended*b_extended >> 11);
         
     endfunction
     

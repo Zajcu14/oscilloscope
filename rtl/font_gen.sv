@@ -24,9 +24,11 @@ module font_gen
       input logic rst,
       input logic [11:0] max_bin,
       input logic [11:0] min_bin,
-      input logic [11:0] mea_bin,
+      //input logic [11:0] mea_bin,
+      input logic [11:0] Vsk_bin,
+      //input logic minus_average,
       input logic [11:0] trigger_level,
-      input logic [11:0] counter_adc,
+      //input logic [11:0] counter_adc,
       input logic [11:0] clk_trig_max,
 
       vga_if.in in,
@@ -44,19 +46,24 @@ module font_gen
 	logic mx_on;
    logic [2:0] bit_addr_cor;
 
-   logic  [23:0] trig, clk_adc, clk_trig, mea, min, max;
-
+   logic  [23:0] trig, clk_adc, clk_trig, min, max, Vsk;
+   //logic  [23:0]  [23:0]mea
 	// min signal
-   logic  [6:0] char_addr_mn;
+   logic [6:0] char_addr_mn;
    logic [3:0] row_addr_mn;
    logic [2:0] bit_addr_mn;
-	logic mn_on;	
+	logic mn_on;
+		// Vsk signal
+   logic [6:0] char_addr_vsk;
+   logic [3:0] row_addr_vsk;
+   logic [2:0] bit_addr_vsk;
+	logic vsk_on;	
 	
 	// mean signal
-   logic  [6:0] char_addr_me;
-   logic [3:0] row_addr_me;
-   logic [2:0] bit_addr_me;
-	logic me_on;
+   //logic [6:0] char_addr_me;
+   //logic [3:0] row_addr_me;
+   //logic [2:0] bit_addr_me;
+	//logic me_on;
 	
 	// signal trig
    logic [6:0] char_addr_trig;
@@ -90,17 +97,18 @@ module font_gen
    logic  hblnk_delay;
    logic  [11:0] rgb_delay;
    /////////////////////////////////////////////////////////////
- logic [11:0] counter_adc_2;
- logic [11:0] mea_bin_1;
+ //logic [11:0] counter_adc_2;
+ //logic [11:0] mea_bin_1;
  logic [11:0] min_bin_1;
  logic [11:0] max_bin_1;
  logic [11:0] trigger_level_1;
- logic [11:0] counter_adc_1;
+ //logic [11:0] counter_adc_1;
  logic [11:0] clk_trig_max_1;
  logic [11:0] clk_trig_max_1_nxt;
- logic [11:0] counter_adc_3;
  
- logic [11:0] mea_bin_1_nxt;
+ logic [11:0] Vsk_bin_1;
+ logic [11:0] Vsk_bin_1_nxt;
+ //logic [11:0] mea_bin_1_nxt;
  logic [11:0] min_bin_1_nxt;
  logic [11:0] max_bin_1_nxt;
  logic [11:0] trigger_level_1_nxt;
@@ -112,38 +120,40 @@ module font_gen
  assign clk_trig_max_1 = clk_trig_max;*/
    always_ff @(posedge clk)begin
       if (rst) begin
-         mea_bin_1 <= '0;
+         //mea_bin_1 <= '0;
          min_bin_1 <= '0;
          max_bin_1 <= '0;
          trigger_level_1 <= '0;
          clk_trig_max_1 <= '0;
+         Vsk_bin_1 <= '0;
      end else begin
-        mea_bin_1 <= mea_bin_1_nxt;
-        min_bin_1 <= min_bin_1_nxt; 
-        max_bin_1 <= max_bin_1_nxt;
-        trigger_level_1 <= trigger_level_1_nxt;
+        Vsk_bin_1 <= Vsk_bin_1_nxt * 4;
+        //mea_bin_1 <= mea_bin_1_nxt;
+        min_bin_1 <= min_bin_1_nxt * 4; 
+        max_bin_1 <= max_bin_1_nxt * 4;
+        trigger_level_1 <= trigger_level_1_nxt * 4;
         clk_trig_max_1 <= clk_trig_max_1_nxt;
      end 
    end
    always_comb begin
-    mea_bin_1_nxt = mea_bin * 3;
-    min_bin_1_nxt = min_bin * 3; 
-    max_bin_1_nxt = max_bin * 3;
-    trigger_level_1_nxt = trigger_level * 3;
+    //mea_bin_1_nxt = mea_bin;
+    Vsk_bin_1_nxt = Vsk_bin / 5;
+    min_bin_1_nxt = min_bin / 5; 
+    max_bin_1_nxt = max_bin / 5;
+    trigger_level_1_nxt = trigger_level / 5;
     clk_trig_max_1_nxt = clk_trig_max;
    end
-   
+   /*
    always_ff @(posedge clk)begin
       if (rst) begin
         counter_adc_1 <= '0;
         counter_adc_2 <= '0;
-        counter_adc_3 <= '0;
       end else begin
         counter_adc_1 <= counter_adc;
-        counter_adc_2 <= 12'd100 / counter_adc_1;
-        counter_adc_3 <= counter_adc_2 * 12'd315;
+        counter_adc_2 <= 12'd3150 / counter_adc_1;
       end
     end  
+    */
      ////////////////////////////////////////////////////////////
    
    Binary2Decimal u_Binary2Decimal(         
@@ -152,24 +162,26 @@ module font_gen
       .bindata(trigger_level_1),           
       .decimalout(trig)
    );
-   Binary2Decimal u_Binary2Decimal_2(         
+  /* Binary2Decimal u_Binary2Decimal_2(         
       .clk,
       .rst,
-      .bindata(counter_adc_3),           
+      .bindata(counter_adc_2),           
       .decimalout(clk_adc)
    );
+   */
    Binary2Decimal u_Binary2Decimal_3(         
       .clk,
       .rst,
       .bindata(clk_trig_max_1),           
       .decimalout(clk_trig)
    );
-   Binary2Decimal u_Binary2Decimal_4(         
+   /*Binary2Decimal u_Binary2Decimal_4(         
       .clk,
       .rst,
       .bindata(mea_bin_1),           
       .decimalout(mea)
    );
+   */
    Binary2Decimal u_Binary2Decimal_5(         
       .clk,
       .rst,
@@ -181,6 +193,12 @@ module font_gen
       .rst,
       .bindata(max_bin_1),           
       .decimalout(max)
+   );
+   Binary2Decimal u_Binary2Decimal_7(         
+      .clk,
+      .rst,
+      .bindata(Vsk_bin_1),           
+      .decimalout(Vsk)
    );
    
    ////////////////////////////////////////////////////////////
@@ -231,15 +249,15 @@ module font_gen
          4'h2: char_addr_mx = 7'h61; // a
          4'h3: char_addr_mx = 7'h78; // x
          4'h4: char_addr_mx = 7'h3d; // =
-         4'h5: char_addr_mx = (7'd48 + max[23:20]); // digit 0
-         4'h6: char_addr_mx = (7'd48 + max[19:16]); // digit 1
-         4'h7: char_addr_mx = (7'd48 + max[15:12]); // digit 2
-         4'h8: char_addr_mx = (7'd48 +  max[11:8]); // digit 3
-         4'h9: char_addr_mx = (7'd48 +  max[7:4]);  // digit 4
-         4'ha: char_addr_mx = (7'd48 +  max[3:0]);  // digit 5
-         4'hb: char_addr_mx = 7'h6d; // m
-         4'hc: char_addr_mx = 7'h56; // V
-         4'hd: char_addr_mx = 7'h00; // 
+         4'h5: char_addr_mx = 7'h00; //
+         4'h6: char_addr_mx = (7'd48 + max[23:20]); // digit 0
+         4'h7: char_addr_mx = (7'd48 + max[19:16]); // digit 1
+         4'h8: char_addr_mx = (7'd48 + max[15:12]); // digit 2
+         4'h9: char_addr_mx = (7'd48 +  max[11:8]); // digit 3
+         4'ha: char_addr_mx = (7'd48 +  max[7:4]);  // digit 4
+         4'hb: char_addr_mx = (7'd48 +  max[3:0]);  // digit 5
+         4'hc: char_addr_mx = 7'h6d; // m
+         4'hd: char_addr_mx = 7'h56; // V 
          4'he: char_addr_mx = 7'h00; // 
          4'hf: char_addr_mx = 7'h00; // 
       endcase
@@ -258,15 +276,15 @@ module font_gen
          4'h2: char_addr_mn = 7'h69; // i
          4'h3: char_addr_mn = 7'h6e; // n
          4'h4: char_addr_mn = 7'h3d; // =
-         4'h5: char_addr_mn = (7'd48 + min[23:20]); // digit 0
-         4'h6: char_addr_mn = (7'd48 + min[19:16]); // digit 1
-         4'h7: char_addr_mn = (7'd48 + min[15:12]); // digit 2
-         4'h8: char_addr_mn = (7'd48 + min[11:8]);  // digit 3
-         4'h9: char_addr_mn = (7'd48 + min[7:4]);   // digit 4
-         4'ha: char_addr_mn = (7'd48 + min[3:0]);   // digit 5
-         4'hb: char_addr_mn = 7'h6d; //  m
-         4'hc: char_addr_mn = 7'h56; //  V
-         4'hd: char_addr_mn = 7'h00; // 
+         4'h5: char_addr_mn = 7'h2d; // -
+         4'h6: char_addr_mn = (7'd48 + min[23:20]); // digit 0
+         4'h7: char_addr_mn = (7'd48 + min[19:16]); // digit 1
+         4'h8: char_addr_mn = (7'd48 + min[15:12]); // digit 2
+         4'h9: char_addr_mn = (7'd48 + min[11:8]);  // digit 3
+         4'ha: char_addr_mn = (7'd48 + min[7:4]);   // digit 4
+         4'hb: char_addr_mn = (7'd48 + min[3:0]);   // digit 5
+         4'hc: char_addr_mn = 7'h6d; //  m
+         4'hd: char_addr_mn = 7'h56; //  V 
          4'he: char_addr_mn = 7'h00; // 
          4'hf: char_addr_mn = 7'h00; // 
       endcase
@@ -275,30 +293,57 @@ module font_gen
    // mean region
    //  - display mean voltage
    //-------------------------------------------
-   assign me_on = ((10'd47<in.vcount)&&(in.vcount<10'd64)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
+   /*assign me_on = ((10'd47<in.vcount)&&(in.vcount<10'd64)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));
    assign row_addr_me = in.vcount[3:0];
    assign bit_addr_me = in.hcount[2:0];
    always_comb begin
       case (in.hcount[6:3])
          4'h0: char_addr_me = 7'h56; // V
-         4'h1: char_addr_me = 7'h6d; // m
-         4'h2: char_addr_me = 7'h65; // e
-         4'h3: char_addr_me = 7'h61; // a
+         4'h1: char_addr_me = 7'h73; // s
+         4'h2: char_addr_me = 7'h72; // r
+         4'h3: char_addr_me = 7'h00; //
          4'h4: char_addr_me = 7'h3d; // =
-         4'h5: char_addr_me = (7'd48 +  mea[23:20]); // digit 0
-         4'h6: char_addr_me = (7'd48 +  mea[19:16]); // digit 1
-         4'h7: char_addr_me = (7'd48 +  mea[15:12]); // digit 2
-         4'h8: char_addr_me = (7'd48 +  mea[11:8]);  // digit 3
-         4'h9: char_addr_me = (7'd48 +  mea[7:4]);   // digit 4
-         4'ha: char_addr_me = (7'd48 +  mea[3:0]);   // digit 5
-         4'hb: char_addr_me = 7'h6d; // m
-         4'hc: char_addr_me = 7'h56; // V
-         4'hd: char_addr_me = 7'h00; // 
+         4'h5: char_addr_me = (minus_average)? 7'h2d : 7'h00;// - v space 
+         4'h6: char_addr_me = (7'd48 +  mea[23:20]); // digit 0
+         4'h7: char_addr_me = (7'd48 +  mea[19:16]); // digit 1
+         4'h8: char_addr_me = (7'd48 +  mea[15:12]); // digit 2
+         4'h9: char_addr_me = (7'd48 +  mea[11:8]);  // digit 3
+         4'ha: char_addr_me = (7'd48 +  mea[7:4]);   // digit 4
+         4'hb: char_addr_me = (7'd48 +  mea[3:0]);   // digit 5
+         4'hc: char_addr_me = 7'h6d; // m
+         4'hd: char_addr_me = 7'h56; // V
          4'he: char_addr_me = 7'h00; // 
          4'hf: char_addr_me = 7'h00; // 
       endcase
    end
-   
+   */
+   //-------------------------------------------
+   // Vsk region
+   //  - display Vsk voltage
+   //-------------------------------------------
+   assign vsk_on = ((10'd47<in.vcount)&&(in.vcount<10'd64)) && ((in.hcount>10'd767)&&(in.hcount<10'd888));//if mea (10'd63<in.vcount)&&(in.vcount<10'd80)
+   assign row_addr_vsk = in.vcount[3:0];
+   assign bit_addr_vsk = in.hcount[2:0];
+   always_comb begin
+      case (in.hcount[6:3])
+         4'h0: char_addr_vsk = 7'h56; // V
+         4'h1: char_addr_vsk = 7'h73; // s
+         4'h2: char_addr_vsk = 7'h6b; // k
+         4'h3: char_addr_vsk = 7'h00; //
+         4'h4: char_addr_vsk = 7'h3d; // =
+         4'h5: char_addr_vsk = 7'h00; // 
+         4'h6: char_addr_vsk = (7'd48 +  Vsk[23:20]); // digit 0
+         4'h7: char_addr_vsk = (7'd48 +  Vsk[19:16]); // digit 1
+         4'h8: char_addr_vsk = (7'd48 +  Vsk[15:12]); // digit 2
+         4'h9: char_addr_vsk = (7'd48 +  Vsk[11:8]);  // digit 3
+         4'ha: char_addr_vsk = (7'd48 +  Vsk[7:4]);   // digit 4
+         4'hb: char_addr_vsk = (7'd48 +  Vsk[3:0]);   // digit 5
+         4'hc: char_addr_vsk = 7'h6d; // m
+         4'hd: char_addr_vsk = 7'h56; // V
+         4'he: char_addr_vsk = 7'h00; // 
+         4'hf: char_addr_vsk = 7'h00; // 
+      endcase
+   end
    //-------------------------------------------
    // Trig region
    //  - display trig voltage
@@ -339,12 +384,12 @@ module font_gen
          4'h2: char_addr_clk_adc = 7'h43; // C
          4'h3: char_addr_clk_adc = 7'h00; // 
          4'h4: char_addr_clk_adc = 7'h3d; // =
-         4'h5: char_addr_clk_adc = 7'd48 + clk_adc[23:20];   // dig0
-         4'h6: char_addr_clk_adc = 7'd48 + clk_adc[19:16] + clk_adc[15:12];   // dig1 + dig2 never write dig 1
-         4'h7: char_addr_clk_adc = 7'h2e;                      // .
-         4'h8: char_addr_clk_adc = 7'd48 + clk_adc[11:8];    // dig3
-         4'h9: char_addr_clk_adc = 7'd48 + clk_adc[7:4];     // dig4
-         4'ha: char_addr_clk_adc = 7'd48 + clk_adc[3:0];     // dig5
+         4'h5: char_addr_clk_adc = 7'd00; //         + clk_adc[23:20];   // dig0
+         4'h6: char_addr_clk_adc = 7'd00; //         + clk_adc[19:16] + clk_adc[15:12];   // dig1 + dig2 never write dig 1
+         4'h7: char_addr_clk_adc = 7'h31; // 1     //7'd48 + clk_adc[11:8];    // dig3
+         4'h8: char_addr_clk_adc = 7'h2e; // .
+         4'h9: char_addr_clk_adc = 7'h39; // 9     //7'd48 + clk_adc[7:4];     // dig4
+         4'ha: char_addr_clk_adc = 7'h31; // 1     //7'd48 + clk_adc[3:0];     // dig5
          4'hb: char_addr_clk_adc = 7'd00;                   
          4'hc: char_addr_clk_adc = 7'h4d; // M
          4'hd: char_addr_clk_adc = 7'h68; // h
@@ -427,7 +472,19 @@ module font_gen
 				end
 			end
 			
-		else if(me_on) begin              //Vmean
+			else if(vsk_on) begin              //Vsk
+			char_addr <= char_addr_vsk;
+         row_addr <= row_addr_vsk;
+         bit_addr <= bit_addr_vsk;
+         if(font_bit) begin
+            out.rgb <= 12'hf_f_0;// green
+				end
+          else begin
+            out.rgb <= 12'b0;  // black
+				end
+			end
+			
+		/*else if(me_on) begin              //Vmean
 			char_addr <= char_addr_me;
          row_addr <= row_addr_me;
          bit_addr <= bit_addr_me;
@@ -438,6 +495,7 @@ module font_gen
             out.rgb <= 12'b0;  // black
 				end
 			end
+			*/
 		else if(trig_on) begin             //trig
 		 char_addr <= char_addr_trig; 
          row_addr <= row_addr_trig;

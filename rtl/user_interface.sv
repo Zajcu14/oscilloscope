@@ -75,13 +75,7 @@ module user_interface(
     		case(state)
             
     			2'b00:begin
-    			     if( counter_adc == 'x || counter == 'x || button_counter == 'x || trigger_clk_counter == 'x)begin
-    			        counter_adc         <= 19'b000_0000_1000_0000_0000 ;
-                        counter             <= 'b0;
-                        state               <= '0;
-			            button_counter      <= 19'b000_0011_1111_1000_0000 ;
-			            trigger_clk_counter <= 19'b000_0000_0001_1000_0000 ;
-    			     end else if (counter_adc == 'd12)begin 
+    			     if (counter_adc == 'd12)begin 
     			         counter_adc <= 'd13; 
     			         state<=2'b01;
     			          
