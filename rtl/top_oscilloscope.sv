@@ -201,25 +201,49 @@ filter u_filter(
     .count_adc(counter_adc),
     . trig_clk(clk_trig_max)
  );
+
+    logic divided_8;
+    logic divided_48;
+    
+    BUFR #(
+       .BUFR_DIVIDE("8"),   // Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8"
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )
+    BUFR_first_stage (
+       .O(divided_8),     // 1-bit output: Clock output port
+       .CE('b1),   // 1-bit input: Active high, clock enable (Divided modes only)
+       .CLR('b0), // 1-bit input: Active high, asynchronous clear (Divided modes only)
+       .I(clk)      // 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
+    );
+    
+    BUFR #(
+       .BUFR_DIVIDE("6"),   // Values: "BYPASS, 1, 2, 3, 4, 5, 6, 7, 8"
+       .SIM_DEVICE("7SERIES")  // Must be set to "7SERIES"
+    )
+    BUFR_second_stage (
+       .O(divided_48),     // 1-bit output: Clock output port
+       .CE('b1),   // 1-bit input: Active high, clock enable (Divided modes only)
+       .CLR('b0), // 1-bit input: Active high, asynchronous clear (Divided modes only)
+       .I(divided_8)      // 1-bit input: Clock buffer input driven by an IBUF, MMCM or local interconnect
+    );
  
  adc_control u_adc_control (
-    .clk,
+    .clk(divided_48),
     .channel(2'b00),
-    .counter_max(clk_adc),
-    .clk_scl(clk_scl),
+    
     .rst,
     .sda(i2c[0]),
     .scl(i2c[1]),
     .data_output(data_adc)
 );
 
-clock_adc u_clock_adc(
+/*clock_adc u_clock_adc(
    .clk,
    .rst,
    .clk_adc(clk_adc),
    .clk_scl(clk_scl),
    .counter_max(12'd50)
-);
+);*/
 
  trigger u_trigger(
     .clk,

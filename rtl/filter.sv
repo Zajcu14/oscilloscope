@@ -110,7 +110,7 @@ module filter(
         a_extended = 23'(a);
         b_extended = 23'(b);
         
-        return 12'(a_extended*b_extended / (2**11));
+        return 12'(a_extended*b_extended >> 11);
         
     endfunction
     
