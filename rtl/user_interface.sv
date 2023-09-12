@@ -68,7 +68,7 @@ module user_interface(
             counter             <= 'b0;
             state               <= '0;
 			button_counter      <= 19'b000_0011_1111_1000_0000 ;
-			trigger_clk_counter <= 19'b000_0000_0001_1000_0000 ;
+			trigger_clk_counter <= 19'b001_1011_0101_1000_0000 ;
     		end
         
     	else begin
