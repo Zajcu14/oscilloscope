@@ -25,7 +25,7 @@ module trigger(
     input logic rst,
     input logic [11:0] LEVEL_TRIGGER,
     input logic [11:0] clk_trig_max, 
-    output reg [11:0] trigger_buffer [0:511],
+    output reg [11:0] trigger_buffer [0:255],
     input logic ready,
     output logic read,
     input logic [10:0] vcount
@@ -79,7 +79,7 @@ module trigger(
                 read <= 1'b0;
             end       */     
             3'd4: begin
-                if(counter == 12'd512)begin
+                if(counter == 12'd256)begin
                     read <= 1'b1;
 					counter <= 0;
 					trigger_level_case <= 3'd0;

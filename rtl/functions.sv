@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module functions #(parameter SAMPLES = 512) (
+module functions #(parameter SAMPLES = 256) (
     input logic clk,
     input logic rst,
-    input reg [11:0] data [0:511],
+    input reg [11:0] data [0:255],
     //output logic [11:0] average,
     //output logic  minus_average,
     output logic [11:0] Vsk,
