@@ -25,6 +25,7 @@ module draw_display(
     input logic rst,
     input reg [11:0] data_display [0:255],
     input reg [11:0] data_display_filter [0:255],
+    input logic [1:0] count_adc,
   //  input reg [11:0] data_display_dft [0:63],
     input logic [7:0] x_mouse_pos,
     input logic [10:0] y_mouse_pos,
@@ -117,9 +118,10 @@ module draw_display(
     //draw Shape display
         Draw_Shape_display(in.hcount, in.vcount, LENGTH_DISPLAY_1, HEIGHT_DISPLAY_1, V_DISPLAY_1, H_DISPLAY_1);
     //draw data_display on display
-        Draw_data_display( in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
-        HEIGHT_DISPLAY_1);
-
+        //Draw_data_display( in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        //HEIGHT_DISPLAY_1);
+    case(count_adc)
+    2'd0: begin
         Draw_data_display(in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1);
 
@@ -130,7 +132,28 @@ module draw_display(
         HEIGHT_DISPLAY_1);
         Draw_data_display_prev( in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1);
-         Draw_data_display_prev(in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        Draw_data_display_prev(in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+    end
+    2'd1: begin
+        Draw_data_display_filter(in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+        
+        Draw_data_display_filter( in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+    end
+    2'd2: begin
+        Draw_data_display(in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+
+        Draw_data_display(in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+        
+        Draw_data_display_prev(in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+        Draw_data_display_prev( in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
+        HEIGHT_DISPLAY_1);
+        Draw_data_display_prev(in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1);
 
        Draw_data_display_filter(in.hcount, in.vcount, V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
@@ -138,6 +161,8 @@ module draw_display(
         
         Draw_data_display_filter( in.hcount, (in.vcount - 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
         HEIGHT_DISPLAY_1);
+    end
+    endcase
         
     //     Draw_data_display_filter(in.hcount, (in.vcount + 1), V_DISPLAY_1, H_DISPLAY_1, LENGTH_DISPLAY_1, 
     //     HEIGHT_DISPLAY_1);

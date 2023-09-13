@@ -33,7 +33,7 @@ module user_interface(
     output logic  minus_y,
     output logic  minus_x,
     output logic [11:0]  trigger,
-    output logic [11:0] count_adc,
+    output logic [1:0] count_adc,
     output logic [11:0] trig_clk
     //output [3:0] delay,
     //output [3:0] mode,
@@ -57,14 +57,15 @@ module user_interface(
       */
  
 
-    logic [18:0]button_counter, counter_adc ;
+    logic [18:0]button_counter;
     logic [18:0] trigger_clk_counter;
     logic [18:0]counter;
     logic [1:0]state;
+    logic [1:0] counter_adc;
 ////////////////////////////////////////////////////////////////////////
     always_ff @(posedge clk)begin
     	if(rst)begin
-    		counter_adc         <= 19'b000_0000_1000_0000_0000 ;
+    		counter_adc         <= 2'd0;
             counter             <= 'b0;
             state               <= '0;
 			button_counter      <= 19'b001_1011_0101_1000_0000 ;
@@ -75,21 +76,20 @@ module user_interface(
     		case(state)
             
     			2'b00:begin
+    			/*
     			     if (counter_adc == 'd12)begin 
     			         counter_adc <= 'd13; 
     			         state<=2'b01;
     			          
-    			     end else if(right_mouse & middle_mouse & xpos > 700 & xpos < 1000)begin
-    					counter_adc <= counter_adc + 10;
+    			     end else*/ 
+    			     if(right_mouse & xpos > 700 & xpos < 1000)begin
+    					counter_adc <= 2'd0;
     					state<=2'b01;
-    				end else if(right_mouse  & xpos > 700 & xpos < 1000)begin
-    					counter_adc <= counter_adc + 1;
-    					state<=2'b01;	
-    				 end else if(left_mouse & middle_mouse & xpos > 700 & xpos < 1000)begin
-    					counter_adc <= counter_adc - 10;
+    				 end else if(middle_mouse & xpos > 700 & xpos < 1000)begin
+    					counter_adc <= 2'd1;
     					state<=2'b01;	
     				end else if(left_mouse & xpos > 700 & xpos < 1000)begin
-    					counter_adc <= counter_adc - 1;
+    					counter_adc <= 2'd2 ;
     					state<=2'b01;
     				end else if(button_counter[18:7] > 2054)begin
     					button_counter <= 2040;
@@ -152,7 +152,7 @@ module user_interface(
     	end 
 ///////////////////////////////////////////////////////////////////////////////////////    
     assign trigger = {button_counter[18:7]};
-    assign count_adc = {counter_adc[18:7]};
+    assign count_adc = {counter_adc};
     assign trig_clk = {trigger_clk_counter[18:7]};
     
     

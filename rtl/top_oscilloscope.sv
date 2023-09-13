@@ -35,7 +35,7 @@
  wire minus_y, minus_x;
  wire [11:0] trigger_level, clk_trig_max;
 //wire [3:0] scale_voltage;
- 
+ logic [1:0] count_adc;
  // Clock wires
  
  // Data wires
@@ -182,6 +182,7 @@ delay #(.WIDTH(27),
     .scale_voltage(4'd1),
     .data_display(data_display),
     .data_display_filter(data_display_filter),
+    .count_adc(count_adc),
     //.data_display_dft (data_display_dft),
     .y_mouse_pos(y_mouse_pos),
     .x_mouse_pos(x_mouse_pos[7:0]),
@@ -202,7 +203,7 @@ delay #(.WIDTH(27),
     .minus_y(minus_y),
     .minus_x(minus_x),
     .trigger(trigger_level),
-    .count_adc(),
+    .count_adc(count_adc),
     . trig_clk(clk_trig_max)
  );
 
